@@ -4,9 +4,10 @@ import {
   MagnifyingGlassIcon,
   ArrowPathIcon,
   ShieldCheckIcon,
-  ArrowRightOnRectangleIcon
+  ArrowRightOnRectangleIcon,
+  StarIcon
 } from '@heroicons/react/24/outline';
-import { BellIcon as BellSolidIcon } from '@heroicons/react/24/solid';
+import { BellIcon as BellSolidIcon, StarIcon as StarSolidIcon } from '@heroicons/react/24/solid';
 import { useAuth } from '../contexts/AuthContext';
 
 const Header = ({ 
@@ -16,7 +17,9 @@ const Header = ({
   onRefresh,
   onOpenConfig,
   onOpenAdmin,
-  isRefreshing 
+  onOpenFavorites,
+  isRefreshing,
+  favoritesEnabled
 }) => {
   const { user, logout, isAdmin } = useAuth();
 
@@ -46,7 +49,7 @@ const Header = ({
           </div>
         </div>
 
-        {/* Controles */}
+        {/* Controles à direita */}
         <div className="flex items-center gap-3">
           {/* Status */}
           {ultimaAtualizacao && (
@@ -98,6 +101,23 @@ const Header = ({
               <BellSolidIcon className="w-5 h-5 text-emerald-300 animate-pulse" />
             ) : (
               <BellIcon className="w-5 h-5 text-emerald-300" />
+            )}
+          </button>
+
+          {/* Botão Favoritos */}
+          <button
+            onClick={onOpenFavorites}
+            className={`p-3 rounded-xl border transition-all backdrop-blur-sm ${
+              favoritesEnabled
+                ? 'bg-amber-500/20 border-amber-400/50 shadow-xl shadow-amber-500/30'
+                : 'bg-emerald-500/10 border-emerald-500/30 hover:bg-emerald-500/20 hover:shadow-lg hover:shadow-emerald-500/20'
+            }`}
+            title="Favoritos"
+          >
+            {favoritesEnabled ? (
+              <StarSolidIcon className="w-5 h-5 text-amber-400" />
+            ) : (
+              <StarIcon className="w-5 h-5 text-emerald-300" />
             )}
           </button>
 
