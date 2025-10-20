@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
-import { UserProvider } from "./contexts/UserContext";
+import { UserProvider, useUser } from "./contexts/UserContext"; // ← ADICIONA useUser AQUI!
 import Header from "./components/Header";
 import RadarFullScreen from "./components/RadarFullScreen";
 import ConfigModal from "./components/ConfigModal";
@@ -9,6 +9,7 @@ import LoginPage from "./components/LoginPage";
 import { useDocuments } from "./hooks/useDocuments";
 import { useStats } from "./hooks/useStats";
 import FavoritosModal from "./components/FavoritosModal";
+import DocumentDetailModal from "./components/DocumentDetailModal";
 import { StarIcon } from "@heroicons/react/24/outline";
 
 function AppContent() {
@@ -18,6 +19,7 @@ function AppContent() {
   const [isConfigOpen, setIsConfigOpen] = useState(false);
   const [isAdminOpen, setIsAdminOpen] = useState(false);
   const [mostrarFavoritos, setMostrarFavoritos] = useState(false);
+  const [selectedDocument, setSelectedDocument] = useState(null); // ← ADICIONA ESTA LINHA
   const { documentosFavoritos } = useUser();
 
   const { stats } = useStats();
@@ -62,7 +64,7 @@ function AppContent() {
   // Se autenticado, mostrar radar
   return (
     <div className="relative w-full h-screen overflow-hidden bg-slate-950">
-      <div className="fixed top-0 left-0 right-0 z-50 p-4">
+      <div className="fixed top-0 left-0 right-0 z-50 p-4 flex items-center justify-between">
         <Header
           ultimaAtualizacao={stats.ultimaAtualizacao}
           notificationEnabled={notificationEnabled}
@@ -72,6 +74,8 @@ function AppContent() {
           onOpenAdmin={isAdmin ? () => setIsAdminOpen(true) : null}
           isRefreshing={isRefreshing}
         />
+        
+        {/* Botão Favoritos */}
         <button
           onClick={() => setMostrarFavoritos(true)}
           className="relative p-3 bg-slate-800 hover:bg-slate-700 rounded-xl transition-all group"
@@ -107,6 +111,14 @@ function AppContent() {
             setMostrarFavoritos(false);
           }}
           allDocuments={documents}
+        />
+      )}
+
+      {/* Modal de Detalhe do Documento */}
+      {selectedDocument && (
+        <DocumentDetailModal
+          document={selectedDocument}
+          onClose={() => setSelectedDocument(null)}
         />
       )}
 
