@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
-import { UserProvider, useUser } from "./contexts/UserContext"; // ← ADICIONA useUser AQUI!
+import { UserProvider, useUser } from "./contexts/UserContext";
 import Header from "./components/Header";
 import RadarFullScreen from "./components/RadarFullScreen";
 import ConfigModal from "./components/ConfigModal";
@@ -10,7 +10,6 @@ import { useDocuments } from "./hooks/useDocuments";
 import { useStats } from "./hooks/useStats";
 import FavoritosModal from "./components/FavoritosModal";
 import DocumentDetailModal from "./components/DocumentDetailModal";
-import { StarIcon } from "@heroicons/react/24/outline";
 
 function AppContent() {
   const { isAuthenticated, loading: authLoading, isAdmin } = useAuth();
@@ -19,7 +18,7 @@ function AppContent() {
   const [isConfigOpen, setIsConfigOpen] = useState(false);
   const [isAdminOpen, setIsAdminOpen] = useState(false);
   const [mostrarFavoritos, setMostrarFavoritos] = useState(false);
-  const [selectedDocument, setSelectedDocument] = useState(null); // ← ADICIONA ESTA LINHA
+  const [selectedDocument, setSelectedDocument] = useState(null);
   const { documentosFavoritos } = useUser();
 
   const { stats } = useStats();
@@ -64,7 +63,7 @@ function AppContent() {
   // Se autenticado, mostrar radar
   return (
     <div className="relative w-full h-screen overflow-hidden bg-slate-950">
-      <div className="fixed top-0 left-0 right-0 z-50 p-4 flex items-center justify-between">
+      <div className="fixed top-0 left-0 right-0 z-50 p-4">
         <Header
           ultimaAtualizacao={stats.ultimaAtualizacao}
           notificationEnabled={notificationEnabled}
@@ -72,24 +71,11 @@ function AppContent() {
           onRefresh={handleRefresh}
           onOpenConfig={() => setIsConfigOpen(true)}
           onOpenAdmin={isAdmin ? () => setIsAdminOpen(true) : null}
+          onOpenFavorites={() => setMostrarFavoritos(true)}
+          favoritesEnabled={mostrarFavoritos}
+          favoritesCount={documentosFavoritos.length}
           isRefreshing={isRefreshing}
         />
-        
-        {/* Botão Favoritos */}
-        <button
-          onClick={() => setMostrarFavoritos(true)}
-          className="relative p-3 bg-slate-800 hover:bg-slate-700 rounded-xl transition-all group"
-          title="Favoritos"
-        >
-          <StarIcon className="w-6 h-6 text-amber-400" />
-          {documentosFavoritos.length > 0 && (
-            <div className="absolute -top-1 -right-1 w-5 h-5 bg-amber-500 text-white text-xs font-bold rounded-full flex items-center justify-center">
-              {documentosFavoritos.length > 99
-                ? "99+"
-                : documentosFavoritos.length}
-            </div>
-          )}
-        </button>
       </div>
 
       <div className="absolute inset-0 pt-24">
