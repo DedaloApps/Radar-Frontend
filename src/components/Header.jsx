@@ -29,7 +29,9 @@ const Header = ({
         {/* Logo e Título */}
         <div className="flex items-center gap-4">
           <div className="relative">
-            <div className="absolute inset-0 bg-gradient-to-br from-emerald-400 to-teal-600 rounded-xl blur-xl opacity-60 animate-pulse"></div>
+            {/* Glow effect - AZUL */}
+            <div className="absolute inset-0 rounded-xl blur-xl opacity-60 animate-pulse"
+                 style={{ background: 'linear-gradient(to bottom right, #27aae2, #1e88b5)' }}></div>
             <div className="relative">
               <img 
                 src="/dedalo.png" 
@@ -40,10 +42,15 @@ const Header = ({
           </div>
           
           <div>
-            <h1 className="text-3xl font-black bg-gradient-to-r from-emerald-300 via-teal-300 to-cyan-300 bg-clip-text text-transparent drop-shadow-lg">
+            {/* Título com gradiente AZUL/CYAN */}
+            <h1 className="text-3xl font-black bg-clip-text text-transparent drop-shadow-lg"
+                style={{ 
+                  backgroundImage: 'linear-gradient(to right, #7dd3fc, #27aae2, #06b6d4)'
+                }}>
               RADAR LEGISLATIVO
             </h1>
-            <p className="text-sm text-emerald-300 font-semibold tracking-wide">
+            <p className="text-sm font-semibold tracking-wide"
+               style={{ color: '#27aae2' }}>
               Olá, {user?.nome || 'Utilizador'} 👋
             </p>
           </div>
@@ -51,17 +58,26 @@ const Header = ({
 
         {/* Controles à direita */}
         <div className="flex items-center gap-3">
-          {/* Status */}
+          {/* Status - AZUL */}
           {ultimaAtualizacao && (
-            <div className="hidden md:flex items-center gap-2 px-4 py-2 bg-emerald-500/10 rounded-lg border border-emerald-500/30 backdrop-blur-sm">
-              <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse shadow-lg shadow-emerald-400"></div>
-              <span className="text-xs text-emerald-300 font-semibold">
+            <div className="hidden md:flex items-center gap-2 px-4 py-2 rounded-lg border backdrop-blur-sm"
+                 style={{ 
+                   backgroundColor: 'rgba(39, 170, 226, 0.1)',
+                   borderColor: 'rgba(39, 170, 226, 0.3)'
+                 }}>
+              <div className="w-2 h-2 rounded-full animate-pulse shadow-lg"
+                   style={{ 
+                     backgroundColor: '#27aae2',
+                     boxShadow: '0 0 10px #27aae2'
+                   }}></div>
+              <span className="text-xs font-semibold"
+                    style={{ color: '#7dd3fc' }}>
                 Atualizado {new Date(ultimaAtualizacao).toLocaleTimeString('pt-PT')}
               </span>
             </div>
           )}
 
-          {/* Botão Admin (só para admins) */}
+          {/* Botão Admin (só para admins) - AMARELO (mantém) */}
           {isAdmin && onOpenAdmin && (
             <button
               onClick={onOpenAdmin}
@@ -72,64 +88,135 @@ const Header = ({
             </button>
           )}
 
-          {/* Botão Refresh */}
+          {/* Botão Refresh - AZUL */}
           <button
             onClick={onRefresh}
             disabled={isRefreshing}
-            className="p-3 bg-emerald-500/10 hover:bg-emerald-500/20 rounded-xl border border-emerald-500/30 transition-all group backdrop-blur-sm hover:shadow-lg hover:shadow-emerald-500/20"
+            className="p-3 rounded-xl border transition-all group backdrop-blur-sm"
+            style={{
+              backgroundColor: 'rgba(39, 170, 226, 0.1)',
+              borderColor: 'rgba(39, 170, 226, 0.3)'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = 'rgba(39, 170, 226, 0.2)';
+              e.currentTarget.style.boxShadow = '0 0 20px rgba(39, 170, 226, 0.2)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = 'rgba(39, 170, 226, 0.1)';
+              e.currentTarget.style.boxShadow = 'none';
+            }}
             title="Atualizar dados"
           >
-            <ArrowPathIcon className={`w-5 h-5 text-emerald-300 ${isRefreshing ? 'animate-spin' : 'group-hover:rotate-180 transition-transform duration-500'}`} />
+            <ArrowPathIcon 
+              className={`w-5 h-5 ${isRefreshing ? 'animate-spin' : 'group-hover:rotate-180 transition-transform duration-500'}`}
+              style={{ color: '#7dd3fc' }}
+            />
           </button>
 
-          {/* Botão Pesquisa */}
-          <button className="p-3 bg-emerald-500/10 hover:bg-emerald-500/20 rounded-xl border border-emerald-500/30 transition-all backdrop-blur-sm hover:shadow-lg hover:shadow-emerald-500/20">
-            <MagnifyingGlassIcon className="w-5 h-5 text-emerald-300" />
+          {/* Botão Pesquisa - AZUL */}
+          <button 
+            className="p-3 rounded-xl border transition-all backdrop-blur-sm"
+            style={{
+              backgroundColor: 'rgba(39, 170, 226, 0.1)',
+              borderColor: 'rgba(39, 170, 226, 0.3)'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = 'rgba(39, 170, 226, 0.2)';
+              e.currentTarget.style.boxShadow = '0 0 20px rgba(39, 170, 226, 0.2)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = 'rgba(39, 170, 226, 0.1)';
+              e.currentTarget.style.boxShadow = 'none';
+            }}
+          >
+            <MagnifyingGlassIcon className="w-5 h-5" style={{ color: '#7dd3fc' }} />
           </button>
 
-          {/* Botão Notificações */}
+          {/* Botão Notificações - AZUL */}
           <button
             onClick={onToggleNotifications}
-            className={`p-3 rounded-xl border transition-all backdrop-blur-sm ${
-              notificationEnabled
-                ? 'bg-emerald-500/20 border-emerald-400/50 shadow-xl shadow-emerald-500/30'
-                : 'bg-emerald-500/10 border-emerald-500/30 hover:bg-emerald-500/20 hover:shadow-lg hover:shadow-emerald-500/20'
-            }`}
+            className={`p-3 rounded-xl border transition-all backdrop-blur-sm`}
+            style={notificationEnabled ? {
+              backgroundColor: 'rgba(39, 170, 226, 0.2)',
+              borderColor: 'rgba(39, 170, 226, 0.5)',
+              boxShadow: '0 0 30px rgba(39, 170, 226, 0.3)'
+            } : {
+              backgroundColor: 'rgba(39, 170, 226, 0.1)',
+              borderColor: 'rgba(39, 170, 226, 0.3)'
+            }}
+            onMouseEnter={(e) => {
+              if (!notificationEnabled) {
+                e.currentTarget.style.backgroundColor = 'rgba(39, 170, 226, 0.2)';
+                e.currentTarget.style.boxShadow = '0 0 20px rgba(39, 170, 226, 0.2)';
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (!notificationEnabled) {
+                e.currentTarget.style.backgroundColor = 'rgba(39, 170, 226, 0.1)';
+                e.currentTarget.style.boxShadow = 'none';
+              }
+            }}
             title={notificationEnabled ? 'Notificações ativadas' : 'Ativar notificações'}
           >
             {notificationEnabled ? (
-              <BellSolidIcon className="w-5 h-5 text-emerald-300 animate-pulse" />
+              <BellSolidIcon className="w-5 h-5 animate-pulse" style={{ color: '#7dd3fc' }} />
             ) : (
-              <BellIcon className="w-5 h-5 text-emerald-300" />
+              <BellIcon className="w-5 h-5" style={{ color: '#7dd3fc' }} />
             )}
           </button>
 
-          {/* Botão Favoritos */}
+          {/* Botão Favoritos - AMARELO (mantém) */}
           <button
             onClick={onOpenFavorites}
             className={`p-3 rounded-xl border transition-all backdrop-blur-sm ${
               favoritesEnabled
                 ? 'bg-amber-500/20 border-amber-400/50 shadow-xl shadow-amber-500/30'
-                : 'bg-emerald-500/10 border-emerald-500/30 hover:bg-emerald-500/20 hover:shadow-lg hover:shadow-emerald-500/20'
+                : 'hover:shadow-lg hover:shadow-amber-500/20'
             }`}
+            style={!favoritesEnabled ? {
+              backgroundColor: 'rgba(39, 170, 226, 0.1)',
+              borderColor: 'rgba(39, 170, 226, 0.3)'
+            } : undefined}
+            onMouseEnter={(e) => {
+              if (!favoritesEnabled) {
+                e.currentTarget.style.backgroundColor = 'rgba(39, 170, 226, 0.2)';
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (!favoritesEnabled) {
+                e.currentTarget.style.backgroundColor = 'rgba(39, 170, 226, 0.1)';
+              }
+            }}
             title="Favoritos"
           >
             {favoritesEnabled ? (
               <StarSolidIcon className="w-5 h-5 text-amber-400" />
             ) : (
-              <StarIcon className="w-5 h-5 text-emerald-300" />
+              <StarIcon className="w-5 h-5" style={{ color: '#7dd3fc' }} />
             )}
           </button>
 
-          {/* Botão Configurações */}
+          {/* Botão Configurações - AZUL */}
           <button 
             onClick={onOpenConfig}
-            className="p-3 bg-emerald-500/10 hover:bg-emerald-500/20 rounded-xl border border-emerald-500/30 transition-all backdrop-blur-sm hover:shadow-lg hover:shadow-emerald-500/20"
+            className="p-3 rounded-xl border transition-all backdrop-blur-sm"
+            style={{
+              backgroundColor: 'rgba(39, 170, 226, 0.1)',
+              borderColor: 'rgba(39, 170, 226, 0.3)'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = 'rgba(39, 170, 226, 0.2)';
+              e.currentTarget.style.boxShadow = '0 0 20px rgba(39, 170, 226, 0.2)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = 'rgba(39, 170, 226, 0.1)';
+              e.currentTarget.style.boxShadow = 'none';
+            }}
           >
-            <Cog6ToothIcon className="w-5 h-5 text-emerald-300" />
+            <Cog6ToothIcon className="w-5 h-5" style={{ color: '#7dd3fc' }} />
           </button>
 
-          {/* Botão Logout */}
+          {/* Botão Logout - VERMELHO (mantém) */}
           <button
             onClick={logout}
             className="p-3 bg-red-500/10 hover:bg-red-500/20 rounded-xl border border-red-500/30 transition-all backdrop-blur-sm hover:shadow-lg hover:shadow-red-500/20"
