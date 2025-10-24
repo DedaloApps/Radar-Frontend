@@ -15,7 +15,7 @@ const Header = ({
   notificationEnabled, 
   onToggleNotifications,
   onRefresh,
-  onOpenConfig,
+  onOpenConfig, 
   onOpenAdmin,
   onOpenFavorites,
   isRefreshing,
