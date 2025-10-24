@@ -109,8 +109,8 @@ const RadarFullScreen = ({ stats, documents }) => {
         {/* Linhas radiais */}
         {categoriasList.map((_, index) => {
           const angle = (angleStep * index - 90) * (Math.PI / 180);
-          const x = `${50 + Math.cos(angle) * 35}%`; {/* ALTERADO: 45 -> 35 */}
-          const y = `${50 + Math.sin(angle) * 35}%`; {/* ALTERADO: 45 -> 35 */}
+          const x = `${50 + Math.cos(angle) * 35}%`;
+          const y = `${50 + Math.sin(angle) * 35}%`;
           return (
             <line
               key={index}
@@ -151,14 +151,14 @@ const RadarFullScreen = ({ stats, documents }) => {
         </div>
       </div>
 
-      {/* CATEGORIAS - Cards Minimalistas */}
+      {/* CATEGORIAS - Cards Redesenhados: Ícone + Título */}
       {categoriasList.map((categoria, index) => {
         const angle = (angleStep * index - 90) * (Math.PI / 180);
         const info = getCategoriaInfo(categoria);
         const { total, documents: categoryDocs } = getCategoryData(categoria);
         const Icon = info.icon;
 
-        const radius = 35; {/* ALTERADO: 40 -> 35 */}
+        const radius = 35;
         const x = 50 + Math.cos(angle) * radius;
         const y = 50 + Math.sin(angle) * radius;
 
@@ -191,44 +191,43 @@ const RadarFullScreen = ({ stats, documents }) => {
                 }`}
               ></div>
 
-              {/* Card */}
+              {/* Card - NOVO LAYOUT */}
               <div
                 className={`relative bg-slate-900/90 backdrop-blur-xl rounded-2xl border transition-all ${
                   isHovered
                     ? "border-emerald-500/50 shadow-2xl shadow-emerald-500/20"
                     : "border-slate-700/50 shadow-xl"
                 }`}
-                style={{ minWidth: "160px" }}
+                style={{ width: "140px" }}
               >
                 {/* Notification Badge */}
                 {hasNew && (
                   <div className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-red-500 rounded-full border-2 border-slate-900 animate-pulse shadow-lg shadow-red-500/50"></div>
                 )}
 
-                <div className="p-4">
-                  {/* Icon + Number */}
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="p-2 bg-slate-800 rounded-lg">
-                      <Icon className="w-5 h-5 text-emerald-400" />
-                    </div>
-                    <div className="text-3xl font-black text-white">
-                      {total}
-                    </div>
+                <div className="p-4 flex flex-col items-center">
+                  {/* LINHA 1: Ícone grande ao centro */}
+                  <div className={`p-3 rounded-xl mb-3 transition-all ${
+                    isHovered ? 'bg-emerald-500/20' : 'bg-slate-800'
+                  }`}>
+                    <Icon className={`w-8 h-8 transition-colors ${
+                      isHovered ? 'text-emerald-400' : 'text-slate-400'
+                    }`} />
                   </div>
 
-                  {/* Nome */}
-                  <div className="text-sm font-semibold text-slate-300 mb-2 line-clamp-2">
+                  {/* LINHA 2: Título da categoria */}
+                  <div className={`text-xs font-semibold text-center line-clamp-2 transition-colors ${
+                    isHovered ? 'text-white' : 'text-slate-300'
+                  }`}>
                     {info.nome}
                   </div>
 
-                  {/* REMOVIDO: Progress Bar */}
-
                   {/* Ver Mais - Aparece no hover */}
                   {isHovered && categoryDocs.length > 0 && (
-                    <div className="mt-3 pt-3 border-t border-slate-700/50">
-                      <div className="flex items-center justify-between text-xs text-emerald-400 font-medium">
-                        <span>Ver documentos</span>
-                        <ChevronRightIcon className="w-4 h-4" />
+                    <div className="mt-3 pt-3 border-t border-slate-700/50 w-full">
+                      <div className="flex items-center justify-center gap-1 text-xs text-emerald-400 font-medium">
+                        <span>Ver</span>
+                        <ChevronRightIcon className="w-3 h-3" />
                       </div>
                     </div>
                   )}
