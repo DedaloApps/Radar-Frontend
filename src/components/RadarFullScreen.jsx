@@ -10,7 +10,7 @@ const RadarFullScreen = ({ stats, documents }) => {
   const [selectedDocument, setSelectedDocument] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
 
-  const { categoriasFavoritas, tiposConteudoVisiveis, foiLido } = useUser();
+  const { categoriasFavoritas, tiposConteudoVisiveis, foiLido, estaArquivado } = useUser();
 
   // Filtrar apenas categorias favoritas
   const categoriasList = categoriasFavoritas;
@@ -27,7 +27,9 @@ const RadarFullScreen = ({ stats, documents }) => {
     const categoryDocs = documentosFiltrados.filter(
       (d) => d.categoria === categoria
     );
-    return { total, documents: categoryDocs };
+    // ✅ NOVO: Contar apenas documentos não arquivados
+    const activeCount = categoryDocs.filter((doc) => !estaArquivado(doc.id)).length;
+    return { total, documents: categoryDocs, activeCount };
   };
 
   const maxValue = Math.max(
@@ -163,7 +165,7 @@ const RadarFullScreen = ({ stats, documents }) => {
       {categoriasList.map((categoria, index) => {
         const angle = (angleStep * index - 90) * (Math.PI / 180);
         const info = getCategoriaInfo(categoria);
-        const { total, documents: categoryDocs } = getCategoryData(categoria);
+        const { total, documents: categoryDocs, activeCount } = getCategoryData(categoria);
         const Icon = info.icon;
 
         const radius = 35;
@@ -171,7 +173,7 @@ const RadarFullScreen = ({ stats, documents }) => {
         const y = 50 + Math.sin(angle) * radius;
 
         const isHovered = hoveredCategory === categoria;
-        const hasNew = categoryDocs.some((doc) => !foiLido(doc.id));
+        const hasNew = categoryDocs.some((doc) => !foiLido(doc.id) && !estaArquivado(doc.id));
 
         return (
           <div
@@ -199,7 +201,7 @@ const RadarFullScreen = ({ stats, documents }) => {
                 }`}
               ></div>
 
-              {/* Card - NOVO LAYOUT */}
+              {/* Card - NOVO LAYOUT COM NÚMERO */}
               <div
                 className={`relative bg-slate-900/90 backdrop-blur-xl rounded-2xl border transition-all ${
                   isHovered
@@ -211,6 +213,15 @@ const RadarFullScreen = ({ stats, documents }) => {
                 {/* Notification Badge */}
                 {hasNew && (
                   <div className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-red-500 rounded-full border-2 border-slate-900 animate-pulse shadow-lg shadow-red-500/50"></div>
+                )}
+
+                {/* ✅ NOVO: Badge com número de documentos ativos */}
+                {activeCount > 0 && (
+                  <div className="absolute -top-2 -left-2 min-w-[24px] h-6 px-2 bg-emerald-500 rounded-full border-2 border-slate-900 flex items-center justify-center">
+                    <span className="text-xs font-bold text-white">
+                      {activeCount}
+                    </span>
+                  </div>
                 )}
 
                 <div className="p-4 flex flex-col items-center">

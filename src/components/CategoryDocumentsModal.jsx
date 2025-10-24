@@ -9,6 +9,7 @@ import {
   ArchiveBoxIcon,
   EyeSlashIcon,
   StarIcon,
+  EyeIcon, // ✅ NOVO - Para marcar como não lido
 } from "@heroicons/react/24/outline";
 import { useState, useMemo } from "react";
 import { useUser } from "../contexts/UserContext";
@@ -24,6 +25,7 @@ const CategoryDocumentsModal = ({ category, onClose, onSelectDocument }) => {
   const {
     foiLido,
     marcarComoLido,
+    marcarComoNaoLido, // ✅ NOVO
     estaArquivado,
     arquivarDocumento,
     restaurarDocumento,
@@ -375,8 +377,22 @@ const CategoryDocumentsModal = ({ category, onClose, onSelectDocument }) => {
                       </div>
                     </button>
 
-                    {/* Botões Favorito + Arquivar/Restaurar */}
+                    {/* Botões de Ação - 3 botões agora! */}
                     <div className="absolute top-4 right-4 flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-all">
+                      {/* ✅ NOVO: Botão Marcar como Não Lido (só aparece se já foi lido) */}
+                      {!isNew && !isArchived && (
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            marcarComoNaoLido(doc.id);
+                          }}
+                          className="p-2 bg-slate-800 hover:bg-blue-500/20 hover:border-blue-500/50 rounded-lg transition-all border border-transparent"
+                          title="Marcar como não lido"
+                        >
+                          <EyeIcon className="w-4 h-4 text-slate-400 hover:text-blue-400 transition-colors" />
+                        </button>
+                      )}
+
                       {/* Botão Favorito */}
                       <button
                         onClick={(e) => {
