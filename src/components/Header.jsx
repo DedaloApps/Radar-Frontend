@@ -114,23 +114,7 @@ const Header = ({
           </button>
 
           {/* Botão Pesquisa - AZUL */}
-          <button 
-            className="p-3 rounded-xl border transition-all backdrop-blur-sm"
-            style={{
-              backgroundColor: 'rgba(39, 170, 226, 0.1)',
-              borderColor: 'rgba(39, 170, 226, 0.3)'
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = 'rgba(39, 170, 226, 0.2)';
-              e.currentTarget.style.boxShadow = '0 0 20px rgba(39, 170, 226, 0.2)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = 'rgba(39, 170, 226, 0.1)';
-              e.currentTarget.style.boxShadow = 'none';
-            }}
-          >
-            <MagnifyingGlassIcon className="w-5 h-5" style={{ color: '#7dd3fc' }} />
-          </button>
+          
 
           {/* Botão Notificações - AZUL */}
           <button
