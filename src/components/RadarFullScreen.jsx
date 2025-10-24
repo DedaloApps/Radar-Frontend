@@ -48,7 +48,7 @@ const RadarFullScreen = ({ stats, documents }) => {
       {/* FUNDO COMPLETO - Tech Grid */}
       <div className="absolute inset-0 tech-grid"></div>
 
-      {/* Efeito de varredura do radar - CENTRO - NOVA COR AZUL #27aae2 */}
+      {/* Efeito de varredura do radar - CENTRO - NOVA COR AZUL */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
         <div
           className="absolute w-[80vmin] h-[80vmin] rounded-full animate-radar-sweep"
@@ -127,33 +127,39 @@ const RadarFullScreen = ({ stats, documents }) => {
         })}
       </svg>
 
-      {/* CENTRO - Stats Totais - NOVA COR AZUL */}
+      {/* CENTRO - Stats Totais - NOVA COR */}
       <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
         <div className="relative group">
           {/* Glow effect - AZUL */}
-          <div className="absolute inset-0 rounded-full blur-2xl transition-all" 
-               style={{ backgroundColor: 'rgba(39, 170, 226, 0.2)' }}></div>
+          <div className="absolute inset-0 rounded-full blur-2xl transition-all"
+            style={{ backgroundColor: 'rgba(39, 170, 226, 0.2)' }}
+          ></div>
 
-          {/* Card - FUNDO ROXO */}
+          {/* Card - ROXO ESCURO com borda AZUL */}
           <div className="relative backdrop-blur-xl rounded-full p-10 border shadow-2xl w-40 h-40 flex items-center justify-center"
-               style={{ 
-                 backgroundColor: 'rgba(38, 34, 97, 0.9)',
-                 borderColor: 'rgba(39, 170, 226, 0.3)'
-               }}>
+            style={{ 
+              backgroundColor: 'rgba(38, 34, 97, 0.9)',
+              borderColor: 'rgba(39, 170, 226, 0.3)'
+            }}
+          >
             <div className="text-center">
               <div className="text-5xl font-black text-white mb-1">
                 {stats.totalGeral || 0}
               </div>
+              {/* Texto AZUL */}
               <div className="text-xs font-semibold uppercase tracking-wider"
-                   style={{ color: '#27aae2' }}>
+                style={{ color: '#27aae2' }}
+              >
                 Total
               </div>
-              {/* Documentos de Hoje - AZUL */}
+              {/* Documentos de Hoje */}
               {stats.documentosHoje > 0 && (
                 <div className="mt-3 pt-3 border-t border-slate-700/50">
                   <div className="flex items-center justify-center gap-1.5">
+                    {/* Ponto AZUL */}
                     <div className="w-1.5 h-1.5 rounded-full animate-pulse"
-                         style={{ backgroundColor: '#27aae2' }}></div>
+                      style={{ backgroundColor: '#27aae2' }}
+                    ></div>
                     <span className="text-[10px] font-medium text-slate-400 uppercase tracking-wide">
                       Hoje
                     </span>
@@ -203,37 +209,38 @@ const RadarFullScreen = ({ stats, documents }) => {
             >
               {/* Glow on hover - AZUL */}
               <div
-                className={`absolute inset-0 rounded-2xl blur-xl transition-opacity ${
-                  isHovered ? "opacity-100" : "opacity-0"
-                }`}
-                style={{ backgroundColor: 'rgba(39, 170, 226, 0.2)' }}
+                className="absolute inset-0 rounded-2xl blur-xl transition-opacity"
+                style={{
+                  backgroundColor: 'rgba(39, 170, 226, 0.2)',
+                  opacity: isHovered ? 1 : 0
+                }}
               ></div>
 
-              {/* Card - FUNDO ROXO + BORDA AZUL */}
+              {/* Card - ROXO ESCURO com borda AZUL */}
               <div
-                className={`relative backdrop-blur-xl rounded-2xl border transition-all shadow-xl ${
-                  isHovered ? "shadow-2xl" : ""
-                }`}
-                style={{ 
+                className="relative backdrop-blur-xl rounded-2xl border transition-all shadow-xl"
+                style={{
                   width: "140px",
                   backgroundColor: 'rgba(38, 34, 97, 0.9)',
                   borderColor: isHovered ? 'rgba(39, 170, 226, 0.5)' : 'rgba(100, 116, 139, 0.5)',
-                  boxShadow: isHovered ? '0 0 30px rgba(39, 170, 226, 0.2)' : undefined
+                  boxShadow: isHovered ? '0 25px 50px -12px rgba(39, 170, 226, 0.2)' : undefined
                 }}
               >
-                {/* Notification Badge - VERMELHO (mantém) */}
+                {/* Notification Badge - Vermelho mantém */}
                 {hasNew && (
                   <div className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-red-500 rounded-full border-2 animate-pulse shadow-lg shadow-red-500/50"
-                       style={{ borderColor: '#262261' }}></div>
+                    style={{ borderColor: '#262261' }}
+                  ></div>
                 )}
 
                 {/* Badge com número - AZUL */}
                 {activeCount > 0 && (
                   <div className="absolute -top-2 -left-2 min-w-[24px] h-6 px-2 rounded-full border-2 flex items-center justify-center"
-                       style={{ 
-                         backgroundColor: '#27aae2',
-                         borderColor: '#262261'
-                       }}>
+                    style={{
+                      backgroundColor: '#27aae2',
+                      borderColor: '#262261'
+                    }}
+                  >
                     <span className="text-xs font-bold text-white">
                       {activeCount}
                     </span>
@@ -242,18 +249,20 @@ const RadarFullScreen = ({ stats, documents }) => {
 
                 <div className="p-4 flex flex-col items-center">
                   {/* LINHA 1: Ícone grande ao centro */}
-                  <div className={`p-3 rounded-xl mb-3 transition-all`}
-                       style={{ 
-                         backgroundColor: isHovered ? 'rgba(39, 170, 226, 0.2)' : 'rgba(30, 41, 59, 0.8)'
-                       }}>
-                    <Icon className={`w-8 h-8 transition-colors`}
-                          style={{ color: isHovered ? '#27aae2' : '#94a3b8' }} />
+                  <div className="p-3 rounded-xl mb-3 transition-all"
+                    style={{
+                      backgroundColor: isHovered ? 'rgba(39, 170, 226, 0.15)' : 'rgba(38, 34, 97, 0.4)'
+                    }}
+                  >
+                    <Icon className="w-8 h-8 transition-colors"
+                      style={{ color: isHovered ? '#27aae2' : '#7dd3fc' }}
+                    />
                   </div>
 
                   {/* LINHA 2: Título da categoria */}
-                  <div className={`text-xs font-semibold text-center line-clamp-2 transition-colors ${
-                    isHovered ? 'text-white' : 'text-slate-300'
-                  }`}>
+                  <div className="text-xs font-semibold text-center line-clamp-2 transition-colors"
+                    style={{ color: isHovered ? '#ffffff' : '#cbd5e1' }}
+                  >
                     {info.nome}
                   </div>
 
@@ -261,7 +270,8 @@ const RadarFullScreen = ({ stats, documents }) => {
                   {isHovered && categoryDocs.length > 0 && (
                     <div className="mt-3 pt-3 border-t border-slate-700/50 w-full">
                       <div className="flex items-center justify-center gap-1 text-xs font-medium"
-                           style={{ color: '#27aae2' }}>
+                        style={{ color: '#27aae2' }}
+                      >
                         <span>Ver</span>
                         <ChevronRightIcon className="w-3 h-3" />
                       </div>
@@ -274,14 +284,13 @@ const RadarFullScreen = ({ stats, documents }) => {
         );
       })}
 
-      {/* Modal de Documentos da Categoria - NÃO fecha quando abre documento */}
+      {/* Modal de Documentos da Categoria */}
       {selectedCategory && !selectedDocument && (
         <CategoryDocumentsModal
           category={selectedCategory}
           onClose={() => setSelectedCategory(null)}
           onSelectDocument={(doc) => {
             setSelectedDocument(doc);
-            // NÃO fechamos selectedCategory aqui!
           }}
         />
       )}
