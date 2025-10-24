@@ -140,12 +140,20 @@ const RadarFullScreen = ({ stats, documents }) => {
               <div className="text-emerald-400 text-xs font-semibold uppercase tracking-wider">
                 Total
               </div>
-              <div className="mt-2 flex items-center justify-center gap-1.5 text-slate-400">
-                <BoltIcon className="w-3.5 h-3.5" />
-                <span className="text-xs font-medium">
-                  {stats.documentosHoje || 0}
-                </span>
-              </div>
+              {/* Documentos de Hoje - Elegante */}
+              {stats.documentosHoje > 0 && (
+                <div className="mt-3 pt-3 border-t border-slate-700/50">
+                  <div className="flex items-center justify-center gap-1.5">
+                    <div className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse"></div>
+                    <span className="text-[10px] font-medium text-slate-400 uppercase tracking-wide">
+                      Hoje
+                    </span>
+                    <span className="text-xs font-bold text-white">
+                      {stats.documentosHoje}
+                    </span>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
