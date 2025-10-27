@@ -11,7 +11,7 @@ import {
 
 // 🎨 CORES: #262261 (roxo) e #27aae2 (azul)
 
-// CATEGORIAS DE STAKEHOLDERS
+// CATEGORIAS DE STAKEHOLDERS COM FONTES DE SCRAPING
 export const STAKEHOLDERS = {
   concertacao_social: {
     nome: 'Concertação Social',
@@ -23,6 +23,13 @@ export const STAKEHOLDERS = {
     bgCor: 'bg-blue-500/10',
     shadowCor: 'shadow-blue-500/50',
     textCor: 'text-blue-400',
+    sources: [
+      { nome: 'CGTP-IN', url: 'https://www.cgtp.pt/accao-e-luta', tipo: 'Sindicato' },
+      { nome: 'UGT', url: 'https://www.ugt.pt/noticias', tipo: 'Sindicato' },
+      { nome: 'CAP', url: 'https://www.cap.pt/noticias-cap', tipo: 'Patronato' },
+      { nome: 'CCP', url: 'https://ccp.pt/noticias/', tipo: 'Patronato' },
+      { nome: 'CTP', url: 'https://ctp.org.pt/noticias', tipo: 'Patronato' },
+    ],
   },
   laboral: {
     nome: 'Laboral',
@@ -34,6 +41,9 @@ export const STAKEHOLDERS = {
     bgCor: 'bg-red-500/10',
     shadowCor: 'shadow-red-500/50',
     textCor: 'text-red-400',
+    sources: [
+      // TODO: Adicionar URLs de sindicatos e organizações laborais
+    ],
   },
   ambiente: {
     nome: 'Ambiente',
@@ -45,6 +55,10 @@ export const STAKEHOLDERS = {
     bgCor: 'bg-green-500/10',
     shadowCor: 'shadow-green-500/50',
     textCor: 'text-green-400',
+    sources: [
+      // TODO: Adicionar URLs de organizações ambientais
+      // Exemplos: Quercus, Zero, LPN, etc.
+    ],
   },
   agricultura: {
     nome: 'Agricultura',
@@ -56,6 +70,10 @@ export const STAKEHOLDERS = {
     bgCor: 'bg-amber-500/10',
     shadowCor: 'shadow-amber-500/50',
     textCor: 'text-amber-400',
+    sources: [
+      // TODO: Adicionar URLs do setor agrícola
+      // Exemplos: CAP, Confagri, cooperativas, etc.
+    ],
   },
   economia_financas: {
     nome: 'Economia/Finanças',
@@ -67,6 +85,10 @@ export const STAKEHOLDERS = {
     bgCor: 'bg-emerald-500/10',
     shadowCor: 'shadow-emerald-500/50',
     textCor: 'text-emerald-400',
+    sources: [
+      // TODO: Adicionar URLs do setor financeiro/empresarial
+      // Exemplos: CIP, AEP, APB, Banco de Portugal, etc.
+    ],
   },
   saude: {
     nome: 'Saúde',
@@ -78,6 +100,10 @@ export const STAKEHOLDERS = {
     bgCor: 'bg-pink-500/10',
     shadowCor: 'shadow-pink-500/50',
     textCor: 'text-pink-400',
+    sources: [
+      // TODO: Adicionar URLs do setor da saúde
+      // Exemplos: Ordem dos Médicos, Ordem dos Enfermeiros, SNS, hospitais, etc.
+    ],
   },
   imobiliario_habitacao: {
     nome: 'Imobiliário/Habitação',
@@ -89,6 +115,10 @@ export const STAKEHOLDERS = {
     bgCor: 'bg-slate-500/10',
     shadowCor: 'shadow-slate-500/50',
     textCor: 'text-slate-400',
+    sources: [
+      // TODO: Adicionar URLs do setor imobiliário
+      // Exemplos: APEMIP, construtoras, associações de inquilinos, etc.
+    ],
   },
   partidos: {
     nome: 'Partidos',
@@ -100,6 +130,10 @@ export const STAKEHOLDERS = {
     bgCor: 'bg-purple-500/10',
     shadowCor: 'shadow-purple-500/50',
     textCor: 'text-purple-400',
+    sources: [
+      // TODO: Adicionar URLs dos partidos políticos
+      // Exemplos: PS, PSD, Chega, IL, BE, PCP, Livre, PAN, CDS, etc.
+    ],
   },
 };
 
@@ -112,7 +146,8 @@ export const getStakeholderInfo = (stakeholderId) => {
     bgCor: 'bg-gray-500/10',
     shadowCor: 'shadow-gray-500/50',
     textCor: 'text-gray-400',
-    tipo: 'Outros'
+    tipo: 'Outros',
+    sources: []
   };
 };
 
@@ -127,3 +162,35 @@ export const STAKEHOLDERS_PADRAO = [
   'imobiliario_habitacao',
   'partidos',
 ];
+
+/**
+ * ESTRUTURA PARA O BACKEND
+ *
+ * Cada stakeholder tem um array `sources` com objetos:
+ * {
+ *   nome: string,      // Nome da organização
+ *   url: string,       // URL para scraping
+ *   tipo: string       // Tipo de organização (Sindicato, Patronato, ONG, etc.)
+ * }
+ *
+ * BACKEND DEVE:
+ * 1. Ler este ficheiro ou criar similar no backend
+ * 2. Fazer scraping dos URLs em sources
+ * 3. Criar documentos com:
+ *    - categoria: ID do stakeholder (ex: 'concertacao_social')
+ *    - fonte: nome da organização (ex: 'CGTP-IN')
+ *    - tipo_conteudo: tipo extraído do scraping
+ *    - outros campos conforme o scraping
+ *
+ * EXEMPLO DE DOCUMENTO SCRAPEADO:
+ * {
+ *   id: "unique-id",
+ *   titulo: "Manifestação contra precariedade",
+ *   categoria: "concertacao_social",
+ *   fonte: "CGTP-IN",
+ *   tipo_conteudo: "noticia",
+ *   data_publicacao: "2025-01-15",
+ *   url_original: "https://www.cgtp.pt/...",
+ *   conteudo: "...",
+ * }
+ */
