@@ -93,6 +93,7 @@ function AppContent() {
       <ConfigModal
         isOpen={isConfigOpen}
         onClose={() => setIsConfigOpen(false)}
+        viewMode={viewMode}
       />
 
       {/* Modal de Favoritos */}

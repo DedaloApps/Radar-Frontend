@@ -1,6 +1,7 @@
 import { XMarkIcon, ArrowPathIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { CheckIcon } from '@heroicons/react/24/solid';
 import { COMISSOES, TIPOS_CONTEUDO } from '../utils/categories';
+import { STAKEHOLDERS } from '../utils/stakeholders';
 import { useUser } from '../contexts/UserContext';
 import { useState } from 'react';
 import {
@@ -29,13 +30,15 @@ const TIPO_ICONS = {
   sumula: DocumentChartBarIcon,
 };
 
-const ConfigModal = ({ isOpen, onClose }) => {
-  const { 
-    categoriasFavoritas, 
-    toggleCategoria, 
-    tiposConteudoVisiveis, 
+const ConfigModal = ({ isOpen, onClose, viewMode }) => {
+  const {
+    categoriasFavoritas,
+    toggleCategoria,
+    stakeholdersFavoritos,
+    toggleStakeholder,
+    tiposConteudoVisiveis,
     toggleTipoConteudo,
-    resetarPreferencias 
+    resetarPreferencias
   } = useUser();
 
   const [activeTab, setActiveTab] = useState('comissoes');
@@ -43,9 +46,15 @@ const ConfigModal = ({ isOpen, onClose }) => {
 
   if (!isOpen) return null;
 
-  const comissoesFiltradas = Object.entries(COMISSOES).filter(([id, info]) =>
+  // Usar COMISSOES ou STAKEHOLDERS baseado no viewMode
+  const items = viewMode === 'legislativo' ? COMISSOES : STAKEHOLDERS;
+  const favoritos = viewMode === 'legislativo' ? categoriasFavoritas : stakeholdersFavoritos;
+  const toggleItem = viewMode === 'legislativo' ? toggleCategoria : toggleStakeholder;
+
+  const itemsFiltrados = Object.entries(items).filter(([id, info]) =>
     info.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    info.nomeCompleto.toLowerCase().includes(searchTerm.toLowerCase())
+    (info.nomeCompleto && info.nomeCompleto.toLowerCase().includes(searchTerm.toLowerCase())) ||
+    (info.sigla && info.sigla.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
   return (
@@ -96,7 +105,7 @@ const ConfigModal = ({ isOpen, onClose }) => {
               activeTab === 'comissoes' ? 'text-white' : 'text-slate-400 hover:text-slate-300'
             }`}
           >
-            Comissões
+            {viewMode === 'legislativo' ? 'Comissões' : 'Stakeholders'}
             {activeTab === 'comissoes' && (
               <div className="absolute bottom-0 left-0 right-0 h-0.5"
                    style={{ backgroundColor: '#27aae2' }}></div>
@@ -137,19 +146,19 @@ const ConfigModal = ({ isOpen, onClose }) => {
                 </div>
                 
                 <div className="text-sm text-slate-400">
-                  <span className="text-white font-medium">{categoriasFavoritas.length}</span> / {Object.keys(COMISSOES).length}
+                  <span className="text-white font-medium">{favoritos.length}</span> / {Object.keys(items).length}
                 </div>
               </div>
 
               <div className="space-y-2">
-                {comissoesFiltradas.map(([id, info]) => {
+                {itemsFiltrados.map(([id, info]) => {
                   const Icon = info.icon;
-                  const isSelected = categoriasFavoritas.includes(id);
+                  const isSelected = favoritos.includes(id);
 
                   return (
                     <button
                       key={id}
-                      onClick={() => toggleCategoria(id)}
+                      onClick={() => toggleItem(id)}
                       className={`w-full flex items-center gap-4 p-4 rounded-lg border transition-all ${
                         isSelected ? 'hover:opacity-90' : 'bg-slate-800/50 border-slate-700 hover:border-slate-600 hover:bg-slate-800'
                       }`}
@@ -167,10 +176,10 @@ const ConfigModal = ({ isOpen, onClose }) => {
 
                       <div className="flex-1 text-left">
                         <div className={`font-medium text-sm ${isSelected ? 'text-white' : 'text-slate-300'}`}>
-                          {info.numero} {info.nome}
+                          {viewMode === 'legislativo' ? `${info.numero} ${info.nome}` : (info.sigla || info.nome)}
                         </div>
                         <div className="text-xs text-slate-500 mt-0.5">
-                          {info.nomeCompleto}
+                          {info.nomeCompleto || info.tipo}
                         </div>
                       </div>
 
@@ -186,9 +195,9 @@ const ConfigModal = ({ isOpen, onClose }) => {
                 })}
               </div>
 
-              {comissoesFiltradas.length === 0 && (
+              {itemsFiltrados.length === 0 && (
                 <div className="text-center py-12 text-slate-500 text-sm">
-                  Nenhuma comissão encontrada
+                  {viewMode === 'legislativo' ? 'Nenhuma comissão encontrada' : 'Nenhum stakeholder encontrado'}
                 </div>
               )}
             </div>

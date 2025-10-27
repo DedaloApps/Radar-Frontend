@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
+import { STAKEHOLDERS_PADRAO } from "../utils/stakeholders";
 
 const UserContext = createContext();
 
@@ -27,6 +28,11 @@ export const UserProvider = ({ children }) => {
           "comissao_04",
           "comissao_05",
         ];
+  });
+
+  const [stakeholdersFavoritos, setStakeholdersFavoritos] = useState(() => {
+    const saved = localStorage.getItem("radar_stakeholders_favoritos");
+    return saved ? JSON.parse(saved) : STAKEHOLDERS_PADRAO;
   });
 
   const [tiposConteudoVisiveis, setTiposConteudoVisiveis] = useState(() => {
@@ -63,6 +69,13 @@ export const UserProvider = ({ children }) => {
 
   useEffect(() => {
     localStorage.setItem(
+      "radar_stakeholders_favoritos",
+      JSON.stringify(stakeholdersFavoritos)
+    );
+  }, [stakeholdersFavoritos]);
+
+  useEffect(() => {
+    localStorage.setItem(
       "radar_tipos_conteudo",
       JSON.stringify(tiposConteudoVisiveis)
     );
@@ -95,6 +108,18 @@ export const UserProvider = ({ children }) => {
     });
   };
 
+  // Funções de stakeholders
+  const toggleStakeholder = (stakeholderId) => {
+    setStakeholdersFavoritos((prev) => {
+      if (prev.includes(stakeholderId)) {
+        if (prev.length <= 1) return prev;
+        return prev.filter((s) => s !== stakeholderId);
+      } else {
+        return [...prev, stakeholderId];
+      }
+    });
+  };
+
   const toggleTipoConteudo = (tipo) => {
     setTiposConteudoVisiveis((prev) => {
       if (prev.includes(tipo)) {
@@ -114,6 +139,7 @@ export const UserProvider = ({ children }) => {
       "comissao_04",
       "comissao_05",
     ]);
+    setStakeholdersFavoritos(STAKEHOLDERS_PADRAO);
     setTiposConteudoVisiveis([
       "agenda",
       "audicao",
@@ -239,6 +265,9 @@ export const UserProvider = ({ children }) => {
         categoriasFavoritas,
         setCategoriasFavoritas,
         toggleCategoria,
+        stakeholdersFavoritos,
+        setStakeholdersFavoritos,
+        toggleStakeholder,
         tiposConteudoVisiveis,
         setTiposConteudoVisiveis,
         toggleTipoConteudo,
