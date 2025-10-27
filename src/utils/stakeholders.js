@@ -1,0 +1,335 @@
+import {
+  UserGroupIcon,
+  BuildingOffice2Icon,
+  ScaleIcon,
+  ShieldCheckIcon,
+  AcademicCapIcon,
+  BriefcaseIcon,
+  UsersIcon,
+  GlobeAltIcon,
+  HeartIcon,
+  BanknotesIcon,
+  TruckIcon,
+  NewspaperIcon,
+  HomeModernIcon,
+  BeakerIcon,
+  MegaphoneIcon,
+} from '@heroicons/react/24/solid';
+
+// 🎨 CORES: #262261 (roxo) e #27aae2 (azul)
+
+// STAKEHOLDERS - Partes Interessadas no Processo Legislativo
+export const STAKEHOLDERS = {
+  // PARTIDOS POLÍTICOS
+  partido_ps: {
+    nome: 'Partido Socialista',
+    sigla: 'PS',
+    tipo: 'Partido Político',
+    icon: UserGroupIcon,
+    cor: 'from-pink-400 to-rose-500',
+    borderCor: 'border-pink-500',
+    bgCor: 'bg-pink-500/10',
+    shadowCor: 'shadow-pink-500/50',
+    textCor: 'text-pink-400',
+  },
+  partido_psd: {
+    nome: 'Partido Social Democrata',
+    sigla: 'PSD',
+    tipo: 'Partido Político',
+    icon: UserGroupIcon,
+    cor: 'from-orange-400 to-amber-500',
+    borderCor: 'border-orange-500',
+    bgCor: 'bg-orange-500/10',
+    shadowCor: 'shadow-orange-500/50',
+    textCor: 'text-orange-400',
+  },
+  partido_chega: {
+    nome: 'Chega',
+    sigla: 'CH',
+    tipo: 'Partido Político',
+    icon: UserGroupIcon,
+    cor: 'from-blue-400 to-indigo-500',
+    borderCor: 'border-blue-500',
+    bgCor: 'bg-blue-500/10',
+    shadowCor: 'shadow-blue-500/50',
+    textCor: 'text-blue-400',
+  },
+  partido_il: {
+    nome: 'Iniciativa Liberal',
+    sigla: 'IL',
+    tipo: 'Partido Político',
+    icon: UserGroupIcon,
+    cor: 'from-cyan-400 to-blue-500',
+    borderCor: 'border-cyan-500',
+    bgCor: 'bg-cyan-500/10',
+    shadowCor: 'shadow-cyan-500/50',
+    textCor: 'text-cyan-400',
+  },
+  partido_be: {
+    nome: 'Bloco de Esquerda',
+    sigla: 'BE',
+    tipo: 'Partido Político',
+    icon: UserGroupIcon,
+    cor: 'from-red-400 to-rose-500',
+    borderCor: 'border-red-500',
+    bgCor: 'bg-red-500/10',
+    shadowCor: 'shadow-red-500/50',
+    textCor: 'text-red-400',
+  },
+  partido_pcp: {
+    nome: 'Partido Comunista Português',
+    sigla: 'PCP',
+    tipo: 'Partido Político',
+    icon: UserGroupIcon,
+    cor: 'from-red-500 to-red-600',
+    borderCor: 'border-red-600',
+    bgCor: 'bg-red-600/10',
+    shadowCor: 'shadow-red-600/50',
+    textCor: 'text-red-500',
+  },
+  partido_livre: {
+    nome: 'LIVRE',
+    sigla: 'L',
+    tipo: 'Partido Político',
+    icon: UserGroupIcon,
+    cor: 'from-green-400 to-emerald-500',
+    borderCor: 'border-green-500',
+    bgCor: 'bg-green-500/10',
+    shadowCor: 'shadow-green-500/50',
+    textCor: 'text-green-400',
+  },
+  partido_pan: {
+    nome: 'Pessoas-Animais-Natureza',
+    sigla: 'PAN',
+    tipo: 'Partido Político',
+    icon: UserGroupIcon,
+    cor: 'from-teal-400 to-green-500',
+    borderCor: 'border-teal-500',
+    bgCor: 'bg-teal-500/10',
+    shadowCor: 'shadow-teal-500/50',
+    textCor: 'text-teal-400',
+  },
+
+  // ORGANIZAÇÕES EMPRESARIAIS
+  cip: {
+    nome: 'CIP',
+    sigla: 'CIP',
+    nomeCompleto: 'Confederação Empresarial de Portugal',
+    tipo: 'Patronato',
+    icon: BriefcaseIcon,
+    cor: 'from-slate-400 to-blue-500',
+    borderCor: 'border-slate-500',
+    bgCor: 'bg-slate-500/10',
+    shadowCor: 'shadow-slate-500/50',
+    textCor: 'text-slate-400',
+  },
+  ccp: {
+    nome: 'CCP',
+    sigla: 'CCP',
+    nomeCompleto: 'Confederação do Comércio e Serviços',
+    tipo: 'Patronato',
+    icon: BuildingOffice2Icon,
+    cor: 'from-blue-400 to-cyan-500',
+    borderCor: 'border-blue-500',
+    bgCor: 'bg-blue-500/10',
+    shadowCor: 'shadow-blue-500/50',
+    textCor: 'text-blue-400',
+  },
+  cap: {
+    nome: 'CAP',
+    sigla: 'CAP',
+    nomeCompleto: 'Confederação dos Agricultores de Portugal',
+    tipo: 'Patronato',
+    icon: TruckIcon,
+    cor: 'from-amber-400 to-yellow-500',
+    borderCor: 'border-amber-500',
+    bgCor: 'bg-amber-500/10',
+    shadowCor: 'shadow-amber-500/50',
+    textCor: 'text-amber-400',
+  },
+
+  // SINDICATOS
+  cgtp: {
+    nome: 'CGTP-IN',
+    sigla: 'CGTP',
+    nomeCompleto: 'Confederação Geral dos Trabalhadores Portugueses',
+    tipo: 'Sindicato',
+    icon: UsersIcon,
+    cor: 'from-red-400 to-rose-500',
+    borderCor: 'border-red-500',
+    bgCor: 'bg-red-500/10',
+    shadowCor: 'shadow-red-500/50',
+    textCor: 'text-red-400',
+  },
+  ugt: {
+    nome: 'UGT',
+    sigla: 'UGT',
+    nomeCompleto: 'União Geral de Trabalhadores',
+    tipo: 'Sindicato',
+    icon: UsersIcon,
+    cor: 'from-orange-400 to-red-500',
+    borderCor: 'border-orange-500',
+    bgCor: 'bg-orange-500/10',
+    shadowCor: 'shadow-orange-500/50',
+    textCor: 'text-orange-400',
+  },
+
+  // SOCIEDADE CIVIL & ONGs
+  ongs_ambiente: {
+    nome: 'ONGs Ambiente',
+    nomeCompleto: 'Organizações Ambientais',
+    tipo: 'Sociedade Civil',
+    icon: GlobeAltIcon,
+    cor: 'from-green-400 to-teal-500',
+    borderCor: 'border-green-500',
+    bgCor: 'bg-green-500/10',
+    shadowCor: 'shadow-green-500/50',
+    textCor: 'text-green-400',
+  },
+  ongs_social: {
+    nome: 'ONGs Social',
+    nomeCompleto: 'Organizações de Solidariedade',
+    tipo: 'Sociedade Civil',
+    icon: HeartIcon,
+    cor: 'from-pink-400 to-rose-500',
+    borderCor: 'border-pink-500',
+    bgCor: 'bg-pink-500/10',
+    shadowCor: 'shadow-pink-500/50',
+    textCor: 'text-pink-400',
+  },
+  ordem_advogados: {
+    nome: 'Ordem dos Advogados',
+    sigla: 'OA',
+    tipo: 'Ordem Profissional',
+    icon: ScaleIcon,
+    cor: 'from-indigo-400 to-blue-500',
+    borderCor: 'border-indigo-500',
+    bgCor: 'bg-indigo-500/10',
+    shadowCor: 'shadow-indigo-500/50',
+    textCor: 'text-indigo-400',
+  },
+
+  // ENTIDADES REGULADORAS
+  banco_portugal: {
+    nome: 'Banco de Portugal',
+    sigla: 'BdP',
+    tipo: 'Regulador',
+    icon: BanknotesIcon,
+    cor: 'from-emerald-400 to-green-500',
+    borderCor: 'border-emerald-500',
+    bgCor: 'bg-emerald-500/10',
+    shadowCor: 'shadow-emerald-500/50',
+    textCor: 'text-emerald-400',
+  },
+  erse: {
+    nome: 'ERSE',
+    nomeCompleto: 'Entidade Reguladora dos Serviços Energéticos',
+    tipo: 'Regulador',
+    icon: ShieldCheckIcon,
+    cor: 'from-yellow-400 to-orange-500',
+    borderCor: 'border-yellow-500',
+    bgCor: 'bg-yellow-500/10',
+    shadowCor: 'shadow-yellow-500/50',
+    textCor: 'text-yellow-400',
+  },
+
+  // UNIVERSIDADES & INVESTIGAÇÃO
+  universidades: {
+    nome: 'Universidades',
+    nomeCompleto: 'Conselho de Reitores',
+    tipo: 'Académico',
+    icon: AcademicCapIcon,
+    cor: 'from-violet-400 to-purple-500',
+    borderCor: 'border-violet-500',
+    bgCor: 'bg-violet-500/10',
+    shadowCor: 'shadow-violet-500/50',
+    textCor: 'text-violet-400',
+  },
+  fct: {
+    nome: 'FCT',
+    nomeCompleto: 'Fundação para a Ciência e Tecnologia',
+    tipo: 'Investigação',
+    icon: BeakerIcon,
+    cor: 'from-cyan-400 to-blue-500',
+    borderCor: 'border-cyan-500',
+    bgCor: 'bg-cyan-500/10',
+    shadowCor: 'shadow-cyan-500/50',
+    textCor: 'text-cyan-400',
+  },
+
+  // MEDIA & COMUNICAÇÃO
+  media: {
+    nome: 'Media',
+    nomeCompleto: 'Órgãos de Comunicação Social',
+    tipo: 'Comunicação',
+    icon: NewspaperIcon,
+    cor: 'from-purple-400 to-pink-500',
+    borderCor: 'border-purple-500',
+    bgCor: 'bg-purple-500/10',
+    shadowCor: 'shadow-purple-500/50',
+    textCor: 'text-purple-400',
+  },
+
+  // AUTARQUIAS
+  anmp: {
+    nome: 'ANMP',
+    nomeCompleto: 'Associação Nacional de Municípios Portugueses',
+    tipo: 'Poder Local',
+    icon: HomeModernIcon,
+    cor: 'from-blue-400 to-indigo-500',
+    borderCor: 'border-blue-500',
+    bgCor: 'bg-blue-500/10',
+    shadowCor: 'shadow-blue-500/50',
+    textCor: 'text-blue-400',
+  },
+
+  // GRUPOS DE PRESSÃO
+  lobby_geral: {
+    nome: 'Lobbies',
+    nomeCompleto: 'Grupos de Interesse Registados',
+    tipo: 'Lobby',
+    icon: MegaphoneIcon,
+    cor: 'from-fuchsia-400 to-purple-500',
+    borderCor: 'border-fuchsia-500',
+    bgCor: 'bg-fuchsia-500/10',
+    shadowCor: 'shadow-fuchsia-500/50',
+    textCor: 'text-fuchsia-400',
+  },
+};
+
+export const getStakeholderInfo = (stakeholderId) => {
+  return STAKEHOLDERS[stakeholderId] || {
+    nome: 'Outros',
+    icon: UserGroupIcon,
+    cor: 'from-gray-400 to-gray-600',
+    borderCor: 'border-gray-500',
+    bgCor: 'bg-gray-500/10',
+    shadowCor: 'shadow-gray-500/50',
+    textCor: 'text-gray-400',
+    tipo: 'Outros'
+  };
+};
+
+// Lista de stakeholders por tipo
+export const STAKEHOLDERS_POR_TIPO = {
+  'Partidos Políticos': [
+    'partido_ps', 'partido_psd', 'partido_chega', 'partido_il',
+    'partido_be', 'partido_pcp', 'partido_livre', 'partido_pan'
+  ],
+  'Patronato': ['cip', 'ccp', 'cap'],
+  'Sindicatos': ['cgtp', 'ugt'],
+  'Sociedade Civil': ['ongs_ambiente', 'ongs_social', 'ordem_advogados'],
+  'Reguladores': ['banco_portugal', 'erse'],
+  'Académico': ['universidades', 'fct'],
+  'Comunicação': ['media'],
+  'Poder Local': ['anmp'],
+  'Lobby': ['lobby_geral']
+};
+
+// Stakeholders padrão (seleção inicial)
+export const STAKEHOLDERS_PADRAO = [
+  'partido_ps', 'partido_psd', 'partido_chega', 'partido_il',
+  'partido_be', 'cip', 'cgtp', 'ugt',
+  'ongs_ambiente', 'banco_portugal', 'universidades', 'media',
+  'anmp', 'ordem_advogados', 'lobby_geral'
+];
