@@ -19,6 +19,7 @@ function AppContent() {
   const [isAdminOpen, setIsAdminOpen] = useState(false);
   const [mostrarFavoritos, setMostrarFavoritos] = useState(false);
   const [selectedDocument, setSelectedDocument] = useState(null);
+  const [viewMode, setViewMode] = useState('legislativo'); // 'legislativo' ou 'stakeholders'
   const { documentosFavoritos } = useUser();
 
   const { stats } = useStats();
@@ -41,6 +42,10 @@ function AppContent() {
     setIsRefreshing(true);
     await refetch();
     setTimeout(() => setIsRefreshing(false), 1000);
+  };
+
+  const toggleViewMode = () => {
+    setViewMode(prev => prev === 'legislativo' ? 'stakeholders' : 'legislativo');
   };
 
   // Mostrar loading enquanto verifica autenticação
@@ -75,11 +80,13 @@ function AppContent() {
           favoritesEnabled={mostrarFavoritos}
           favoritesCount={documentosFavoritos.length}
           isRefreshing={isRefreshing}
+          viewMode={viewMode}
+          onToggleViewMode={toggleViewMode}
         />
       </div>
 
       <div className="absolute inset-0 pt-24">
-        <RadarFullScreen stats={stats} documents={documents} />
+        <RadarFullScreen stats={stats} documents={documents} viewMode={viewMode} />
       </div>
 
       {/* Modais */}

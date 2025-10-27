@@ -1,23 +1,17 @@
 import { useState } from "react";
 import { getCategoriaInfo } from "../utils/categories";
 import { getStakeholderInfo, STAKEHOLDERS_PADRAO } from "../utils/stakeholders";
-import { BoltIcon, ChevronRightIcon, UsersIcon, BuildingLibraryIcon } from "@heroicons/react/24/solid";
+import { ChevronRightIcon } from "@heroicons/react/24/solid";
 import { useUser } from "../contexts/UserContext";
 import DocumentDetailModal from "./DocumentDetailModal";
 import CategoryDocumentsModal from "./CategoryDocumentsModal";
 
-const RadarFullScreen = ({ stats, documents }) => {
+const RadarFullScreen = ({ stats, documents, viewMode }) => {
   const [hoveredCategory, setHoveredCategory] = useState(null);
   const [selectedDocument, setSelectedDocument] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
-  const [viewMode, setViewMode] = useState('legislativo'); // 'legislativo' ou 'stakeholders'
 
   const { categoriasFavoritas, tiposConteudoVisiveis, foiLido, estaArquivado } = useUser();
-
-  // Alternar entre modos
-  const toggleViewMode = () => {
-    setViewMode(prev => prev === 'legislativo' ? 'stakeholders' : 'legislativo');
-  };
 
   // Definir lista de categorias baseado no modo
   const categoriasList = viewMode === 'legislativo'
@@ -57,62 +51,6 @@ const RadarFullScreen = ({ stats, documents }) => {
     <>
       {/* FUNDO COMPLETO - Tech Grid */}
       <div className="absolute inset-0 tech-grid"></div>
-
-      {/* BOTÃO TOGGLE - Stakeholders vs Legislativo */}
-      <div className="absolute top-24 right-8 z-50">
-        <button
-          onClick={toggleViewMode}
-          className="group relative flex items-center gap-3 px-6 py-3 rounded-2xl border-2 transition-all duration-300 hover:scale-105 shadow-xl"
-          style={{
-            backgroundColor: 'rgba(38, 34, 97, 0.95)',
-            borderColor: viewMode === 'stakeholders' ? '#27aae2' : 'rgba(100, 116, 139, 0.5)',
-            boxShadow: viewMode === 'stakeholders'
-              ? '0 10px 30px -5px rgba(39, 170, 226, 0.4)'
-              : '0 10px 30px -5px rgba(0, 0, 0, 0.3)'
-          }}
-        >
-          {/* Glow Effect on Hover */}
-          <div
-            className="absolute inset-0 rounded-2xl blur-xl transition-opacity opacity-0 group-hover:opacity-100"
-            style={{ backgroundColor: 'rgba(39, 170, 226, 0.2)' }}
-          ></div>
-
-          {/* Ícones */}
-          <div className="relative flex items-center gap-3">
-            {viewMode === 'legislativo' ? (
-              <>
-                <BuildingLibraryIcon
-                  className="w-6 h-6 transition-colors"
-                  style={{ color: '#cbd5e1' }}
-                />
-                <div className="flex flex-col items-start">
-                  <span className="text-sm font-bold text-white">Legislativo</span>
-                  <span className="text-[10px] text-slate-400">Clique para ver Stakeholders</span>
-                </div>
-              </>
-            ) : (
-              <>
-                <UsersIcon
-                  className="w-6 h-6 transition-colors"
-                  style={{ color: '#27aae2' }}
-                />
-                <div className="flex flex-col items-start">
-                  <span className="text-sm font-bold" style={{ color: '#27aae2' }}>Stakeholders</span>
-                  <span className="text-[10px] text-slate-400">Clique para ver Legislativo</span>
-                </div>
-              </>
-            )}
-          </div>
-
-          {/* Indicador de modo ativo */}
-          {viewMode === 'stakeholders' && (
-            <div
-              className="absolute -top-1 -right-1 w-3 h-3 rounded-full animate-pulse"
-              style={{ backgroundColor: '#27aae2' }}
-            ></div>
-          )}
-        </button>
-      </div>
 
       {/* Efeito de varredura do radar - CENTRO - NOVA COR AZUL */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">

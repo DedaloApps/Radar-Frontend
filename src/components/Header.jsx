@@ -1,25 +1,28 @@
-import { 
-  BellIcon, 
+import {
+  BellIcon,
   Cog6ToothIcon,
   MagnifyingGlassIcon,
   ArrowPathIcon,
   ShieldCheckIcon,
   ArrowRightOnRectangleIcon,
-  StarIcon
+  StarIcon,
+  ArrowsRightLeftIcon
 } from '@heroicons/react/24/outline';
 import { BellIcon as BellSolidIcon, StarIcon as StarSolidIcon } from '@heroicons/react/24/solid';
 import { useAuth } from '../contexts/AuthContext';
 
-const Header = ({ 
-  ultimaAtualizacao, 
-  notificationEnabled, 
+const Header = ({
+  ultimaAtualizacao,
+  notificationEnabled,
   onToggleNotifications,
   onRefresh,
-  onOpenConfig, 
+  onOpenConfig,
   onOpenAdmin,
   onOpenFavorites,
   isRefreshing,
-  favoritesEnabled
+  favoritesEnabled,
+  viewMode,
+  onToggleViewMode
 }) => {
   const { user, logout, isAdmin } = useAuth();
 
@@ -42,14 +45,41 @@ const Header = ({
           </div>
           
           <div>
-            {/* Título com gradiente AZUL/CYAN */}
-            <h1 className="text-3xl font-black bg-clip-text text-transparent drop-shadow-lg"
-                style={{ 
-                  backgroundImage: 'linear-gradient(to right, #7dd3fc, #27aae2, #06b6d4)'
-                }}>
-              RADAR LEGISLATIVO
-            </h1>
-            <p className="text-sm font-semibold tracking-wide"
+            {/* Título com gradiente AZUL/CYAN - Dinâmico */}
+            <div className="flex items-center gap-3">
+              <h1 className="text-3xl font-black bg-clip-text text-transparent drop-shadow-lg"
+                  style={{
+                    backgroundImage: 'linear-gradient(to right, #7dd3fc, #27aae2, #06b6d4)'
+                  }}>
+                {viewMode === 'legislativo' ? 'RADAR LEGISLATIVO' : 'RADAR DE STAKEHOLDERS'}
+              </h1>
+
+              {/* Seta para alternar entre modos */}
+              <button
+                onClick={onToggleViewMode}
+                className="group p-2 rounded-lg border transition-all hover:scale-110"
+                style={{
+                  backgroundColor: 'rgba(39, 170, 226, 0.1)',
+                  borderColor: 'rgba(39, 170, 226, 0.3)'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = 'rgba(39, 170, 226, 0.2)';
+                  e.currentTarget.style.boxShadow = '0 0 20px rgba(39, 170, 226, 0.3)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = 'rgba(39, 170, 226, 0.1)';
+                  e.currentTarget.style.boxShadow = 'none';
+                }}
+                title={viewMode === 'legislativo' ? 'Ver Stakeholders' : 'Ver Legislativo'}
+              >
+                <ArrowsRightLeftIcon
+                  className="w-5 h-5 transition-transform group-hover:rotate-180"
+                  style={{ color: '#7dd3fc' }}
+                />
+              </button>
+            </div>
+
+            <p className="text-sm font-semibold tracking-wide mt-1"
                style={{ color: '#27aae2' }}>
               Olá, {user?.nome || 'Utilizador'} 👋
             </p>
