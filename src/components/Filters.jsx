@@ -1,11 +1,17 @@
 import { Search } from 'lucide-react';
-import { CATEGORIAS } from '../utils/categories';
+import { COMISSOES, STAKEHOLDERS } from '../utils/categories';
+import { useEnvironment } from '../contexts/EnvironmentContext';
 
 const Filters = ({ selectedCategoria, onCategoriaChange, searchQuery, onSearchChange }) => {
+  const { ambiente } = useEnvironment();
+
+  // Seleciona as categorias baseado no ambiente
+  const categorias = ambiente === 'parlamento' ? COMISSOES : STAKEHOLDERS;
+
   return (
     <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
       <h2 className="text-2xl font-bold mb-6 text-gray-800">🔍 Filtros</h2>
-      
+
       {/* Filtros por Categoria */}
       <div className="flex flex-wrap gap-3 mb-6">
         <button
@@ -18,18 +24,18 @@ const Filters = ({ selectedCategoria, onCategoriaChange, searchQuery, onSearchCh
         >
           Todas
         </button>
-        
-        {Object.entries(CATEGORIAS).slice(0, 5).map(([key, info]) => (
+
+        {Object.entries(categorias).slice(0, 5).map(([key, info]) => (
           <button
             key={key}
             onClick={() => onCategoriaChange(key)}
             className={`px-6 py-3 rounded-full font-medium transition-all ${
               selectedCategoria === key
-                ? `${info.cor} text-white shadow-lg`
+                ? `bg-gradient-to-r ${info.cor} text-white shadow-lg`
                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
             }`}
           >
-            {info.emoji} {info.nome}
+            {info.numero} {info.nome}
           </button>
         ))}
       </div>

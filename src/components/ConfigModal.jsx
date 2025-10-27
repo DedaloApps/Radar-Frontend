@@ -1,7 +1,8 @@
 import { XMarkIcon, ArrowPathIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { CheckIcon } from '@heroicons/react/24/solid';
-import { COMISSOES, TIPOS_CONTEUDO } from '../utils/categories';
+import { COMISSOES, STAKEHOLDERS, TIPOS_CONTEUDO } from '../utils/categories';
 import { useUser } from '../contexts/UserContext';
+import { useEnvironment } from '../contexts/EnvironmentContext';
 import { useState } from 'react';
 import {
   CalendarIcon,
@@ -30,22 +31,28 @@ const TIPO_ICONS = {
 };
 
 const ConfigModal = ({ isOpen, onClose }) => {
-  const { 
-    categoriasFavoritas, 
-    toggleCategoria, 
-    tiposConteudoVisiveis, 
+  const {
+    categoriasFavoritas,
+    toggleCategoria,
+    tiposConteudoVisiveis,
     toggleTipoConteudo,
-    resetarPreferencias 
+    resetarPreferencias
   } = useUser();
+
+  const { ambiente } = useEnvironment();
 
   const [activeTab, setActiveTab] = useState('comissoes');
   const [searchTerm, setSearchTerm] = useState('');
 
   if (!isOpen) return null;
 
-  const comissoesFiltradas = Object.entries(COMISSOES).filter(([id, info]) =>
+  // Usa COMISSOES ou STAKEHOLDERS baseado no ambiente
+  const categorias = ambiente === 'parlamento' ? COMISSOES : STAKEHOLDERS;
+  const labelCategoria = ambiente === 'parlamento' ? 'Comissões' : 'Categorias';
+
+  const categoriasFiltradas = Object.entries(categorias).filter(([id, info]) =>
     info.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    info.nomeCompleto.toLowerCase().includes(searchTerm.toLowerCase())
+    (info.nomeCompleto || '').toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -96,7 +103,7 @@ const ConfigModal = ({ isOpen, onClose }) => {
               activeTab === 'comissoes' ? 'text-white' : 'text-slate-400 hover:text-slate-300'
             }`}
           >
-            Comissões
+            {labelCategoria}
             {activeTab === 'comissoes' && (
               <div className="absolute bottom-0 left-0 right-0 h-0.5"
                    style={{ backgroundColor: '#27aae2' }}></div>
@@ -137,12 +144,12 @@ const ConfigModal = ({ isOpen, onClose }) => {
                 </div>
                 
                 <div className="text-sm text-slate-400">
-                  <span className="text-white font-medium">{categoriasFavoritas.length}</span> / {Object.keys(COMISSOES).length}
+                  <span className="text-white font-medium">{categoriasFavoritas.length}</span> / {Object.keys(categorias).length}
                 </div>
               </div>
 
               <div className="space-y-2">
-                {comissoesFiltradas.map(([id, info]) => {
+                {categoriasFiltradas.map(([id, info]) => {
                   const Icon = info.icon;
                   const isSelected = categoriasFavoritas.includes(id);
 
@@ -169,9 +176,11 @@ const ConfigModal = ({ isOpen, onClose }) => {
                         <div className={`font-medium text-sm ${isSelected ? 'text-white' : 'text-slate-300'}`}>
                           {info.numero} {info.nome}
                         </div>
-                        <div className="text-xs text-slate-500 mt-0.5">
-                          {info.nomeCompleto}
-                        </div>
+                        {info.nomeCompleto && (
+                          <div className="text-xs text-slate-500 mt-0.5">
+                            {info.nomeCompleto}
+                          </div>
+                        )}
                       </div>
 
                       <div className="w-5 h-5 rounded border-2 flex items-center justify-center transition-all"
@@ -186,9 +195,9 @@ const ConfigModal = ({ isOpen, onClose }) => {
                 })}
               </div>
 
-              {comissoesFiltradas.length === 0 && (
+              {categoriasFiltradas.length === 0 && (
                 <div className="text-center py-12 text-slate-500 text-sm">
-                  Nenhuma comissão encontrada
+                  {ambiente === 'parlamento' ? 'Nenhuma comissão encontrada' : 'Nenhuma categoria encontrada'}
                 </div>
               )}
             </div>

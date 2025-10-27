@@ -36,61 +36,68 @@ const Header = ({
             <div className="absolute inset-0 rounded-xl blur-xl opacity-60 animate-pulse"
                  style={{ background: 'linear-gradient(to bottom right, #27aae2, #1e88b5)' }}></div>
             <div className="relative">
-              <img 
-                src="/dedalo.png" 
-                alt="Dédalo Logo" 
+              <img
+                src="/dedalo.png"
+                alt="Dédalo Logo"
                 className="w-24 h-24 object-contain"
               />
             </div>
           </div>
-          
-          <div>
+
+          <div className="flex flex-col gap-2">
             {/* Título com gradiente AZUL/CYAN */}
-            <h1 className="text-3xl font-black bg-clip-text text-transparent drop-shadow-lg"
-                style={{
-                  backgroundImage: 'linear-gradient(to right, #7dd3fc, #27aae2, #06b6d4)'
-                }}>
-              RADAR LEGISLATIVO
-            </h1>
+            <div className="flex items-center gap-3">
+              <h1 className="text-3xl font-black bg-clip-text text-transparent drop-shadow-lg"
+                  style={{
+                    backgroundImage: 'linear-gradient(to right, #7dd3fc, #27aae2, #06b6d4)'
+                  }}>
+                {ambiente === 'parlamento' ? 'RADAR LEGISLATIVO' : 'RADAR DE STAKEHOLDERS'}
+              </h1>
+
+              {/* Tabs de Ambiente */}
+              <div className="flex items-center gap-1 px-1 py-1 rounded-xl backdrop-blur-sm border"
+                   style={{
+                     backgroundColor: 'rgba(15, 23, 42, 0.6)',
+                     borderColor: 'rgba(39, 170, 226, 0.2)'
+                   }}>
+                <button
+                  onClick={() => ambiente === 'stakeholders' && toggleAmbiente()}
+                  className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                    ambiente === 'parlamento' ? '' : 'hover:bg-slate-800/50'
+                  }`}
+                  style={ambiente === 'parlamento' ? {
+                    backgroundColor: '#27aae2',
+                    color: 'white',
+                    boxShadow: '0 2px 10px rgba(39, 170, 226, 0.4)'
+                  } : {
+                    color: '#94a3b8'
+                  }}
+                >
+                  Parlamento
+                </button>
+                <button
+                  onClick={() => ambiente === 'parlamento' && toggleAmbiente()}
+                  className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                    ambiente === 'stakeholders' ? '' : 'hover:bg-slate-800/50'
+                  }`}
+                  style={ambiente === 'stakeholders' ? {
+                    backgroundColor: '#27aae2',
+                    color: 'white',
+                    boxShadow: '0 2px 10px rgba(39, 170, 226, 0.4)'
+                  } : {
+                    color: '#94a3b8'
+                  }}
+                >
+                  Stakeholders
+                </button>
+              </div>
+            </div>
+
             <p className="text-sm font-semibold tracking-wide"
                style={{ color: '#27aae2' }}>
               Olá, {user?.nome || 'Utilizador'} 👋
             </p>
           </div>
-        </div>
-
-        {/* Toggle Ambiente - Centro */}
-        <div className="absolute left-1/2 transform -translate-x-1/2">
-          <button
-            onClick={toggleAmbiente}
-            className="group relative px-6 py-3 rounded-2xl border backdrop-blur-sm transition-all hover:scale-105"
-            style={{
-              backgroundColor: 'rgba(39, 170, 226, 0.1)',
-              borderColor: 'rgba(39, 170, 226, 0.3)'
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = 'rgba(39, 170, 226, 0.2)';
-              e.currentTarget.style.boxShadow = '0 0 30px rgba(39, 170, 226, 0.3)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = 'rgba(39, 170, 226, 0.1)';
-              e.currentTarget.style.boxShadow = 'none';
-            }}
-            title={`Alternar para ${ambiente === 'parlamento' ? 'Stakeholders' : 'Parlamento'}`}
-          >
-            <div className="flex items-center gap-3">
-              <span className="text-sm font-bold" style={{ color: '#7dd3fc' }}>
-                {getNomeAmbiente()}
-              </span>
-              <ArrowsRightLeftIcon
-                className="w-5 h-5 transition-transform group-hover:rotate-180 duration-500"
-                style={{ color: '#27aae2' }}
-              />
-              <span className="text-sm font-bold text-slate-400">
-                {ambiente === 'parlamento' ? 'Stakeholders' : 'Parlamento'}
-              </span>
-            </div>
-          </button>
         </div>
 
         {/* Controles à direita */}
