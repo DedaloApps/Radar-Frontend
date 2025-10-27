@@ -18,6 +18,10 @@ import {
   ChatBubbleLeftRightIcon,
   HandRaisedIcon,
   DocumentMagnifyingGlassIcon,
+  BriefcaseIcon,
+  BuildingLibraryIcon,
+  BeakerIcon,
+  CurrencyEuroIcon,
 } from '@heroicons/react/24/solid';
 
 // 🎨 NOVAS CORES: #262261 (roxo) e #27aae2 (azul)
@@ -267,7 +271,158 @@ export const TIPOS_CONTEUDO = {
   geral: { nome: 'Geral', emoji: '📄', cor: 'bg-slate-500' }
 };
 
-export const getCategoriaInfo = (categoria) => {
+// ==========================================
+// 🏛️ STAKEHOLDERS - Entidades Externas
+// ==========================================
+export const STAKEHOLDERS = {
+  // CONCERTAÇÃO SOCIAL
+  stake_concertacao: {
+    numero: '🤝',
+    nome: 'Concertação Social',
+    nomeCompleto: 'Concertação Social - Sindicatos e Patronato',
+    icon: UserGroupIcon,
+    cor: 'from-amber-400 to-orange-500',
+    borderCor: 'border-amber-500',
+    bgCor: 'bg-amber-500/10',
+    shadowCor: 'shadow-amber-500/50',
+    textCor: 'text-amber-400',
+    sites: [
+      { nome: 'CGTP', url: 'https://www.cgtp.pt/accao-e-luta' },
+      { nome: 'UGT', url: 'https://www.ugt.pt/noticias' },
+      { nome: 'CAP', url: 'https://www.cap.pt/noticias-cap' },
+      { nome: 'CCP', url: 'https://ccp.pt/noticias/' },
+      { nome: 'CTP', url: 'https://ctp.org.pt/noticias' }
+    ]
+  },
+
+  // LABORAL
+  stake_laboral: {
+    numero: '👷',
+    nome: 'Laboral',
+    nomeCompleto: 'Autoridades Laborais e Migração',
+    icon: BriefcaseIcon,
+    cor: 'from-blue-400 to-indigo-500',
+    borderCor: 'border-blue-500',
+    bgCor: 'bg-blue-500/10',
+    shadowCor: 'shadow-blue-500/50',
+    textCor: 'text-blue-400',
+    sites: [
+      { nome: 'ACT', url: 'https://portal.act.gov.pt/Pages/TodasNoticias.aspx#1' },
+      { nome: 'CITE', url: 'https://cite.gov.pt/noticias-antigas' },
+      { nome: 'AIMA', url: 'https://aima.gov.pt/pt/noticias' }
+    ]
+  },
+
+  // AMBIENTE
+  stake_ambiente: {
+    numero: '🌱',
+    nome: 'Ambiente',
+    nomeCompleto: 'Ambiente e Energia',
+    icon: BoltIcon,
+    cor: 'from-green-400 to-emerald-500',
+    borderCor: 'border-green-500',
+    bgCor: 'bg-green-500/10',
+    shadowCor: 'shadow-green-500/50',
+    textCor: 'text-green-400',
+    sites: [
+      { nome: 'APA', url: 'https://apambiente.pt/destaques' },
+      { nome: 'IGAMAOT', url: 'https://www.igamaot.gov.pt/pt/espaco-publico/destaques#1' },
+      { nome: 'DGEG', url: 'https://www.dgeg.gov.pt/pt/destaques/' },
+      { nome: 'DGAV', url: 'https://www.dgav.pt/destaques/noticias/' },
+      { nome: 'ADENE', url: 'https://www.adene.pt/comunicacao/noticias/' },
+      { nome: 'ERSE', url: 'https://www.erse.pt/comunicacao/destaques/' }
+    ]
+  },
+
+  // AGRICULTURA
+  stake_agricultura: {
+    numero: '🌾',
+    nome: 'Agricultura',
+    nomeCompleto: 'Agricultura e Desenvolvimento Rural',
+    icon: TruckIcon,
+    cor: 'from-lime-400 to-green-500',
+    borderCor: 'border-lime-500',
+    bgCor: 'bg-lime-500/10',
+    shadowCor: 'shadow-lime-500/50',
+    textCor: 'text-lime-400',
+    sites: [
+      { nome: 'DGADR', url: 'https://www.dgadr.gov.pt/pt/destaques' },
+      { nome: 'INIAV', url: 'https://www.iniav.pt/divulgacao/noticias-iniav' }
+    ]
+  },
+
+  // ECONOMIA/FINANÇAS
+  stake_economia: {
+    numero: '💰',
+    nome: 'Economia/Finanças',
+    nomeCompleto: 'Economia, Finanças e Comércio',
+    icon: CurrencyEuroIcon,
+    cor: 'from-purple-400 to-violet-500',
+    borderCor: 'border-purple-500',
+    bgCor: 'bg-purple-500/10',
+    shadowCor: 'shadow-purple-500/50',
+    textCor: 'text-purple-400',
+    sites: [
+      { nome: 'IAPMEI', url: 'https://www.iapmei.pt/NOTICIAS.aspx' },
+      { nome: 'AdC', url: 'https://www.concorrencia.pt/pt/noticias-comunicados-e-intervencoes' },
+      { nome: 'AT', url: 'https://info-aduaneiro.portaldasfinancas.gov.pt/pt/noticias/Pages/noticias.aspx' },
+      { nome: 'Banco Portugal', url: 'https://www.bportugal.pt/comunicados/media/banco-de-portugal' },
+      { nome: 'Portugal Global', url: 'https://portugalglobal.pt/noticias/' },
+      { nome: 'DGPC', url: 'https://www.consumidor.gov.pt/comunicacao1/noticias1?page=1' },
+      { nome: 'DGAE', url: 'https://www.dgae.gov.pt/comunicacao/noticias.aspx' }
+    ]
+  },
+
+  // SAÚDE
+  stake_saude: {
+    numero: '⚕️',
+    nome: 'Saúde',
+    nomeCompleto: 'Autoridades de Saúde',
+    icon: HeartIcon,
+    cor: 'from-red-400 to-rose-500',
+    borderCor: 'border-red-500',
+    bgCor: 'bg-red-500/10',
+    shadowCor: 'shadow-red-500/50',
+    textCor: 'text-red-400',
+    sites: [
+      { nome: 'INFARMED', url: 'https://www.infarmed.pt/web/infarmed/noticias' },
+      { nome: 'ERS', url: 'https://www.ers.pt/pt/comunicacao/noticias/' },
+      { nome: 'IGAS', url: 'https://www.igas.min-saude.pt/category/noticias-e-eventos/noticias/' }
+    ]
+  },
+
+  // IMOBILIÁRIO/HABITAÇÃO
+  stake_habitacao: {
+    numero: '🏠',
+    nome: 'Imobiliário/Habitação',
+    nomeCompleto: 'Imobiliário, Habitação e Território',
+    icon: HomeModernIcon,
+    cor: 'from-cyan-400 to-blue-500',
+    borderCor: 'border-cyan-500',
+    bgCor: 'bg-cyan-500/10',
+    shadowCor: 'shadow-cyan-500/50',
+    textCor: 'text-cyan-400',
+    sites: [
+      { nome: 'CMVM', url: 'https://www.cmvm.pt/PInstitucional/Content?Input=E9639BDA21F5F3D13613E5F7C187F1A785B6EE9D48F21D9B121B7E5EC2D6A6F5' },
+      { nome: 'DGT', url: 'https://www.dgterritorio.gov.pt/todas-noticias' },
+      { nome: 'IHRU', url: 'https://www.ihru.pt/noticias' }
+    ]
+  }
+};
+
+export const getCategoriaInfo = (categoria, ambiente = 'parlamento') => {
+  if (ambiente === 'stakeholders') {
+    return STAKEHOLDERS[categoria] || {
+      nome: 'Outros',
+      icon: ScaleIcon,
+      cor: 'from-gray-400 to-gray-600',
+      borderCor: 'border-gray-500',
+      bgCor: 'bg-gray-500/10',
+      shadowCor: 'shadow-gray-500/50',
+      textCor: 'text-gray-400'
+    };
+  }
+
   return COMISSOES[categoria] || {
     nome: 'Outros',
     icon: ScaleIcon,

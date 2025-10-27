@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import { UserProvider, useUser } from "./contexts/UserContext";
+import { EnvironmentProvider, useEnvironment } from "./contexts/EnvironmentContext";
 import Header from "./components/Header";
 import RadarFullScreen from "./components/RadarFullScreen";
 import ConfigModal from "./components/ConfigModal";
@@ -13,6 +14,7 @@ import DocumentDetailModal from "./components/DocumentDetailModal";
 
 function AppContent() {
   const { isAuthenticated, loading: authLoading, isAdmin } = useAuth();
+  const { ambiente } = useEnvironment();
   const [notificationEnabled, setNotificationEnabled] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [isConfigOpen, setIsConfigOpen] = useState(false);
@@ -21,8 +23,8 @@ function AppContent() {
   const [selectedDocument, setSelectedDocument] = useState(null);
   const { documentosFavoritos } = useUser();
 
-  const { stats } = useStats();
-  const { documents, refetch } = useDocuments();
+  const { stats } = useStats(ambiente);
+  const { documents, refetch } = useDocuments(ambiente);
 
   useEffect(() => {
     if ("Notification" in window) {
@@ -122,7 +124,9 @@ function App() {
   return (
     <AuthProvider>
       <UserProvider>
-        <AppContent />
+        <EnvironmentProvider>
+          <AppContent />
+        </EnvironmentProvider>
       </UserProvider>
     </AuthProvider>
   );

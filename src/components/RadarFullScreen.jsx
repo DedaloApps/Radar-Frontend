@@ -2,6 +2,7 @@ import { useState } from "react";
 import { getCategoriaInfo } from "../utils/categories";
 import { BoltIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
 import { useUser } from "../contexts/UserContext";
+import { useEnvironment } from "../contexts/EnvironmentContext";
 import DocumentDetailModal from "./DocumentDetailModal";
 import CategoryDocumentsModal from "./CategoryDocumentsModal";
 
@@ -11,9 +12,12 @@ const RadarFullScreen = ({ stats, documents }) => {
   const [selectedCategory, setSelectedCategory] = useState(null);
 
   const { categoriasFavoritas, tiposConteudoVisiveis, foiLido, estaArquivado } = useUser();
+  const { ambiente, getCategoriasAmbiente } = useEnvironment();
 
-  // Filtrar apenas categorias favoritas
-  const categoriasList = categoriasFavoritas;
+  // Filtrar categorias com base no ambiente
+  const categoriasList = ambiente === 'parlamento'
+    ? categoriasFavoritas
+    : getCategoriasAmbiente();
   const angleStep = 360 / categoriasList.length;
 
   // Filtrar documentos por tipo de conteúdo visível
@@ -177,7 +181,7 @@ const RadarFullScreen = ({ stats, documents }) => {
       {/* CATEGORIAS - Cards com NOVAS CORES */}
       {categoriasList.map((categoria, index) => {
         const angle = (angleStep * index - 90) * (Math.PI / 180);
-        const info = getCategoriaInfo(categoria);
+        const info = getCategoriaInfo(categoria, ambiente);
         const { total, documents: categoryDocs, activeCount } = getCategoryData(categoria);
         const Icon = info.icon;
 

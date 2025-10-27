@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { getStats } from '../services/api';
+import { getStats, getStakeholdersStats } from '../services/api';
 
-export const useStats = () => {
+export const useStats = (ambiente = 'parlamento') => {
   const [stats, setStats] = useState({
     totalGeral: 0,
     documentosHoje: 0,
@@ -13,7 +13,9 @@ export const useStats = () => {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const data = await getStats();
+        const data = ambiente === 'parlamento'
+          ? await getStats()
+          : await getStakeholdersStats();
         setStats(data.data);
       } catch (error) {
         console.error('Erro ao buscar estatísticas:', error);
@@ -27,7 +29,7 @@ export const useStats = () => {
     // Atualizar stats a cada 5 minutos
     const interval = setInterval(fetchStats, 5 * 60 * 1000);
     return () => clearInterval(interval);
-  }, []);
+  }, [ambiente]);
 
   return { stats, loading };
 };

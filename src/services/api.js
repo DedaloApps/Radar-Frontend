@@ -7,21 +7,39 @@ const api = axios.create({
   timeout: 10000,
 });
 
-// Documentos
+// Documentos (Parlamento)
 export const getDocuments = async (params = {}) => {
   const response = await api.get('/documents', { params });
   return response.data;
 };
 
 export const searchDocuments = async (query) => {
-  const response = await api.get('/documents/search', { 
-    params: { q: query } 
+  const response = await api.get('/documents/search', {
+    params: { q: query }
   });
   return response.data;
 };
 
 export const getStats = async () => {
   const response = await api.get('/documents/stats');
+  return response.data;
+};
+
+// Stakeholders
+export const getStakeholdersDocuments = async (params = {}) => {
+  const response = await api.get('/stakeholders/documents', { params });
+  return response.data;
+};
+
+export const searchStakeholdersDocuments = async (query) => {
+  const response = await api.get('/stakeholders/search', {
+    params: { q: query }
+  });
+  return response.data;
+};
+
+export const getStakeholdersStats = async () => {
+  const response = await api.get('/stakeholders/stats');
   return response.data;
 };
 

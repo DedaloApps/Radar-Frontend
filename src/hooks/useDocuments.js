@@ -1,7 +1,12 @@
 import { useState, useEffect, useCallback } from 'react';
-import { getDocuments, searchDocuments } from '../services/api';
+import {
+  getDocuments,
+  searchDocuments,
+  getStakeholdersDocuments,
+  searchStakeholdersDocuments
+} from '../services/api';
 
-export const useDocuments = () => {
+export const useDocuments = (ambiente = 'parlamento') => {
   const [documents, setDocuments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -14,15 +19,19 @@ export const useDocuments = () => {
 
     try {
       let data;
-      
+
       if (searchQuery) {
-        data = await searchDocuments(searchQuery);
+        data = ambiente === 'parlamento'
+          ? await searchDocuments(searchQuery)
+          : await searchStakeholdersDocuments(searchQuery);
       } else {
         const params = {};
         if (selectedCategoria !== 'todas') {
           params.categoria = selectedCategoria;
         }
-        data = await getDocuments(params);
+        data = ambiente === 'parlamento'
+          ? await getDocuments(params)
+          : await getStakeholdersDocuments(params);
       }
 
       setDocuments(data.data || []);
@@ -32,7 +41,7 @@ export const useDocuments = () => {
     } finally {
       setLoading(false);
     }
-  }, [selectedCategoria, searchQuery]);
+  }, [selectedCategoria, searchQuery, ambiente]);
 
   useEffect(() => {
     fetchDocuments();
