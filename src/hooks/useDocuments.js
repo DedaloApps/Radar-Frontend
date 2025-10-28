@@ -1,7 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
 import { getDocuments, searchDocuments } from '../services/api';
 
-export const useDocuments = () => {
+// ✅ ADICIONAR o parâmetro tipoRadar
+export const useDocuments = (tipoRadar = 'parlamento') => {
   const [documents, setDocuments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -11,20 +12,20 @@ export const useDocuments = () => {
   const fetchDocuments = useCallback(async () => {
     setLoading(true);
     setError(null);
-
     try {
       let data;
       
       if (searchQuery) {
         data = await searchDocuments(searchQuery);
       } else {
-        const params = {};
+        const params = {
+          tipo_radar: tipoRadar  // ✅ ADICIONAR isto
+        };
         if (selectedCategoria !== 'todas') {
           params.categoria = selectedCategoria;
         }
         data = await getDocuments(params);
       }
-
       setDocuments(data.data || []);
     } catch (err) {
       setError(err.message);
@@ -32,7 +33,7 @@ export const useDocuments = () => {
     } finally {
       setLoading(false);
     }
-  }, [selectedCategoria, searchQuery]);
+  }, [selectedCategoria, searchQuery, tipoRadar]); // ✅ ADICIONAR tipoRadar nas dependências
 
   useEffect(() => {
     fetchDocuments();
