@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { getStats } from '../services/api';
 
-export const useStats = () => {
+// ✅ ADICIONAR o parâmetro tipoRadar
+export const useStats = (tipoRadar = 'parlamento') => {
   const [stats, setStats] = useState({
     totalGeral: 0,
     documentosHoje: 0,
@@ -13,7 +14,8 @@ export const useStats = () => {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const data = await getStats();
+        // ✅ PASSAR o tipoRadar como parâmetro
+        const data = await getStats(tipoRadar);
         setStats(data.data);
       } catch (error) {
         console.error('Erro ao buscar estatísticas:', error);
@@ -26,8 +28,9 @@ export const useStats = () => {
 
     // Atualizar stats a cada 5 minutos
     const interval = setInterval(fetchStats, 5 * 60 * 1000);
+
     return () => clearInterval(interval);
-  }, []);
+  }, [tipoRadar]); // ✅ ADICIONAR tipoRadar nas dependências
 
   return { stats, loading };
 };
