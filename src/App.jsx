@@ -19,11 +19,18 @@ function AppContent() {
   const [isAdminOpen, setIsAdminOpen] = useState(false);
   const [mostrarFavoritos, setMostrarFavoritos] = useState(false);
   const [selectedDocument, setSelectedDocument] = useState(null);
-  const [viewMode, setViewMode] = useState('legislativo'); // 'legislativo' ou 'stakeholders'
+  
+  // ✅ CORREÇÃO 1: Ler viewMode do localStorage
+  const [viewMode, setViewMode] = useState(() => {
+    return localStorage.getItem('radar_view_mode') || 'legislativo';
+  });
+  
   const { documentosFavoritos } = useUser();
 
-  const { stats } = useStats();
-  const { documents, refetch } = useDocuments();
+  // ✅ CORREÇÃO 2: Passar viewMode como 'parlamento' ou 'stakeholders' para os hooks
+  const tipoRadar = viewMode === 'stakeholders' ? 'stakeholders' : 'parlamento';
+  const { stats } = useStats(tipoRadar);
+  const { documents, refetch } = useDocuments(tipoRadar);
 
   useEffect(() => {
     if ("Notification" in window) {
@@ -44,8 +51,13 @@ function AppContent() {
     setTimeout(() => setIsRefreshing(false), 1000);
   };
 
+  // ✅ CORREÇÃO 3: Guardar viewMode no localStorage quando muda
   const toggleViewMode = () => {
-    setViewMode(prev => prev === 'legislativo' ? 'stakeholders' : 'legislativo');
+    setViewMode(prev => {
+      const newMode = prev === 'legislativo' ? 'stakeholders' : 'legislativo';
+      localStorage.setItem('radar_view_mode', newMode);
+      return newMode;
+    });
   };
 
   // Mostrar loading enquanto verifica autenticação
