@@ -50,6 +50,7 @@ export const UserProvider = ({ children }) => {
           "requerimento",  // ✅ NOVO
           "votacao",       // ✅ NOVO
           "sumula",        // ✅ NOVO
+          "noticia",  // ← ADICIONAR ESTA LINHA
         ];
   });
 
@@ -151,6 +152,7 @@ export const UserProvider = ({ children }) => {
       "requerimento",  // ✅ NOVO
       "votacao",       // ✅ NOVO
       "sumula",        // ✅ NOVO
+      "noticia",  // ← ADICIONAR ESTA LINHA
     ]);
   };
 
