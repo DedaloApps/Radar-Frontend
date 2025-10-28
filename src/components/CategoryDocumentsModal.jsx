@@ -37,6 +37,18 @@ const CategoryDocumentsModal = ({ category, onClose, onSelectDocument }) => {
   const { id, info, docs } = category;
   const Icon = info.icon;
 
+  // ✅ DEBUG: ADICIONAR AQUI PARA VER A ESTRUTURA
+  console.log('🔍 DEBUG CategoryDocumentsModal:');
+  console.log('Category ID:', id);
+  console.log('Total docs recebidos:', docs.length);
+  console.log('Primeiro documento (estrutura completa):', docs[0]);
+  console.log('Campos do primeiro doc:', docs[0] ? Object.keys(docs[0]) : 'sem docs');
+  if (docs[0]) {
+    console.log('doc.categoria:', docs[0].categoria);
+    console.log('doc.stakeholder:', docs[0].stakeholder);
+    console.log('doc.fonte:', docs[0].fonte);
+  }
+
   const tiposDisponiveis = useMemo(() => {
     const tipos = [
       ...new Set(docs.map((d) => d.tipo_conteudo).filter(Boolean)),
@@ -196,26 +208,21 @@ const CategoryDocumentsModal = ({ category, onClose, onSelectDocument }) => {
                     className={`flex items-center gap-2 px-4 py-2 border rounded-lg text-sm font-medium transition-all ${
                       mostrarArquivados
                         ? "bg-slate-700 border-slate-600 text-white"
-                        : "bg-slate-800/50 border-slate-700 text-slate-400 hover:text-white hover:border-slate-600"
+                        : "bg-slate-800 border-slate-700 text-slate-400 hover:text-white hover:border-slate-600"
                     }`}
                   >
                     <ArchiveBoxIcon className="w-4 h-4" />
-                    {mostrarArquivados ? "Ver Ativos" : `Arquivados (${totalArquivados})`}
+                    {mostrarArquivados ? "Ver Ativos" : `Ver Arquivados (${totalArquivados})`}
                   </button>
                 )}
 
-                {naoLidos > 0 && !mostrarArquivados && (
+                {!mostrarArquivados && naoLidos > 0 && (
                   <button
                     onClick={marcarTudoComoLido}
-                    className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all border"
-                    style={{
-                      backgroundColor: 'rgba(39, 170, 226, 0.1)',
-                      borderColor: 'rgba(39, 170, 226, 0.3)',
-                      color: '#27aae2'
-                    }}
+                    className="flex items-center gap-2 px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-sm text-slate-400 hover:text-white hover:border-slate-600 transition-all"
                   >
                     <CheckIcon className="w-4 h-4" />
-                    Marcar tudo lido
+                    Marcar Todos como Lido
                   </button>
                 )}
               </div>
@@ -224,15 +231,15 @@ const CategoryDocumentsModal = ({ category, onClose, onSelectDocument }) => {
 
           <button
             onClick={onClose}
-            className="absolute top-6 right-6 p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors"
+            className="absolute top-6 right-6 p-2 hover:bg-slate-700 rounded-lg transition-colors"
           >
-            <XMarkIcon className="w-5 h-5" />
+            <XMarkIcon className="w-5 h-5 text-slate-400 hover:text-white transition-colors" />
           </button>
         </div>
 
         {/* Filtros */}
-        {!mostrarArquivados && (
-          <div className="border-b p-4 space-y-3 flex-shrink-0"
+        {docs.length > 0 && (
+          <div className="p-4 space-y-3 border-b flex-shrink-0"
                style={{
                  backgroundColor: 'rgba(38, 34, 97, 0.3)',
                  borderColor: 'rgba(100, 116, 139, 0.5)'
