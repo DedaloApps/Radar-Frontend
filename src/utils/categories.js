@@ -23,6 +23,7 @@ import {
   BeakerIcon,
 } from '@heroicons/react/24/solid';
 
+
 // 🎨 NOVAS CORES: #262261 (roxo) e #27aae2 (azul)
 export const COMISSOES = {
   comissao_01: {
