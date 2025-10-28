@@ -13,27 +13,6 @@ const RadarFullScreen = ({ stats, documents, viewMode }) => {
 
   const { categoriasFavoritas, stakeholdersFavoritos, tiposConteudoVisiveis, foiLido, estaArquivado } = useUser();
 
- // ✅ DEBUG: Ver estrutura dos documentos
-console.log('🔍 DEBUG RadarFullScreen:');
-console.log('viewMode:', viewMode);
-console.log('Total documents:', documents.length);
-console.log('stakeholdersFavoritos:', stakeholdersFavoritos);
-
-// Ver TODOS os valores únicos de categoria
-const todasCategorias = [...new Set(documents.map(d => d.categoria))];
-console.log('Todas as categorias nos documentos:', todasCategorias);
-
-// Ver documentos com categoria que começa com "stake_"
-const docsStakeholders = documents.filter(d => d.categoria?.startsWith('stake_'));
-console.log('Documentos com categoria stake_*:', docsStakeholders.length);
-if (docsStakeholders.length > 0) {
-  console.log('Exemplo de doc stakeholder:', docsStakeholders[0]);
-}
-
-// Ver o campo tipo_radar
-const tiposRadar = [...new Set(documents.map(d => d.tipo_radar))];
-console.log('Tipos de radar disponíveis:', tiposRadar);
-
   // Definir lista de categorias baseado no modo
   const categoriasList = viewMode === 'stakeholders'
     ? stakeholdersFavoritos
@@ -50,15 +29,9 @@ console.log('Tipos de radar disponíveis:', tiposRadar);
     const stat = stats.porCategoria?.find((s) => s._id === categoria);
     const total = stat?.total || 0;
     
-    // ✅ Filtrar por campo correto baseado no modo
+    // ✅ CORRIGIDO: Filtrar sempre por d.categoria (funciona para ambos os modos)
     const categoryDocs = documentosFiltrados.filter((d) => {
-      if (viewMode === 'stakeholders') {
-        // Se for modo stakeholders, filtrar por stakeholder ou fonte
-        return d.stakeholder === categoria || d.fonte === categoria;
-      } else {
-        // Se for modo legislativo, filtrar por categoria
-        return d.categoria === categoria;
-      }
+      return d.categoria === categoria;
     });
     
     // Contar apenas documentos não arquivados
