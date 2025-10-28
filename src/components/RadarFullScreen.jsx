@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { getCategoriaInfo } from "../utils/categories";
-import { getStakeholderInfo, STAKEHOLDERS_PADRAO } from "../utils/stakeholders";
+import { getStakeholderInfo } from "../utils/stakeholders";
 import { ChevronRightIcon } from "@heroicons/react/24/solid";
 import { useUser } from "../contexts/UserContext";
 import DocumentDetailModal from "./DocumentDetailModal";
@@ -14,9 +14,9 @@ const RadarFullScreen = ({ stats, documents, viewMode }) => {
   const { categoriasFavoritas, stakeholdersFavoritos, tiposConteudoVisiveis, foiLido, estaArquivado } = useUser();
 
   // Definir lista de categorias baseado no modo
-  const categoriasList = viewMode === 'legislativo'
-    ? categoriasFavoritas
-    : stakeholdersFavoritos;
+  const categoriasList = viewMode === 'stakeholders'
+    ? stakeholdersFavoritos
+    : categoriasFavoritas;
 
   const angleStep = 360 / categoriasList.length;
 
@@ -182,10 +182,10 @@ const RadarFullScreen = ({ stats, documents, viewMode }) => {
       {categoriasList.map((categoria, index) => {
         const angle = (angleStep * index - 90) * (Math.PI / 180);
 
-        // Obter informação baseada no modo
-        const info = viewMode === 'legislativo'
-          ? getCategoriaInfo(categoria)
-          : getStakeholderInfo(categoria);
+        // ✅ Obter informação baseada no modo
+        const info = viewMode === 'stakeholders'
+          ? getStakeholderInfo(categoria)
+          : getCategoriaInfo(categoria);
 
         const { total, documents: categoryDocs, activeCount } = getCategoryData(categoria);
         const Icon = info.icon;
@@ -272,7 +272,7 @@ const RadarFullScreen = ({ stats, documents, viewMode }) => {
                   <div className="text-xs font-semibold text-center line-clamp-2 transition-colors"
                     style={{ color: isHovered ? '#ffffff' : '#cbd5e1' }}
                   >
-                    {info.sigla || info.nome}
+                    {info.nome}
                   </div>
 
                   {/* Tipo de stakeholder (só no modo stakeholders) */}
