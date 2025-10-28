@@ -13,16 +13,16 @@ import {
 
 // CATEGORIAS DE STAKEHOLDERS COM FONTES DE SCRAPING
 export const STAKEHOLDERS = {
-  concertacao_social: {
+  stake_concertacao: {
     nome: 'Concertação Social',
     nomeCompleto: 'Parceiros de Concertação Social',
     tipo: 'Diálogo Social',
     icon: UserGroupIcon,
-    cor: 'from-blue-400 to-cyan-500',
-    borderCor: 'border-blue-500',
-    bgCor: 'bg-blue-500/10',
-    shadowCor: 'shadow-blue-500/50',
-    textCor: 'text-blue-400',
+    cor: 'from-orange-400 to-red-500',
+    borderCor: 'border-orange-500',
+    bgCor: 'bg-orange-500/10',
+    shadowCor: 'shadow-orange-500/50',
+    textCor: 'text-orange-400',
     sources: [
       { nome: 'CGTP-IN', url: 'https://www.cgtp.pt/accao-e-luta', tipo: 'Sindicato' },
       { nome: 'UGT', url: 'https://www.ugt.pt/noticias', tipo: 'Sindicato' },
@@ -31,21 +31,21 @@ export const STAKEHOLDERS = {
       { nome: 'CTP', url: 'https://ctp.org.pt/noticias', tipo: 'Patronato' },
     ],
   },
-  laboral: {
+  stake_laboral: {
     nome: 'Laboral',
     nomeCompleto: 'Sindicatos e Organizações de Trabalhadores',
     tipo: 'Trabalho',
     icon: UsersIcon,
-    cor: 'from-red-400 to-rose-500',
-    borderCor: 'border-red-500',
-    bgCor: 'bg-red-500/10',
-    shadowCor: 'shadow-red-500/50',
-    textCor: 'text-red-400',
+    cor: 'from-amber-400 to-orange-500',
+    borderCor: 'border-amber-500',
+    bgCor: 'bg-amber-500/10',
+    shadowCor: 'shadow-amber-500/50',
+    textCor: 'text-amber-400',
     sources: [
       // TODO: Adicionar URLs de sindicatos e organizações laborais
     ],
   },
-  ambiente: {
+  stake_ambiente: {
     nome: 'Ambiente',
     nomeCompleto: 'Organizações Ambientais e Sustentabilidade',
     tipo: 'Ambiente',
@@ -60,79 +60,64 @@ export const STAKEHOLDERS = {
       // Exemplos: Quercus, Zero, LPN, etc.
     ],
   },
-  agricultura: {
+  stake_agricultura: {
     nome: 'Agricultura',
     nomeCompleto: 'Setor Agrícola e Pecuário',
     tipo: 'Agricultura',
     icon: TruckIcon,
-    cor: 'from-amber-400 to-yellow-500',
-    borderCor: 'border-amber-500',
-    bgCor: 'bg-amber-500/10',
-    shadowCor: 'shadow-amber-500/50',
-    textCor: 'text-amber-400',
+    cor: 'from-lime-400 to-green-500',
+    borderCor: 'border-lime-500',
+    bgCor: 'bg-lime-500/10',
+    shadowCor: 'shadow-lime-500/50',
+    textCor: 'text-lime-400',
     sources: [
       // TODO: Adicionar URLs do setor agrícola
       // Exemplos: CAP, Confagri, cooperativas, etc.
     ],
   },
-  economia_financas: {
+  stake_economia: {
     nome: 'Economia/Finanças',
     nomeCompleto: 'Setor Financeiro e Empresarial',
     tipo: 'Economia',
     icon: BanknotesIcon,
-    cor: 'from-emerald-400 to-green-500',
-    borderCor: 'border-emerald-500',
-    bgCor: 'bg-emerald-500/10',
-    shadowCor: 'shadow-emerald-500/50',
-    textCor: 'text-emerald-400',
+    cor: 'from-yellow-400 to-amber-500',
+    borderCor: 'border-yellow-500',
+    bgCor: 'bg-yellow-500/10',
+    shadowCor: 'shadow-yellow-500/50',
+    textCor: 'text-yellow-400',
     sources: [
       // TODO: Adicionar URLs do setor financeiro/empresarial
       // Exemplos: CIP, AEP, APB, Banco de Portugal, etc.
     ],
   },
-  saude: {
+  stake_saude: {
     nome: 'Saúde',
     nomeCompleto: 'Setor da Saúde e Ordens Profissionais',
     tipo: 'Saúde',
     icon: HeartIcon,
-    cor: 'from-pink-400 to-rose-500',
-    borderCor: 'border-pink-500',
-    bgCor: 'bg-pink-500/10',
-    shadowCor: 'shadow-pink-500/50',
-    textCor: 'text-pink-400',
+    cor: 'from-red-400 to-rose-500',
+    borderCor: 'border-red-500',
+    bgCor: 'bg-red-500/10',
+    shadowCor: 'shadow-red-500/50',
+    textCor: 'text-red-400',
     sources: [
       // TODO: Adicionar URLs do setor da saúde
       // Exemplos: Ordem dos Médicos, Ordem dos Enfermeiros, SNS, hospitais, etc.
     ],
   },
-  imobiliario_habitacao: {
+  stake_imobiliario: {
     nome: 'Imobiliário/Habitação',
     nomeCompleto: 'Setor Imobiliário e Habitação',
     tipo: 'Habitação',
     icon: HomeModernIcon,
-    cor: 'from-slate-400 to-blue-500',
-    borderCor: 'border-slate-500',
-    bgCor: 'bg-slate-500/10',
-    shadowCor: 'shadow-slate-500/50',
-    textCor: 'text-slate-400',
+    cor: 'from-stone-400 to-gray-500',
+    borderCor: 'border-stone-500',
+    bgCor: 'bg-stone-500/10',
+    shadowCor: 'shadow-stone-500/50',
+    textCor: 'text-stone-400',
     sources: [
       // TODO: Adicionar URLs do setor imobiliário
       // Exemplos: APEMIP, construtoras, associações de inquilinos, etc.
-    ],
-  },
-  partidos: {
-    nome: 'Partidos',
-    nomeCompleto: 'Partidos Políticos',
-    tipo: 'Política',
-    icon: FlagIcon,
-    cor: 'from-purple-400 to-indigo-500',
-    borderCor: 'border-purple-500',
-    bgCor: 'bg-purple-500/10',
-    shadowCor: 'shadow-purple-500/50',
-    textCor: 'text-purple-400',
-    sources: [
-      // TODO: Adicionar URLs dos partidos políticos
-      // Exemplos: PS, PSD, Chega, IL, BE, PCP, Livre, PAN, CDS, etc.
     ],
   },
 };
@@ -151,46 +136,13 @@ export const getStakeholderInfo = (stakeholderId) => {
   };
 };
 
-// Stakeholders padrão (todas as 8 categorias)
+// ✅ CORRIGIDO: IDs com prefixo 'stake_' para corresponder à BD
 export const STAKEHOLDERS_PADRAO = [
-  'concertacao_social',
-  'laboral',
-  'ambiente',
-  'agricultura',
-  'economia_financas',
-  'saude',
-  'imobiliario_habitacao',
-  'partidos',
+  'stake_concertacao',
+  'stake_laboral',
+  'stake_ambiente',
+  'stake_agricultura',
+  'stake_economia',
+  'stake_saude',
+  'stake_imobiliario',
 ];
-
-/**
- * ESTRUTURA PARA O BACKEND
- *
- * Cada stakeholder tem um array `sources` com objetos:
- * {
- *   nome: string,      // Nome da organização
- *   url: string,       // URL para scraping
- *   tipo: string       // Tipo de organização (Sindicato, Patronato, ONG, etc.)
- * }
- *
- * BACKEND DEVE:
- * 1. Ler este ficheiro ou criar similar no backend
- * 2. Fazer scraping dos URLs em sources
- * 3. Criar documentos com:
- *    - categoria: ID do stakeholder (ex: 'concertacao_social')
- *    - fonte: nome da organização (ex: 'CGTP-IN')
- *    - tipo_conteudo: tipo extraído do scraping
- *    - outros campos conforme o scraping
- *
- * EXEMPLO DE DOCUMENTO SCRAPEADO:
- * {
- *   id: "unique-id",
- *   titulo: "Manifestação contra precariedade",
- *   categoria: "concertacao_social",
- *   fonte: "CGTP-IN",
- *   tipo_conteudo: "noticia",
- *   data_publicacao: "2025-01-15",
- *   url_original: "https://www.cgtp.pt/...",
- *   conteudo: "...",
- * }
- */
