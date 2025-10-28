@@ -20,8 +20,11 @@ export const searchDocuments = async (query) => {
   return response.data;
 };
 
-export const getStats = async () => {
-  const response = await api.get('/documents/stats');
+// ✅ CORRIGIDO: Aceitar tipoRadar como parâmetro
+export const getStats = async (tipoRadar = 'parlamento') => {
+  const response = await api.get('/documents/stats', {
+    params: { tipo_radar: tipoRadar }
+  });
   return response.data;
 };
 
