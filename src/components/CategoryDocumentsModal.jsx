@@ -18,6 +18,7 @@ const CategoryDocumentsModal = ({ category, onClose, onSelectDocument }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [sortOrder, setSortOrder] = useState("desc");
   const [tipoFiltro, setTipoFiltro] = useState("todos");
+  const [fonteFiltro, setFonteFiltro] = useState("todos");
   const [dataInicio, setDataInicio] = useState("");
   const [dataFim, setDataFim] = useState("");
   const [mostrarArquivados, setMostrarArquivados] = useState(false);
@@ -43,6 +44,13 @@ const CategoryDocumentsModal = ({ category, onClose, onSelectDocument }) => {
     return tipos;
   }, [docs]);
 
+  const fontesDisponiveis = useMemo(() => {
+    const fontes = [
+      ...new Set(docs.map((d) => d.fonte).filter(Boolean)),
+    ];
+    return fontes.sort();
+  }, [docs]);
+
   const documentosFiltrados = useMemo(() => {
     let resultado = [...docs];
 
@@ -60,6 +68,10 @@ const CategoryDocumentsModal = ({ category, onClose, onSelectDocument }) => {
 
     if (tipoFiltro !== "todos") {
       resultado = resultado.filter((doc) => doc.tipo_conteudo === tipoFiltro);
+    }
+
+    if (fonteFiltro !== "todos") {
+      resultado = resultado.filter((doc) => doc.fonte === fonteFiltro);
     }
 
     if (dataInicio) {
@@ -88,6 +100,7 @@ const CategoryDocumentsModal = ({ category, onClose, onSelectDocument }) => {
     searchTerm,
     sortOrder,
     tipoFiltro,
+    fonteFiltro,
     dataInicio,
     dataFim,
     mostrarArquivados,
@@ -107,6 +120,7 @@ const CategoryDocumentsModal = ({ category, onClose, onSelectDocument }) => {
     setSearchTerm("");
     setSortOrder("desc");
     setTipoFiltro("todos");
+    setFonteFiltro("todos");
     setDataInicio("");
     setDataFim("");
   };
@@ -125,7 +139,7 @@ const CategoryDocumentsModal = ({ category, onClose, onSelectDocument }) => {
   const totalArquivados = docs.filter((doc) => estaArquivado(doc.id)).length;
 
   const filtrosAtivos =
-    searchTerm || tipoFiltro !== "todos" || dataInicio || dataFim;
+    searchTerm || tipoFiltro !== "todos" || fonteFiltro !== "todos" || dataInicio || dataFim;
 
   return (
     <div
@@ -251,12 +265,31 @@ const CategoryDocumentsModal = ({ category, onClose, onSelectDocument }) => {
                 <select
                   value={tipoFiltro}
                   onChange={(e) => setTipoFiltro(e.target.value)}
-                  className="px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-sm text-white focus:outline-none transition-colors"
+                  className="px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-sm text-white focus:outline-none transition-colors hover:border-slate-600"
                 >
                   <option value="todos">Todos os tipos</option>
                   {tiposDisponiveis.map((tipo) => (
                     <option key={tipo} value={tipo}>
                       {tipo.charAt(0).toUpperCase() + tipo.slice(1)}
+                    </option>
+                  ))}
+                </select>
+              )}
+
+              {fontesDisponiveis.length > 0 && (
+                <select
+                  value={fonteFiltro}
+                  onChange={(e) => setFonteFiltro(e.target.value)}
+                  className="px-3 py-2 border rounded-lg text-sm text-white focus:outline-none transition-all hover:border-slate-600"
+                  style={{
+                    backgroundColor: fonteFiltro !== "todos" ? 'rgba(39, 170, 226, 0.15)' : 'rgb(30, 41, 59)',
+                    borderColor: fonteFiltro !== "todos" ? 'rgba(39, 170, 226, 0.5)' : 'rgb(51, 65, 85)',
+                  }}
+                >
+                  <option value="todos">Todas as fontes</option>
+                  {fontesDisponiveis.map((fonte) => (
+                    <option key={fonte} value={fonte}>
+                      {fonte}
                     </option>
                   ))}
                 </select>
@@ -341,6 +374,12 @@ const CategoryDocumentsModal = ({ category, onClose, onSelectDocument }) => {
                             <CalendarIcon className="w-3.5 h-3.5" />
                             {formatDate(doc.data_publicacao || doc.createdAt)}
                           </span>
+                          {doc.fonte && (
+                            <span className="px-2 py-0.5 rounded text-white font-medium"
+                                  style={{ backgroundColor: 'rgba(39, 170, 226, 0.2)' }}>
+                              {doc.fonte}
+                            </span>
+                          )}
                           {doc.tipo_conteudo && (
                             <span className="px-2 py-0.5 bg-slate-800 rounded text-slate-400">
                               {doc.tipo_conteudo}
