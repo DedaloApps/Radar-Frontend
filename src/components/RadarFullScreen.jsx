@@ -13,17 +13,26 @@ const RadarFullScreen = ({ stats, documents, viewMode }) => {
 
   const { categoriasFavoritas, stakeholdersFavoritos, tiposConteudoVisiveis, foiLido, estaArquivado } = useUser();
 
-  // ✅ DEBUG: Ver estrutura dos documentos
-  console.log('🔍 DEBUG RadarFullScreen:');
-  console.log('viewMode:', viewMode);
-  console.log('Total documents:', documents.length);
-  console.log('Primeiro documento:', documents[0]);
-  if (documents[0]) {
-    console.log('Campos do documento:', Object.keys(documents[0]));
-    console.log('doc.categoria:', documents[0].categoria);
-    console.log('doc.stakeholder:', documents[0].stakeholder);
-    console.log('doc.fonte:', documents[0].fonte);
-  }
+ // ✅ DEBUG: Ver estrutura dos documentos
+console.log('🔍 DEBUG RadarFullScreen:');
+console.log('viewMode:', viewMode);
+console.log('Total documents:', documents.length);
+console.log('stakeholdersFavoritos:', stakeholdersFavoritos);
+
+// Ver TODOS os valores únicos de categoria
+const todasCategorias = [...new Set(documents.map(d => d.categoria))];
+console.log('Todas as categorias nos documentos:', todasCategorias);
+
+// Ver documentos com categoria que começa com "stake_"
+const docsStakeholders = documents.filter(d => d.categoria?.startsWith('stake_'));
+console.log('Documentos com categoria stake_*:', docsStakeholders.length);
+if (docsStakeholders.length > 0) {
+  console.log('Exemplo de doc stakeholder:', docsStakeholders[0]);
+}
+
+// Ver o campo tipo_radar
+const tiposRadar = [...new Set(documents.map(d => d.tipo_radar))];
+console.log('Tipos de radar disponíveis:', tiposRadar);
 
   // Definir lista de categorias baseado no modo
   const categoriasList = viewMode === 'stakeholders'
