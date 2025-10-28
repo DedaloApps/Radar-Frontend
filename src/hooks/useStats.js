@@ -34,3 +34,4 @@ export const useStats = (tipoRadar = 'parlamento') => {
 
   return { stats, loading };
 };
+
