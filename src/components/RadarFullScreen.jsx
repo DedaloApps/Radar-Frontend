@@ -13,6 +13,9 @@ const RadarFullScreen = ({ stats, documents, viewMode }) => {
 
   const { categoriasFavoritas, stakeholdersFavoritos, tiposConteudoVisiveis, foiLido, estaArquivado } = useUser();
 
+  const categoriasList = viewMode === 'stakeholders' 
+  ? categoriasFavoritasStakeholders 
+  : categoriasFavoritas;
   // Definir lista de categorias baseado no modo
   const categoriasList = viewMode === 'legislativo'
     ? categoriasFavoritas
