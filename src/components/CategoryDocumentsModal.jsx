@@ -10,15 +10,17 @@ import {
   EyeSlashIcon,
   StarIcon,
   EyeIcon,
+  BuildingOfficeIcon,
 } from "@heroicons/react/24/outline";
 import { useState, useMemo } from "react";
 import { useUser } from "../contexts/UserContext";
 
-const CategoryDocumentsModal = ({ category, onClose, onSelectDocument }) => {
+const CategoryDocumentsModal = ({ category, onClose, onSelectDocument, viewMode }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [sortOrder, setSortOrder] = useState("desc");
   const [tipoFiltro, setTipoFiltro] = useState("todos");
   const [fonteFiltro, setFonteFiltro] = useState("todos");
+  const [entidadeFiltro, setEntidadeFiltro] = useState("todas"); // ✅ NOVO
   const [dataInicio, setDataInicio] = useState("");
   const [dataFim, setDataFim] = useState("");
   const [mostrarArquivados, setMostrarArquivados] = useState(false);
@@ -37,18 +39,6 @@ const CategoryDocumentsModal = ({ category, onClose, onSelectDocument }) => {
   const { id, info, docs } = category;
   const Icon = info.icon;
 
-  // ✅ DEBUG: ADICIONAR AQUI PARA VER A ESTRUTURA
-  console.log('🔍 DEBUG CategoryDocumentsModal:');
-  console.log('Category ID:', id);
-  console.log('Total docs recebidos:', docs.length);
-  console.log('Primeiro documento (estrutura completa):', docs[0]);
-  console.log('Campos do primeiro doc:', docs[0] ? Object.keys(docs[0]) : 'sem docs');
-  if (docs[0]) {
-    console.log('doc.categoria:', docs[0].categoria);
-    console.log('doc.stakeholder:', docs[0].stakeholder);
-    console.log('doc.fonte:', docs[0].fonte);
-  }
-
   const tiposDisponiveis = useMemo(() => {
     const tipos = [
       ...new Set(docs.map((d) => d.tipo_conteudo).filter(Boolean)),
@@ -62,6 +52,15 @@ const CategoryDocumentsModal = ({ category, onClose, onSelectDocument }) => {
     ];
     return fontes.sort();
   }, [docs]);
+
+  // ✅ NOVO: Entidades disponíveis (só para stakeholders)
+  const entidadesDisponiveis = useMemo(() => {
+    if (viewMode !== 'stakeholders') return [];
+    const entidades = [
+      ...new Set(docs.map((d) => d.entidades).filter(Boolean)),
+    ];
+    return entidades.sort();
+  }, [docs, viewMode]);
 
   const documentosFiltrados = useMemo(() => {
     let resultado = [...docs];
@@ -84,6 +83,11 @@ const CategoryDocumentsModal = ({ category, onClose, onSelectDocument }) => {
 
     if (fonteFiltro !== "todos") {
       resultado = resultado.filter((doc) => doc.fonte === fonteFiltro);
+    }
+
+    // ✅ NOVO: Filtro por entidade
+    if (entidadeFiltro !== "todas") {
+      resultado = resultado.filter((doc) => doc.entidades === entidadeFiltro);
     }
 
     if (dataInicio) {
@@ -113,6 +117,7 @@ const CategoryDocumentsModal = ({ category, onClose, onSelectDocument }) => {
     sortOrder,
     tipoFiltro,
     fonteFiltro,
+    entidadeFiltro,
     dataInicio,
     dataFim,
     mostrarArquivados,
@@ -133,6 +138,7 @@ const CategoryDocumentsModal = ({ category, onClose, onSelectDocument }) => {
     setSortOrder("desc");
     setTipoFiltro("todos");
     setFonteFiltro("todos");
+    setEntidadeFiltro("todas");
     setDataInicio("");
     setDataFim("");
   };
@@ -151,7 +157,7 @@ const CategoryDocumentsModal = ({ category, onClose, onSelectDocument }) => {
   const totalArquivados = docs.filter((doc) => estaArquivado(doc.id)).length;
 
   const filtrosAtivos =
-    searchTerm || tipoFiltro !== "todos" || fonteFiltro !== "todos" || dataInicio || dataFim;
+    searchTerm || tipoFiltro !== "todos" || fonteFiltro !== "todos" || entidadeFiltro !== "todas" || dataInicio || dataFim;
 
   return (
     <div
@@ -267,6 +273,57 @@ const CategoryDocumentsModal = ({ category, onClose, onSelectDocument }) => {
               </button>
             </div>
 
+            {/* ✅ NOVO: Filtro de Entidades em Botões (SÓ STAKEHOLDERS) */}
+            {viewMode === 'stakeholders' && entidadesDisponiveis.length > 0 && (
+              <div className="space-y-2">
+                <div className="flex items-center gap-2 text-xs text-slate-400 font-medium">
+                  <BuildingOfficeIcon className="w-4 h-4" />
+                  <span>Entidade / Organização:</span>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  <button
+                    onClick={() => setEntidadeFiltro("todas")}
+                    className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all border ${
+                      entidadeFiltro === "todas"
+                        ? "text-white border-transparent shadow-lg"
+                        : "text-slate-400 bg-slate-800/50 border-slate-700 hover:text-white hover:border-slate-600"
+                    }`}
+                    style={
+                      entidadeFiltro === "todas"
+                        ? {
+                            backgroundColor: '#27aae2',
+                            boxShadow: '0 0 20px rgba(39, 170, 226, 0.3)'
+                          }
+                        : {}
+                    }
+                  >
+                    Todas
+                  </button>
+                  {entidadesDisponiveis.map((entidade) => (
+                    <button
+                      key={entidade}
+                      onClick={() => setEntidadeFiltro(entidade)}
+                      className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all border ${
+                        entidadeFiltro === entidade
+                          ? "text-white border-transparent shadow-lg"
+                          : "text-slate-400 bg-slate-800/50 border-slate-700 hover:text-white hover:border-slate-600"
+                      }`}
+                      style={
+                        entidadeFiltro === entidade
+                          ? {
+                              backgroundColor: '#27aae2',
+                              boxShadow: '0 0 20px rgba(39, 170, 226, 0.3)'
+                            }
+                          : {}
+                      }
+                    >
+                      {entidade}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
             <div className="flex flex-wrap gap-3">
               {tiposDisponiveis.length > 0 && (
                 <select
@@ -381,10 +438,10 @@ const CategoryDocumentsModal = ({ category, onClose, onSelectDocument }) => {
                             <CalendarIcon className="w-3.5 h-3.5" />
                             {formatDate(doc.data_publicacao || doc.createdAt)}
                           </span>
-                          {doc.fonte && (
+                          {doc.entidades && (
                             <span className="px-2 py-0.5 rounded text-white font-medium"
                                   style={{ backgroundColor: 'rgba(39, 170, 226, 0.2)' }}>
-                              {doc.fonte}
+                              {doc.entidades}
                             </span>
                           )}
                           {doc.tipo_conteudo && (
