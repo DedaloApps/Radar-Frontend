@@ -13,6 +13,18 @@ const RadarFullScreen = ({ stats, documents, viewMode }) => {
 
   const { categoriasFavoritas, stakeholdersFavoritos, tiposConteudoVisiveis, foiLido, estaArquivado } = useUser();
 
+  // ✅ DEBUG: Ver estrutura dos documentos
+  console.log('🔍 DEBUG RadarFullScreen:');
+  console.log('viewMode:', viewMode);
+  console.log('Total documents:', documents.length);
+  console.log('Primeiro documento:', documents[0]);
+  if (documents[0]) {
+    console.log('Campos do documento:', Object.keys(documents[0]));
+    console.log('doc.categoria:', documents[0].categoria);
+    console.log('doc.stakeholder:', documents[0].stakeholder);
+    console.log('doc.fonte:', documents[0].fonte);
+  }
+
   // Definir lista de categorias baseado no modo
   const categoriasList = viewMode === 'stakeholders'
     ? stakeholdersFavoritos
@@ -28,9 +40,18 @@ const RadarFullScreen = ({ stats, documents, viewMode }) => {
   const getCategoryData = (categoria) => {
     const stat = stats.porCategoria?.find((s) => s._id === categoria);
     const total = stat?.total || 0;
-    const categoryDocs = documentosFiltrados.filter(
-      (d) => d.categoria === categoria
-    );
+    
+    // ✅ Filtrar por campo correto baseado no modo
+    const categoryDocs = documentosFiltrados.filter((d) => {
+      if (viewMode === 'stakeholders') {
+        // Se for modo stakeholders, filtrar por stakeholder ou fonte
+        return d.stakeholder === categoria || d.fonte === categoria;
+      } else {
+        // Se for modo legislativo, filtrar por categoria
+        return d.categoria === categoria;
+      }
+    });
+    
     // Contar apenas documentos não arquivados
     const activeCount = categoryDocs.filter((doc) => !estaArquivado(doc.id)).length;
     return { total, documents: categoryDocs, activeCount };
