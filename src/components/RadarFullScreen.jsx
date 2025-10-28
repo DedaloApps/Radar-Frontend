@@ -305,14 +305,15 @@ const RadarFullScreen = ({ stats, documents, viewMode }) => {
 
       {/* Modal de Documentos da Categoria */}
       {selectedCategory && !selectedDocument && (
-        <CategoryDocumentsModal
-          category={selectedCategory}
-          onClose={() => setSelectedCategory(null)}
-          onSelectDocument={(doc) => {
-            setSelectedDocument(doc);
-          }}
-        />
-      )}
+  <CategoryDocumentsModal
+    category={selectedCategory}
+    viewMode={viewMode}  // ✅ ADICIONA ISTO
+    onClose={() => setSelectedCategory(null)}
+    onSelectDocument={(doc) => {
+      setSelectedDocument(doc);
+    }}
+  />
+)}
 
       {/* Modal de Detalhe do Documento */}
       {selectedDocument && (
