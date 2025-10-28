@@ -20,7 +20,7 @@ const CategoryDocumentsModal = ({ category, onClose, onSelectDocument, viewMode 
   const [sortOrder, setSortOrder] = useState("desc");
   const [tipoFiltro, setTipoFiltro] = useState("todos");
   const [fonteFiltro, setFonteFiltro] = useState("todos");
-  const [entidadeFiltro, setEntidadeFiltro] = useState("todas"); // ✅ NOVO
+  const [entidadesFiltro, setEntidadesFiltro] = useState([]); // ✅ ARRAY para multi-seleção
   const [dataInicio, setDataInicio] = useState("");
   const [dataFim, setDataFim] = useState("");
   const [mostrarArquivados, setMostrarArquivados] = useState(false);
@@ -85,9 +85,9 @@ const CategoryDocumentsModal = ({ category, onClose, onSelectDocument, viewMode 
       resultado = resultado.filter((doc) => doc.fonte === fonteFiltro);
     }
 
-    // ✅ NOVO: Filtro por entidade
-    if (entidadeFiltro !== "todas") {
-      resultado = resultado.filter((doc) => doc.entidades === entidadeFiltro);
+    // ✅ NOVO: Filtro por entidades (multi-seleção)
+    if (entidadesFiltro.length > 0) {
+      resultado = resultado.filter((doc) => entidadesFiltro.includes(doc.entidades));
     }
 
     if (dataInicio) {
@@ -117,7 +117,7 @@ const CategoryDocumentsModal = ({ category, onClose, onSelectDocument, viewMode 
     sortOrder,
     tipoFiltro,
     fonteFiltro,
-    entidadeFiltro,
+    entidadesFiltro,
     dataInicio,
     dataFim,
     mostrarArquivados,
@@ -138,9 +138,22 @@ const CategoryDocumentsModal = ({ category, onClose, onSelectDocument, viewMode 
     setSortOrder("desc");
     setTipoFiltro("todos");
     setFonteFiltro("todos");
-    setEntidadeFiltro("todas");
+    setEntidadesFiltro([]);
     setDataInicio("");
     setDataFim("");
+  };
+
+  // ✅ NOVO: Toggle de entidade (adiciona/remove do array)
+  const toggleEntidade = (entidade) => {
+    setEntidadesFiltro(prev => {
+      if (prev.includes(entidade)) {
+        // Remove se já existir
+        return prev.filter(e => e !== entidade);
+      } else {
+        // Adiciona se não existir
+        return [...prev, entidade];
+      }
+    });
   };
 
   const marcarTudoComoLido = () => {
@@ -157,7 +170,7 @@ const CategoryDocumentsModal = ({ category, onClose, onSelectDocument, viewMode 
   const totalArquivados = docs.filter((doc) => estaArquivado(doc.id)).length;
 
   const filtrosAtivos =
-    searchTerm || tipoFiltro !== "todos" || fonteFiltro !== "todos" || entidadeFiltro !== "todas" || dataInicio || dataFim;
+    searchTerm || tipoFiltro !== "todos" || fonteFiltro !== "todos" || entidadesFiltro.length > 0 || dataInicio || dataFim;
 
   return (
     <div
@@ -273,54 +286,72 @@ const CategoryDocumentsModal = ({ category, onClose, onSelectDocument, viewMode 
               </button>
             </div>
 
-            {/* ✅ NOVO: Filtro de Entidades em Botões (SÓ STAKEHOLDERS) */}
+            {/* ✅ FILTRO DE ENTIDADES - MULTI-SELEÇÃO (SÓ STAKEHOLDERS) */}
             {viewMode === 'stakeholders' && entidadesDisponiveis.length > 0 && (
               <div className="space-y-2">
-                <div className="flex items-center gap-2 text-xs text-slate-400 font-medium">
-                  <BuildingOfficeIcon className="w-4 h-4" />
-                  <span>Entidade / Organização:</span>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2 text-xs text-slate-400 font-medium">
+                    <BuildingOfficeIcon className="w-4 h-4" />
+                    <span>Filtrar por Entidade:</span>
+                  </div>
+                  {entidadesFiltro.length > 0 && (
+                    <button
+                      onClick={() => setEntidadesFiltro([])}
+                      className="text-xs text-slate-500 hover:text-slate-300 transition-colors"
+                    >
+                      Limpar ({entidadesFiltro.length})
+                    </button>
+                  )}
                 </div>
                 <div className="flex flex-wrap gap-2">
-                  <button
-                    onClick={() => setEntidadeFiltro("todas")}
-                    className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all border ${
-                      entidadeFiltro === "todas"
-                        ? "text-white border-transparent shadow-lg"
-                        : "text-slate-400 bg-slate-800/50 border-slate-700 hover:text-white hover:border-slate-600"
-                    }`}
-                    style={
-                      entidadeFiltro === "todas"
-                        ? {
-                            backgroundColor: '#27aae2',
-                            boxShadow: '0 0 20px rgba(39, 170, 226, 0.3)'
-                          }
-                        : {}
-                    }
-                  >
-                    Todas
-                  </button>
-                  {entidadesDisponiveis.map((entidade) => (
-                    <button
-                      key={entidade}
-                      onClick={() => setEntidadeFiltro(entidade)}
-                      className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all border ${
-                        entidadeFiltro === entidade
-                          ? "text-white border-transparent shadow-lg"
-                          : "text-slate-400 bg-slate-800/50 border-slate-700 hover:text-white hover:border-slate-600"
-                      }`}
-                      style={
-                        entidadeFiltro === entidade
-                          ? {
-                              backgroundColor: '#27aae2',
-                              boxShadow: '0 0 20px rgba(39, 170, 226, 0.3)'
-                            }
-                          : {}
-                      }
-                    >
-                      {entidade}
-                    </button>
-                  ))}
+                  {entidadesDisponiveis.map((entidade) => {
+                    const isSelected = entidadesFiltro.includes(entidade);
+                    return (
+                      <button
+                        key={entidade}
+                        onClick={() => toggleEntidade(entidade)}
+                        className={`px-4 py-2 rounded-full text-xs font-medium transition-all border-2 ${
+                          isSelected
+                            ? "text-white border-transparent shadow-lg scale-105"
+                            : "text-slate-400 bg-slate-800/50 border-slate-700 hover:text-white hover:border-slate-600 hover:bg-slate-800"
+                        }`}
+                        style={
+                          isSelected
+                            ? {
+                                background: 'linear-gradient(135deg, #27aae2 0%, #1e90c8 100%)',
+                                boxShadow: '0 4px 20px rgba(39, 170, 226, 0.4), 0 0 0 3px rgba(39, 170, 226, 0.1)'
+                              }
+                            : {}
+                        }
+                      >
+                        <span className="flex items-center gap-1.5">
+                          {isSelected && (
+                            <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                            </svg>
+                          )}
+                          {entidade}
+                        </span>
+                      </button>
+                    );
+                  })}
                 </div>
+                {entidadesFiltro.length > 0 && (
+                  <div className="flex items-center gap-2 text-xs">
+                    <span className="text-slate-500">A mostrar:</span>
+                    <div className="flex flex-wrap gap-1">
+                      {entidadesFiltro.map((entidade) => (
+                        <span
+                          key={entidade}
+                          className="px-2 py-0.5 rounded text-white font-medium"
+                          style={{ backgroundColor: 'rgba(39, 170, 226, 0.3)' }}
+                        >
+                          {entidade}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             )}
 
