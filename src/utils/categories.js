@@ -331,18 +331,6 @@ export const COMISSOES = {
     bgCor: 'bg-stone-500/10',
     shadowCor: 'shadow-stone-500/50',
     textCor: 'text-stone-400'
-  },
-  // ✅ NOVA CATEGORIA: PARTIDOS POLÍTICOS
-  stake_partidos: {
-    numero: '🏛️',
-    nome: 'Partidos Políticos',
-    nomeCompleto: 'Partidos Políticos (PSD, PS, Chega, IL, BE, PCP, Livre, CDS-PP, PAN)',
-    icon: FlagIcon,
-    cor: 'from-blue-400 to-indigo-500',
-    borderCor: 'border-blue-500',
-    bgCor: 'bg-blue-500/10',
-    shadowCor: 'shadow-blue-500/50',
-    textCor: 'text-blue-400'
   }
 };
 
