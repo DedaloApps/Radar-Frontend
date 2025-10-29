@@ -20,7 +20,7 @@ const CategoryDocumentsModal = ({ category, onClose, onSelectDocument, viewMode 
   const [sortOrder, setSortOrder] = useState("desc");
   const [tipoFiltro, setTipoFiltro] = useState("todos");
   const [fonteFiltro, setFonteFiltro] = useState("todos");
-  const [entidadesFiltro, setEntidadesFiltro] = useState([]); // ✅ ARRAY para multi-seleção
+  const [entidadesFiltro, setEntidadesFiltro] = useState([]);
   const [dataInicio, setDataInicio] = useState("");
   const [dataFim, setDataFim] = useState("");
   const [mostrarArquivados, setMostrarArquivados] = useState(false);
@@ -85,7 +85,7 @@ const CategoryDocumentsModal = ({ category, onClose, onSelectDocument, viewMode 
       resultado = resultado.filter((doc) => doc.fonte === fonteFiltro);
     }
 
-    // ✅ NOVO: Filtro por entidades (multi-seleção)
+    // ✅ Filtro por entidades (multi-seleção)
     if (entidadesFiltro.length > 0) {
       resultado = resultado.filter((doc) => entidadesFiltro.includes(doc.entidades));
     }
@@ -143,14 +143,11 @@ const CategoryDocumentsModal = ({ category, onClose, onSelectDocument, viewMode 
     setDataFim("");
   };
 
-  // ✅ NOVO: Toggle de entidade (adiciona/remove do array)
   const toggleEntidade = (entidade) => {
     setEntidadesFiltro(prev => {
       if (prev.includes(entidade)) {
-        // Remove se já existir
         return prev.filter(e => e !== entidade);
       } else {
-        // Adiciona se não existir
         return [...prev, entidade];
       }
     });
@@ -185,7 +182,7 @@ const CategoryDocumentsModal = ({ category, onClose, onSelectDocument, viewMode 
         }}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Header - ROXO/AZUL */}
+        {/* Header */}
         <div className="relative border-b flex-shrink-0"
              style={{
                backgroundColor: 'rgba(38, 34, 97, 0.5)',
@@ -472,7 +469,10 @@ const CategoryDocumentsModal = ({ category, onClose, onSelectDocument, viewMode 
                           {doc.entidades && (
                             <span className="px-2 py-0.5 rounded text-white font-medium"
                                   style={{ backgroundColor: 'rgba(39, 170, 226, 0.2)' }}>
-                              {doc.entidades}
+                              {/* ✅ Se for partido E tiver fonte_original, mostrar "Partido - Fonte" */}
+                              {doc.categoria === 'stake_partidos' && doc.fonte_original
+                                ? `${doc.entidades} - ${doc.fonte_original}`
+                                : doc.entidades}
                             </span>
                           )}
                           {doc.tipo_conteudo && (
