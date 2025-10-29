@@ -25,6 +25,29 @@ const CategoryDocumentsModal = ({ category, onClose, onSelectDocument, viewMode 
   const [dataFim, setDataFim] = useState("");
   const [mostrarArquivados, setMostrarArquivados] = useState(false);
 
+  // ✅ CORES DOS PARTIDOS
+  const CORES_PARTIDOS = {
+    'PSD': '#FF6600',
+    'PS': '#FF69B4',
+    'Chega': '#1E3A8A',
+    'IL': '#00BCD4',
+    'BE': '#8B0000',
+    'PCP': '#DC143C',
+    'Livre': '#32CD32',
+    'CDS-PP': '#0066CC',
+    'PAN': '#4CAF50',
+  };
+
+  // ✅ Função para obter cor do partido
+  const getCorPartido = (entidade) => {
+    // Se for partidos, extrair só o nome do partido (antes do " - ")
+    if (category.id === 'stake_partidos') {
+      const nomePartido = entidade?.split(' - ')[0]?.trim();
+      return CORES_PARTIDOS[nomePartido] || 'rgba(39, 170, 226, 0.2)';
+    }
+    return 'rgba(39, 170, 226, 0.2)'; // Cor padrão para outros stakeholders
+  };
+
   const {
     foiLido,
     marcarComoLido,
@@ -468,7 +491,7 @@ const CategoryDocumentsModal = ({ category, onClose, onSelectDocument, viewMode 
                           </span>
                           {doc.entidades && (
                             <span className="px-2 py-0.5 rounded text-white font-medium"
-                                  style={{ backgroundColor: 'rgba(39, 170, 226, 0.2)' }}>
+                                  style={{ backgroundColor: getCorPartido(doc.entidades) }}>
                               {/* ✅ Se for partido E tiver fonte_original, mostrar "Partido - Fonte" */}
                               {doc.categoria === 'stake_partidos' && doc.fonte_original
                                 ? `${doc.entidades} - ${doc.fonte_original}`
