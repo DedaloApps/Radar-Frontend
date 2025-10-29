@@ -21,6 +21,7 @@ import {
   BriefcaseIcon,
   BuildingOfficeIcon,
   BeakerIcon,
+  CurrencyEuroIcon,
 } from '@heroicons/react/24/solid';
 
 
@@ -208,7 +209,7 @@ export const COMISSOES = {
   },
   // NOVAS CATEGORIAS GERAIS - COM NOVAS CORES
   geral_iniciativas: {
-    numero: '🆕',
+    numero: 'INIT',
     nome: 'Últimas Iniciativas',
     nomeCompleto: 'Últimas Iniciativas Entradas',
     icon: DocumentCheckIcon,
@@ -220,7 +221,7 @@ export const COMISSOES = {
     url: 'https://www.parlamento.pt/Paginas/UltimasIniciativasEntradas.aspx'
   },
   geral_perguntas: {
-    numero: '❓',
+    numero: 'PERG',
     nome: 'Perguntas e Requer.',
     nomeCompleto: 'Perguntas e Requerimentos',
     icon: ChatBubbleLeftRightIcon,
@@ -232,7 +233,7 @@ export const COMISSOES = {
     url: 'https://www.parlamento.pt/ActividadeParlamentar/Paginas/PerguntasRequerimentos.aspx'
   },
   geral_votacoes: {
-    numero: '🗳️',
+    numero: 'VOT',
     nome: 'Votações',
     nomeCompleto: 'Arquivo de Votações',
     icon: HandRaisedIcon,
@@ -244,7 +245,7 @@ export const COMISSOES = {
     url: 'https://www.parlamento.pt/ArquivoDocumentacao/Paginas/Arquivodevotacoes.aspx'
   },
   geral_sumulas: {
-    numero: '📋',
+    numero: 'SUM',
     nome: 'Súmulas Conf. Líderes',
     nomeCompleto: 'Súmulas da Conferência de Líderes',
     icon: DocumentMagnifyingGlassIcon,
@@ -255,8 +256,20 @@ export const COMISSOES = {
     textCor: 'text-cyan-400',
     url: 'https://www.parlamento.pt/ActividadeParlamentar/Paginas/Sumulas-Conferencia-Lideres.aspx'
   },
+  geral_alteracoes_oe: {
+    numero: 'OE',
+    nome: 'Alterações OE',
+    nomeCompleto: 'Alterações ao Orçamento de Estado',
+    icon: CurrencyEuroIcon,
+    cor: 'from-emerald-400 to-green-500',
+    borderCor: 'border-emerald-500',
+    bgCor: 'bg-emerald-500/10',
+    shadowCor: 'shadow-emerald-500/50',
+    textCor: 'text-emerald-400',
+    url: 'https://www.parlamento.pt/OrcamentoEstado/Paginas/PesquisaPropAlteracao37XVII.aspx'
+  },
   stake_concertacao: {
-    numero: '🤝',
+    numero: 'CONC',
     nome: 'Concertação Social',
     nomeCompleto: 'Concertação Social (CGTP, UGT, CAP, CCP, CTP)',
     icon: UserGroupIcon,
@@ -267,7 +280,7 @@ export const COMISSOES = {
     textCor: 'text-orange-400'
   },
   stake_laboral: {
-    numero: '👷',
+    numero: 'LAB',
     nome: 'Trabalho e Laboral',
     nomeCompleto: 'Trabalho e Laboral (ACT, CITE, AIMA)',
     icon: BriefcaseIcon,
@@ -278,7 +291,7 @@ export const COMISSOES = {
     textCor: 'text-amber-400'
   },
   stake_ambiente: {
-    numero: '🌿',
+    numero: 'AMB',
     nome: 'Ambiente',
     nomeCompleto: 'Ambiente (APA, IGAMAOT, DGAV, DGEG, ADENE, ERSE)',
     icon: BoltIcon,
@@ -289,7 +302,7 @@ export const COMISSOES = {
     textCor: 'text-green-400'
   },
   stake_agricultura: {
-    numero: '🌾',
+    numero: 'AGR',
     nome: 'Agricultura',
     nomeCompleto: 'Agricultura (DGADR, INIAV)',
     icon: TruckIcon,
@@ -300,7 +313,7 @@ export const COMISSOES = {
     textCor: 'text-lime-400'
   },
   stake_economia: {
-    numero: '💼',
+    numero: 'ECON',
     nome: 'Economia e Finanças',
     nomeCompleto: 'Economia e Finanças (IAPMEI, AdC, AT, Banco de Portugal, etc.)',
     icon: ChartBarIcon,
@@ -311,7 +324,7 @@ export const COMISSOES = {
     textCor: 'text-yellow-400'
   },
   stake_saude: {
-    numero: '⚕️',
+    numero: 'SAU',
     nome: 'Saúde',
     nomeCompleto: 'Saúde (INFARMED, ERS, IGAS)',
     icon: HeartIcon,
@@ -322,7 +335,7 @@ export const COMISSOES = {
     textCor: 'text-red-400'
   },
   stake_imobiliario: {
-    numero: '🏠',
+    numero: 'IMOB',
     nome: 'Imobiliário e Habitação',
     nomeCompleto: 'Imobiliário e Habitação (CMVM, DGTerritório, IHRU)',
     icon: HomeModernIcon,
@@ -336,17 +349,18 @@ export const COMISSOES = {
 
 // TIPOS DE CONTEÚDO - COM NOVAS CORES (tons de azul/roxo)
 export const TIPOS_CONTEUDO = {
-  agenda: { nome: 'Agenda', emoji: '📅', cor: 'bg-blue-500' },
-  audicao: { nome: 'Audição', emoji: '🎤', cor: 'bg-purple-500' },
-  audiencia: { nome: 'Audiência', emoji: '👥', cor: 'bg-indigo-500' },
-  iniciativa: { nome: 'Iniciativa', emoji: '📜', cor: 'bg-cyan-500' },
-  peticao: { nome: 'Petição', emoji: '✍️', cor: 'bg-violet-500' },
-  pergunta: { nome: 'Pergunta', emoji: '❓', cor: 'bg-purple-500' },
-  requerimento: { nome: 'Requerimento', emoji: '📝', cor: 'bg-indigo-500' },
-  votacao: { nome: 'Votação', emoji: '🗳️', cor: 'bg-blue-500' },
-  sumula: { nome: 'Súmula', emoji: '📋', cor: 'bg-cyan-500' },
-  geral: { nome: 'Geral', emoji: '📄', cor: 'bg-slate-500' },
-  noticia: { nome: 'Notícia', emoji: '📰', cor: 'bg-orange-500' }
+  agenda: { nome: 'Agenda', emoji: '', cor: 'bg-blue-500' },
+  audicao: { nome: 'Audição', emoji: '', cor: 'bg-purple-500' },
+  audiencia: { nome: 'Audiência', emoji: '', cor: 'bg-indigo-500' },
+  iniciativa: { nome: 'Iniciativa', emoji: '', cor: 'bg-cyan-500' },
+  peticao: { nome: 'Petição', emoji: '', cor: 'bg-violet-500' },
+  pergunta: { nome: 'Pergunta', emoji: '', cor: 'bg-purple-500' },
+  requerimento: { nome: 'Requerimento', emoji: '', cor: 'bg-indigo-500' },
+  votacao: { nome: 'Votação', emoji: '', cor: 'bg-blue-500' },
+  sumula: { nome: 'Súmula', emoji: '', cor: 'bg-cyan-500' },
+  geral: { nome: 'Geral', emoji: '', cor: 'bg-slate-500' },
+  noticia: { nome: 'Notícia', emoji: '', cor: 'bg-orange-500' },
+  alteracao_oe: { nome: 'Alteração OE', emoji: '', cor: 'bg-emerald-500' }
 };
 
 export const getCategoriaInfo = (categoria) => {
