@@ -326,6 +326,8 @@ const CategoryDocumentsModal = ({ category, onClose, onSelectDocument, viewMode 
                 <div className="flex flex-wrap gap-2">
                   {entidadesDisponiveis.map((entidade) => {
                     const isSelected = entidadesFiltro.includes(entidade);
+                    const corPartido = getCorPartido(entidade);
+                    
                     return (
                       <button
                         key={entidade}
@@ -338,8 +340,8 @@ const CategoryDocumentsModal = ({ category, onClose, onSelectDocument, viewMode 
                         style={
                           isSelected
                             ? {
-                                background: 'linear-gradient(135deg, #27aae2 0%, #1e90c8 100%)',
-                                boxShadow: '0 4px 20px rgba(39, 170, 226, 0.4), 0 0 0 3px rgba(39, 170, 226, 0.1)'
+                                background: corPartido,
+                                boxShadow: `0 4px 20px ${corPartido}66, 0 0 0 3px ${corPartido}1A`
                               }
                             : {}
                         }
@@ -364,7 +366,7 @@ const CategoryDocumentsModal = ({ category, onClose, onSelectDocument, viewMode 
                         <span
                           key={entidade}
                           className="px-2 py-0.5 rounded text-white font-medium"
-                          style={{ backgroundColor: 'rgba(39, 170, 226, 0.3)' }}
+                          style={{ backgroundColor: getCorPartido(entidade) }}
                         >
                           {entidade}
                         </span>
