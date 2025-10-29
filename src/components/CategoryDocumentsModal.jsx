@@ -38,13 +38,28 @@ const CategoryDocumentsModal = ({ category, onClose, onSelectDocument, viewMode 
     'PAN': '#4CAF50',
   };
 
-  // ✅ Função para obter cor do partido
+  // ✅ CORES DA CONCERTAÇÃO SOCIAL
+  const CORES_CONCERTACAO = {
+    'CGTP-IN': '#DC143C',
+    'UGT': '#FF8C00',
+    'CAP': '#228B22',
+    'CCP': '#4169E1',
+    'CTP': '#9370DB',
+  };
+
+  // ✅ Função para obter cor do partido/entidade
   const getCorPartido = (entidade) => {
     // Se for partidos, extrair só o nome do partido (antes do " - ")
     if (category.id === 'stake_partidos') {
       const nomePartido = entidade?.split(' - ')[0]?.trim();
       return CORES_PARTIDOS[nomePartido] || 'rgba(39, 170, 226, 0.2)';
     }
+    
+    // Se for Concertação Social
+    if (category.id === 'stake_concertacao') {
+      return CORES_CONCERTACAO[entidade] || 'rgba(39, 170, 226, 0.2)';
+    }
+    
     return 'rgba(39, 170, 226, 0.2)'; // Cor padrão para outros stakeholders
   };
 
