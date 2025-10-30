@@ -10,58 +10,17 @@ import {
   EyeSlashIcon,
   StarIcon,
   EyeIcon,
-  BuildingOfficeIcon,
 } from "@heroicons/react/24/outline";
 import { useState, useMemo } from "react";
 import { useUser } from "../contexts/UserContext";
 
-const CategoryDocumentsModal = ({ category, onClose, onSelectDocument, viewMode }) => {
+const CategoryDocumentsModal = ({ category, onClose, onSelectDocument }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [sortOrder, setSortOrder] = useState("desc");
   const [tipoFiltro, setTipoFiltro] = useState("todos");
-  const [fonteFiltro, setFonteFiltro] = useState("todos");
-  const [entidadesFiltro, setEntidadesFiltro] = useState([]);
   const [dataInicio, setDataInicio] = useState("");
   const [dataFim, setDataFim] = useState("");
   const [mostrarArquivados, setMostrarArquivados] = useState(false);
-
-  // ✅ CORES DOS PARTIDOS
-  const CORES_PARTIDOS = {
-    'PSD': '#FF6600',
-    'PS': '#FF69B4',
-    'Chega': '#1E3A8A',
-    'IL': '#00BCD4',
-    'BE': '#8B0000',
-    'PCP': '#DC143C',
-    'Livre': '#32CD32',
-    'CDS-PP': '#0066CC',
-    'PAN': '#4CAF50',
-  };
-
-  // ✅ CORES DA CONCERTAÇÃO SOCIAL
-  const CORES_CONCERTACAO = {
-    'CGTP-IN': '#DC143C',
-    'UGT': '#FF8C00',
-    'CAP': '#228B22',
-    'CCP': '#4169E1',
-    'CTP': '#9370DB',
-  };
-
-  // ✅ Função para obter cor do partido/entidade
-  const getCorPartido = (entidade) => {
-    // Se for partidos, extrair só o nome do partido (antes do " - ")
-    if (category.id === 'stake_partidos') {
-      const nomePartido = entidade?.split(' - ')[0]?.trim();
-      return CORES_PARTIDOS[nomePartido] || 'rgba(39, 170, 226, 0.2)';
-    }
-    
-    // Se for Concertação Social
-    if (category.id === 'stake_concertacao') {
-      return CORES_CONCERTACAO[entidade] || 'rgba(39, 170, 226, 0.2)';
-    }
-    
-    return 'rgba(39, 170, 226, 0.2)'; // Cor padrão para outros stakeholders
-  };
 
   const {
     foiLido,
@@ -84,22 +43,6 @@ const CategoryDocumentsModal = ({ category, onClose, onSelectDocument, viewMode 
     return tipos;
   }, [docs]);
 
-  const fontesDisponiveis = useMemo(() => {
-    const fontes = [
-      ...new Set(docs.map((d) => d.fonte).filter(Boolean)),
-    ];
-    return fontes.sort();
-  }, [docs]);
-
-  // ✅ NOVO: Entidades disponíveis (só para stakeholders)
-  const entidadesDisponiveis = useMemo(() => {
-    if (viewMode !== 'stakeholders') return [];
-    const entidades = [
-      ...new Set(docs.map((d) => d.entidades).filter(Boolean)),
-    ];
-    return entidades.sort();
-  }, [docs, viewMode]);
-
   const documentosFiltrados = useMemo(() => {
     let resultado = [...docs];
 
@@ -117,15 +60,6 @@ const CategoryDocumentsModal = ({ category, onClose, onSelectDocument, viewMode 
 
     if (tipoFiltro !== "todos") {
       resultado = resultado.filter((doc) => doc.tipo_conteudo === tipoFiltro);
-    }
-
-    if (fonteFiltro !== "todos") {
-      resultado = resultado.filter((doc) => doc.fonte === fonteFiltro);
-    }
-
-    // ✅ Filtro por entidades (multi-seleção)
-    if (entidadesFiltro.length > 0) {
-      resultado = resultado.filter((doc) => entidadesFiltro.includes(doc.entidades));
     }
 
     if (dataInicio) {
@@ -154,8 +88,6 @@ const CategoryDocumentsModal = ({ category, onClose, onSelectDocument, viewMode 
     searchTerm,
     sortOrder,
     tipoFiltro,
-    fonteFiltro,
-    entidadesFiltro,
     dataInicio,
     dataFim,
     mostrarArquivados,
@@ -175,20 +107,8 @@ const CategoryDocumentsModal = ({ category, onClose, onSelectDocument, viewMode 
     setSearchTerm("");
     setSortOrder("desc");
     setTipoFiltro("todos");
-    setFonteFiltro("todos");
-    setEntidadesFiltro([]);
     setDataInicio("");
     setDataFim("");
-  };
-
-  const toggleEntidade = (entidade) => {
-    setEntidadesFiltro(prev => {
-      if (prev.includes(entidade)) {
-        return prev.filter(e => e !== entidade);
-      } else {
-        return [...prev, entidade];
-      }
-    });
   };
 
   const marcarTudoComoLido = () => {
@@ -205,7 +125,7 @@ const CategoryDocumentsModal = ({ category, onClose, onSelectDocument, viewMode 
   const totalArquivados = docs.filter((doc) => estaArquivado(doc.id)).length;
 
   const filtrosAtivos =
-    searchTerm || tipoFiltro !== "todos" || fonteFiltro !== "todos" || entidadesFiltro.length > 0 || dataInicio || dataFim;
+    searchTerm || tipoFiltro !== "todos" || dataInicio || dataFim;
 
   return (
     <div
@@ -220,7 +140,7 @@ const CategoryDocumentsModal = ({ category, onClose, onSelectDocument, viewMode 
         }}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Header */}
+        {/* Header - ROXO/AZUL */}
         <div className="relative border-b flex-shrink-0"
              style={{
                backgroundColor: 'rgba(38, 34, 97, 0.5)',
@@ -262,21 +182,26 @@ const CategoryDocumentsModal = ({ category, onClose, onSelectDocument, viewMode 
                     className={`flex items-center gap-2 px-4 py-2 border rounded-lg text-sm font-medium transition-all ${
                       mostrarArquivados
                         ? "bg-slate-700 border-slate-600 text-white"
-                        : "bg-slate-800 border-slate-700 text-slate-400 hover:text-white hover:border-slate-600"
+                        : "bg-slate-800/50 border-slate-700 text-slate-400 hover:text-white hover:border-slate-600"
                     }`}
                   >
                     <ArchiveBoxIcon className="w-4 h-4" />
-                    {mostrarArquivados ? "Ver Ativos" : `Ver Arquivados (${totalArquivados})`}
+                    {mostrarArquivados ? "Ver Ativos" : `Arquivados (${totalArquivados})`}
                   </button>
                 )}
 
-                {!mostrarArquivados && naoLidos > 0 && (
+                {naoLidos > 0 && !mostrarArquivados && (
                   <button
                     onClick={marcarTudoComoLido}
-                    className="flex items-center gap-2 px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-sm text-slate-400 hover:text-white hover:border-slate-600 transition-all"
+                    className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all border"
+                    style={{
+                      backgroundColor: 'rgba(39, 170, 226, 0.1)',
+                      borderColor: 'rgba(39, 170, 226, 0.3)',
+                      color: '#27aae2'
+                    }}
                   >
                     <CheckIcon className="w-4 h-4" />
-                    Marcar Todos como Lido
+                    Marcar tudo lido
                   </button>
                 )}
               </div>
@@ -285,15 +210,15 @@ const CategoryDocumentsModal = ({ category, onClose, onSelectDocument, viewMode 
 
           <button
             onClick={onClose}
-            className="absolute top-6 right-6 p-2 hover:bg-slate-700 rounded-lg transition-colors"
+            className="absolute top-6 right-6 p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors"
           >
-            <XMarkIcon className="w-5 h-5 text-slate-400 hover:text-white transition-colors" />
+            <XMarkIcon className="w-5 h-5" />
           </button>
         </div>
 
         {/* Filtros */}
-        {docs.length > 0 && (
-          <div className="p-4 space-y-3 border-b flex-shrink-0"
+        {!mostrarArquivados && (
+          <div className="border-b p-4 space-y-3 flex-shrink-0"
                style={{
                  backgroundColor: 'rgba(38, 34, 97, 0.3)',
                  borderColor: 'rgba(100, 116, 139, 0.5)'
@@ -321,112 +246,7 @@ const CategoryDocumentsModal = ({ category, onClose, onSelectDocument, viewMode 
               </button>
             </div>
 
-            {/* ✅ FILTRO DE ENTIDADES - MULTI-SELEÇÃO (SÓ STAKEHOLDERS) */}
-            {viewMode === 'stakeholders' && entidadesDisponiveis.length > 0 && (
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2 text-xs text-slate-400 font-medium">
-                    <BuildingOfficeIcon className="w-4 h-4" />
-                    <span>Filtrar por Entidade:</span>
-                  </div>
-                  {entidadesFiltro.length > 0 && (
-                    <button
-                      onClick={() => setEntidadesFiltro([])}
-                      className="text-xs text-slate-500 hover:text-slate-300 transition-colors"
-                    >
-                      Limpar ({entidadesFiltro.length})
-                    </button>
-                  )}
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {entidadesDisponiveis.map((entidade) => {
-                    const isSelected = entidadesFiltro.includes(entidade);
-                    const corPartido = getCorPartido(entidade);
-                    
-                    return (
-                      <button
-                        key={entidade}
-                        onClick={() => toggleEntidade(entidade)}
-                        className={`px-4 py-2 rounded-full text-xs font-medium transition-all border-2 ${
-                          isSelected
-                            ? "text-white border-transparent shadow-lg scale-105"
-                            : "text-slate-400 bg-slate-800/50 border-slate-700 hover:text-white hover:border-slate-600 hover:bg-slate-800"
-                        }`}
-                        style={
-                          isSelected
-                            ? {
-                                background: corPartido,
-                                boxShadow: `0 4px 20px ${corPartido}66, 0 0 0 3px ${corPartido}1A`
-                              }
-                            : {}
-                        }
-                      >
-                        <span className="flex items-center gap-1.5">
-                          {isSelected && (
-                            <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                            </svg>
-                          )}
-                          {entidade}
-                        </span>
-                      </button>
-                    );
-                  })}
-                </div>
-                {entidadesFiltro.length > 0 && (
-                  <div className="flex items-center gap-2 text-xs">
-                    <span className="text-slate-500">A mostrar:</span>
-                    <div className="flex flex-wrap gap-1">
-                      {entidadesFiltro.map((entidade) => (
-                        <span
-                          key={entidade}
-                          className="px-2 py-0.5 rounded text-white font-medium"
-                          style={{ backgroundColor: getCorPartido(entidade) }}
-                        >
-                          {entidade}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-            )}
-
             <div className="flex flex-wrap gap-3">
-              {tiposDisponiveis.length > 0 && (
-                <select
-                  value={tipoFiltro}
-                  onChange={(e) => setTipoFiltro(e.target.value)}
-                  className="px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-sm text-white focus:outline-none transition-colors hover:border-slate-600"
-                >
-                  <option value="todos">Todos os tipos</option>
-                  {tiposDisponiveis.map((tipo) => (
-                    <option key={tipo} value={tipo}>
-                      {tipo.charAt(0).toUpperCase() + tipo.slice(1)}
-                    </option>
-                  ))}
-                </select>
-              )}
-
-              {fontesDisponiveis.length > 0 && (
-                <select
-                  value={fonteFiltro}
-                  onChange={(e) => setFonteFiltro(e.target.value)}
-                  className="px-3 py-2 border rounded-lg text-sm text-white focus:outline-none transition-all hover:border-slate-600"
-                  style={{
-                    backgroundColor: fonteFiltro !== "todos" ? 'rgba(39, 170, 226, 0.15)' : 'rgb(30, 41, 59)',
-                    borderColor: fonteFiltro !== "todos" ? 'rgba(39, 170, 226, 0.5)' : 'rgb(51, 65, 85)',
-                  }}
-                >
-                  <option value="todos">Todas as fontes</option>
-                  {fontesDisponiveis.map((fonte) => (
-                    <option key={fonte} value={fonte}>
-                      {fonte}
-                    </option>
-                  ))}
-                </select>
-              )}
-
               <div className="relative">
                 <label className="absolute -top-2 left-2 px-1 text-xs text-slate-500"
                        style={{ backgroundColor: 'rgba(38, 34, 97, 0.3)' }}>
@@ -506,20 +326,6 @@ const CategoryDocumentsModal = ({ category, onClose, onSelectDocument, viewMode 
                             <CalendarIcon className="w-3.5 h-3.5" />
                             {formatDate(doc.data_publicacao || doc.createdAt)}
                           </span>
-                          {doc.entidades && (
-                            <span className="px-2 py-0.5 rounded text-white font-medium"
-                                  style={{ backgroundColor: getCorPartido(doc.entidades) }}>
-                              {/* ✅ Se for partido E tiver fonte_original, mostrar "Partido - Fonte" */}
-                              {doc.categoria === 'stake_partidos' && doc.fonte_original
-                                ? `${doc.entidades} - ${doc.fonte_original}`
-                                : doc.entidades}
-                            </span>
-                          )}
-                          {doc.tipo_conteudo && (
-                            <span className="px-2 py-0.5 bg-slate-800 rounded text-slate-400">
-                              {doc.tipo_conteudo}
-                            </span>
-                          )}
                           {doc.numero && <span className="text-slate-600">Nº {doc.numero}</span>}
                         </div>
                       </div>
