@@ -247,6 +247,21 @@ const CategoryDocumentsModal = ({ category, onClose, onSelectDocument }) => {
             </div>
 
             <div className="flex flex-wrap gap-3">
+              {tiposDisponiveis.length > 0 && (
+                <select
+                  value={tipoFiltro}
+                  onChange={(e) => setTipoFiltro(e.target.value)}
+                  className="px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-sm text-white focus:outline-none transition-colors"
+                >
+                  <option value="todos">Todos os tipos</option>
+                  {tiposDisponiveis.map((tipo) => (
+                    <option key={tipo} value={tipo}>
+                      {tipo.charAt(0).toUpperCase() + tipo.slice(1)}
+                    </option>
+                  ))}
+                </select>
+              )}
+
               <div className="relative">
                 <label className="absolute -top-2 left-2 px-1 text-xs text-slate-500"
                        style={{ backgroundColor: 'rgba(38, 34, 97, 0.3)' }}>
@@ -326,6 +341,11 @@ const CategoryDocumentsModal = ({ category, onClose, onSelectDocument }) => {
                             <CalendarIcon className="w-3.5 h-3.5" />
                             {formatDate(doc.data_publicacao || doc.createdAt)}
                           </span>
+                          {doc.tipo_conteudo && (
+                            <span className="px-2 py-0.5 bg-slate-800 rounded text-slate-400">
+                              {doc.tipo_conteudo}
+                            </span>
+                          )}
                           {doc.numero && <span className="text-slate-600">Nº {doc.numero}</span>}
                         </div>
                       </div>
