@@ -134,48 +134,136 @@ const RadarFullScreen = ({ stats, documents, viewMode }) => {
         })}
       </svg>
 
-      {/* CENTRO - Stats Totais - NOVA COR */}
+      {/* CENTRO - Logo Radar Legislativo */}
       <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
         <div className="relative group">
-          {/* Glow effect - AZUL */}
-          <div className="absolute inset-0 rounded-full blur-2xl transition-all"
-            style={{ backgroundColor: 'rgba(39, 170, 226, 0.2)' }}
-          ></div>
+          {/* Glow effect animado - AZUL */}
+          <div className="absolute inset-0 rounded-full blur-3xl transition-all group-hover:blur-2xl"
+            style={{ backgroundColor: 'rgba(39, 170, 226, 0.3)' }}
+          >
+            <div className="w-full h-full rounded-full animate-pulse"
+              style={{ backgroundColor: 'rgba(39, 170, 226, 0.1)' }}
+            ></div>
+          </div>
 
-          {/* Card - ROXO ESCURO com borda AZUL */}
-          <div className="relative backdrop-blur-xl rounded-full p-10 border shadow-2xl w-40 h-40 flex items-center justify-center"
+          {/* Card - ROXO ESCURO com borda AZUL animada */}
+          <div className="relative backdrop-blur-xl rounded-full border-2 shadow-2xl w-48 h-48 flex items-center justify-center transition-all group-hover:scale-105"
             style={{ 
-              backgroundColor: 'rgba(38, 34, 97, 0.9)',
-              borderColor: 'rgba(39, 170, 226, 0.3)'
+              backgroundColor: 'rgba(38, 34, 97, 0.95)',
+              borderColor: 'rgba(39, 170, 226, 0.4)',
+              boxShadow: '0 0 40px rgba(39, 170, 226, 0.2), inset 0 0 60px rgba(39, 170, 226, 0.05)'
             }}
           >
-            <div className="text-center">
-              <div className="text-5xl font-black text-white mb-1">
-                {stats.totalGeral || 0}
-              </div>
-              {/* Texto AZUL */}
-              <div className="text-xs font-semibold uppercase tracking-wider"
-                style={{ color: '#27aae2' }}
-              >
-                Total
-              </div>
-              {/* Documentos de Hoje */}
-              {stats.documentosHoje > 0 && (
-                <div className="mt-3 pt-3 border-t border-slate-700/50">
-                  <div className="flex items-center justify-center gap-1.5">
-                    {/* Ponto AZUL */}
-                    <div className="w-1.5 h-1.5 rounded-full animate-pulse"
-                      style={{ backgroundColor: '#27aae2' }}
-                    ></div>
-                    <span className="text-[10px] font-medium text-slate-400 uppercase tracking-wide">
-                      Hoje
-                    </span>
-                    <span className="text-xs font-bold text-white">
-                      {stats.documentosHoje}
-                    </span>
-                  </div>
+            {/* Anel interno decorativo */}
+            <div className="absolute inset-4 rounded-full border border-slate-700/30"></div>
+            
+            <div className="text-center relative z-10">
+              {/* Logo / Ícone Principal */}
+              <div className="mb-3 flex items-center justify-center">
+                <div className="relative">
+                  {/* Círculo de fundo com gradiente */}
+                  <div className="absolute inset-0 rounded-full"
+                    style={{
+                      background: 'radial-gradient(circle, rgba(39, 170, 226, 0.2) 0%, transparent 70%)'
+                    }}
+                  ></div>
+                  
+                  {/* Ícone do Radar customizado */}
+                  <svg width="64" height="64" viewBox="0 0 64 64" className="relative z-10">
+                    {/* Círculos concêntricos do radar */}
+                    <circle cx="32" cy="32" r="28" fill="none" stroke="#27aae2" strokeWidth="1.5" opacity="0.3" />
+                    <circle cx="32" cy="32" r="20" fill="none" stroke="#27aae2" strokeWidth="1.5" opacity="0.5" />
+                    <circle cx="32" cy="32" r="12" fill="none" stroke="#27aae2" strokeWidth="1.5" opacity="0.7" />
+                    
+                    {/* Linhas radiais */}
+                    <line x1="32" y1="4" x2="32" y2="60" stroke="#27aae2" strokeWidth="1" opacity="0.3" />
+                    <line x1="4" y1="32" x2="60" y2="32" stroke="#27aae2" strokeWidth="1" opacity="0.3" />
+                    
+                    {/* Varredura do radar (com animação) */}
+                    <path d="M 32 32 L 32 4 A 28 28 0 0 1 60 32 Z" fill="#27aae2" opacity="0.2">
+                      <animateTransform
+                        attributeName="transform"
+                        type="rotate"
+                        from="0 32 32"
+                        to="360 32 32"
+                        dur="4s"
+                        repeatCount="indefinite"
+                      />
+                    </path>
+                    
+                    {/* Ponto central */}
+                    <circle cx="32" cy="32" r="3" fill="#27aae2">
+                      <animate
+                        attributeName="r"
+                        values="3;5;3"
+                        dur="2s"
+                        repeatCount="indefinite"
+                      />
+                      <animate
+                        attributeName="opacity"
+                        values="1;0.6;1"
+                        dur="2s"
+                        repeatCount="indefinite"
+                      />
+                    </circle>
+                  </svg>
                 </div>
-              )}
+              </div>
+
+              {/* Texto "Radar Legislativo" */}
+              <div className="space-y-1">
+                <div className="text-sm font-black uppercase tracking-wider text-white"
+                  style={{ 
+                    letterSpacing: '0.15em',
+                    textShadow: '0 0 20px rgba(39, 170, 226, 0.5)'
+                  }}
+                >
+                  Radar
+                </div>
+                <div className="text-xs font-bold uppercase tracking-widest"
+                  style={{ 
+                    color: '#27aae2',
+                    letterSpacing: '0.2em'
+                  }}
+                >
+                  Legislativo
+                </div>
+              </div>
+
+              {/* Stats compactos abaixo */}
+              <div className="mt-4 pt-3 border-t border-slate-700/30">
+                <div className="flex items-center justify-center gap-3 text-[10px]">
+                  {/* Total */}
+                  <div className="flex flex-col items-center">
+                    <span className="font-bold text-white text-sm">{stats.totalGeral || 0}</span>
+                    <span className="text-slate-500 uppercase tracking-wider">Total</span>
+                  </div>
+                  
+                  {/* Documentos de Hoje */}
+                  {stats.documentosHoje > 0 && (
+                    <>
+                      <div className="w-px h-6 bg-slate-700/50"></div>
+                      <div className="flex flex-col items-center">
+                        <div className="flex items-center gap-1">
+                          <div className="w-1 h-1 rounded-full bg-red-500 animate-pulse"></div>
+                          <span className="font-bold text-white text-sm">{stats.documentosHoje}</span>
+                        </div>
+                        <span className="text-slate-500 uppercase tracking-wider">Hoje</span>
+                      </div>
+                    </>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Efeito de brilho rotativo na borda */}
+            <div className="absolute inset-0 rounded-full overflow-hidden opacity-50">
+              <div className="absolute inset-0"
+                style={{
+                  background: 'conic-gradient(from 0deg, transparent 0deg, rgba(39, 170, 226, 0.4) 90deg, transparent 180deg)',
+                  animation: 'spin 8s linear infinite'
+                }}
+              ></div>
             </div>
           </div>
         </div>
