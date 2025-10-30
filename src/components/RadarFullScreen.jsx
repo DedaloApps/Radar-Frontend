@@ -134,67 +134,55 @@ const RadarFullScreen = ({ stats, documents, viewMode }) => {
         })}
       </svg>
 
-      {/* CENTRO - Logo Dédalo */}
+      {/* CENTRO - Design Minimalista Elegante */}
       <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
         <div className="relative group">
-          {/* Glow effect animado - AZUL */}
-          <div className="absolute inset-0 rounded-full blur-3xl transition-all"
-            style={{ backgroundColor: 'rgba(39, 170, 226, 0.4)' }}
-          >
-            <div className="w-full h-full rounded-full animate-pulse"
-              style={{ backgroundColor: 'rgba(39, 170, 226, 0.2)' }}
-            ></div>
-          </div>
+          {/* Glow suave no fundo */}
+          <div className="absolute inset-0 rounded-full blur-2xl opacity-30"
+            style={{ backgroundColor: '#27aae2' }}
+          ></div>
 
-          {/* Card - ROXO ESCURO com borda AZUL */}
-          <div className="relative backdrop-blur-xl rounded-full border-2 shadow-2xl w-44 h-44 flex items-center justify-center transition-all group-hover:scale-105"
+          {/* Card Principal - Design Clean */}
+          <div className="relative backdrop-blur-md rounded-full w-36 h-36 flex items-center justify-center transition-all"
             style={{ 
-              backgroundColor: 'rgba(38, 34, 97, 0.95)',
-              borderColor: 'rgba(39, 170, 226, 0.5)',
-              boxShadow: '0 0 50px rgba(39, 170, 226, 0.3)'
+              backgroundColor: 'rgba(15, 23, 42, 0.8)',
+              border: '2px solid rgba(39, 170, 226, 0.3)',
+              boxShadow: '0 8px 32px rgba(39, 170, 226, 0.15)'
             }}
           >
-            {/* Anel interno decorativo */}
-            <div className="absolute inset-3 rounded-full border border-blue-400/20"></div>
-            
-            <div className="text-center relative z-10 flex flex-col items-center">
-              {/* Logo Dédalo */}
-              <div className="relative mb-2">
-                <div className="absolute inset-0 rounded-xl blur-lg opacity-60"
-                  style={{ background: 'linear-gradient(to bottom right, #27aae2, #1e88b5)' }}
-                ></div>
-                <img 
-                  src="/dedalo.png" 
-                  alt="Dédalo Logo" 
-                  className="w-20 h-20 object-contain relative z-10"
-                />
+            {/* Logo Inspect - Simples e Clean */}
+            <div className="flex flex-col items-center gap-2">
+              <div className="text-3xl font-black tracking-tight"
+                style={{ 
+                  color: '#27aae2',
+                  textShadow: '0 0 30px rgba(39, 170, 226, 0.4)'
+                }}
+              >
+                inspect
               </div>
-
-              {/* Documentos de Hoje (só se existirem) */}
+              
+              {/* Stats - Super minimalista */}
               {stats.documentosHoje > 0 && (
-                <div className="mt-2 pt-2 border-t border-slate-700/40 w-full">
-                  <div className="flex flex-col items-center gap-1">
-                    <div className="flex items-center gap-2">
-                      <div className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></div>
-                      <span className="text-2xl font-black text-white">{stats.documentosHoje}</span>
-                    </div>
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
-                      Novos Hoje
-                    </span>
-                  </div>
+                <div className="flex items-center gap-1.5 px-3 py-1 rounded-full"
+                  style={{
+                    backgroundColor: 'rgba(239, 68, 68, 0.15)',
+                    border: '1px solid rgba(239, 68, 68, 0.3)'
+                  }}
+                >
+                  <div className="w-1 h-1 rounded-full bg-red-500 animate-pulse"></div>
+                  <span className="text-lg font-bold text-white">{stats.documentosHoje}</span>
+                  <span className="text-[9px] font-medium text-slate-400 uppercase">hoje</span>
                 </div>
               )}
             </div>
 
-            {/* Efeito de brilho rotativo na borda */}
-            <div className="absolute inset-0 rounded-full overflow-hidden opacity-40">
-              <div className="absolute inset-0"
-                style={{
-                  background: 'conic-gradient(from 0deg, transparent 0deg, rgba(39, 170, 226, 0.6) 60deg, transparent 120deg)',
-                  animation: 'spin 6s linear infinite'
-                }}
-              ></div>
-            </div>
+            {/* Anel exterior sutil */}
+            <div className="absolute inset-0 rounded-full"
+              style={{
+                border: '1px solid rgba(39, 170, 226, 0.1)',
+                transform: 'scale(1.15)'
+              }}
+            ></div>
           </div>
         </div>
       </div>
