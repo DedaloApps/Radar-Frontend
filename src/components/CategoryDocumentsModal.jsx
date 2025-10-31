@@ -11,8 +11,10 @@ import {
   StarIcon,
   EyeIcon,
   BuildingOfficeIcon,
+  Square2StackIcon, // ✅ Para selecionar todos
 } from "@heroicons/react/24/outline";
-import { useMemo } from "react";
+import { CheckIcon as CheckIconSolid } from "@heroicons/react/24/solid"; // ✅ Para checkbox preenchido
+import { useState, useMemo } from "react";
 import { useUser } from "../contexts/UserContext";
 
 const CategoryDocumentsModal = ({ 
@@ -20,10 +22,10 @@ const CategoryDocumentsModal = ({
   onClose, 
   onSelectDocument, 
   viewMode,
-  filtros,      // ✅ RECEBER DO PAI
-  setFiltros    // ✅ RECEBER DO PAI
+  filtros,
+  setFiltros
 }) => {
-  // ✅ EXTRAIR FILTROS DO OBJETO RECEBIDO
+  // ✅ ESTADOS EXISTENTES
   const {
     searchTerm,
     sortOrder,
@@ -35,12 +37,13 @@ const CategoryDocumentsModal = ({
     mostrarArquivados
   } = filtros;
 
-  // ✅ FUNÇÃO HELPER PARA ATUALIZAR FILTROS
+  // ✅ NOVOS ESTADOS PARA SELEÇÃO MÚLTIPLA
+  const [documentosSelecionados, setDocumentosSelecionados] = useState([]);
+
   const updateFiltro = (key, value) => {
     setFiltros(prev => ({ ...prev, [key]: value }));
   };
 
-  // ✅ CORES DOS PARTIDOS
   const CORES_PARTIDOS = {
     'PSD': '#FF6600',
     'PS': '#FF69B4',
@@ -53,7 +56,6 @@ const CategoryDocumentsModal = ({
     'PAN': '#4CAF50',
   };
 
-  // ✅ CORES DA CONCERTAÇÃO SOCIAL
   const CORES_CONCERTACAO = {
     'CGTP-IN': '#DC143C',
     'UGT': '#FF8C00',
@@ -62,7 +64,6 @@ const CategoryDocumentsModal = ({
     'CTP': '#9370DB',
   };
 
-  // ✅ Função para obter cor do partido/entidade
   const getCorPartido = (entidade) => {
     if (category.id === 'stake_partidos') {
       const nomePartido = entidade?.split(' - ')[0]?.trim();
@@ -182,7 +183,6 @@ const CategoryDocumentsModal = ({
     });
   };
 
-  // ✅ ATUALIZADO: Limpar filtros
   const limparFiltros = () => {
     setFiltros({
       searchTerm: "",
@@ -196,7 +196,6 @@ const CategoryDocumentsModal = ({
     });
   };
 
-  // ✅ ATUALIZADO: Toggle entidade
   const toggleEntidade = (entidade) => {
     setFiltros(prev => {
       const novasEntidades = prev.entidadesFiltro.includes(entidade)
@@ -213,6 +212,57 @@ const CategoryDocumentsModal = ({
         marcarComoLido(doc.id);
       }
     });
+  };
+
+  // ✅ FUNÇÕES DE SELEÇÃO MÚLTIPLA
+  const toggleSelecaoDocumento = (docId, e) => {
+    e.stopPropagation(); // Evitar abrir o documento
+    setDocumentosSelecionados(prev => {
+      if (prev.includes(docId)) {
+        return prev.filter(id => id !== docId);
+      } else {
+        return [...prev, docId];
+      }
+    });
+  };
+
+  const selecionarTodos = () => {
+    const todosIds = documentosFiltrados.map(doc => doc.id);
+    setDocumentosSelecionados(todosIds);
+  };
+
+  const desselecionarTodos = () => {
+    setDocumentosSelecionados([]);
+  };
+
+  const todosSelecionados = documentosFiltrados.length > 0 && 
+    documentosSelecionados.length === documentosFiltrados.length;
+
+  // ✅ AÇÕES EM LOTE
+  const arquivarSelecionados = () => {
+    if (documentosSelecionados.length === 0) return;
+    
+    // Confirmação se forem muitos
+    if (documentosSelecionados.length > 10) {
+      if (!window.confirm(`Tens certeza que queres arquivar ${documentosSelecionados.length} documentos?`)) {
+        return;
+      }
+    }
+    
+    documentosSelecionados.forEach(docId => arquivarDocumento(docId));
+    setDocumentosSelecionados([]);
+  };
+
+  const marcarSelecionadosComoLidos = () => {
+    if (documentosSelecionados.length === 0) return;
+    documentosSelecionados.forEach(docId => marcarComoLido(docId));
+    setDocumentosSelecionados([]);
+  };
+
+  const favoritarSelecionados = () => {
+    if (documentosSelecionados.length === 0) return;
+    documentosSelecionados.forEach(docId => toggleFavorito(docId));
+    setDocumentosSelecionados([]);
   };
 
   const naoLidos = docs.filter(
@@ -267,6 +317,12 @@ const CategoryDocumentsModal = ({
                         • {totalArquivados} arquivado{totalArquivados !== 1 ? "s" : ""}
                       </span>
                     )}
+                    {/* ✅ CONTADOR DE SELECIONADOS */}
+                    {documentosSelecionados.length > 0 && (
+                      <span className="ml-2 font-semibold" style={{ color: '#27aae2' }}>
+                        • {documentosSelecionados.length} selecionado{documentosSelecionados.length !== 1 ? 's' : ''}
+                      </span>
+                    )}
                   </p>
                 </div>
               </div>
@@ -307,7 +363,7 @@ const CategoryDocumentsModal = ({
           </button>
         </div>
 
-        {/* Filtros */}
+        {/* Filtros + Seleção */}
         {docs.length > 0 && (
           <div className="p-4 space-y-3 border-b flex-shrink-0"
                style={{
@@ -335,9 +391,57 @@ const CategoryDocumentsModal = ({
                   {sortOrder === "desc" ? "Recente" : "Antigo"}
                 </span>
               </button>
+
+              {/* ✅ BOTÃO SELECIONAR TODOS / DESSELECIONAR */}
+              <button
+                onClick={todosSelecionados ? desselecionarTodos : selecionarTodos}
+                className="flex items-center gap-2 px-4 py-2 border rounded-lg text-sm font-medium transition-all"
+                style={{
+                  backgroundColor: todosSelecionados ? 'rgba(39, 170, 226, 0.15)' : 'rgb(30, 41, 59)',
+                  borderColor: todosSelecionados ? 'rgba(39, 170, 226, 0.5)' : 'rgb(51, 65, 85)',
+                  color: todosSelecionados ? '#27aae2' : 'rgb(148, 163, 184)'
+                }}
+              >
+                <Square2StackIcon className="w-4 h-4" />
+                <span className="hidden sm:inline">
+                  {todosSelecionados ? 'Desselecionar' : 'Selecionar Todos'}
+                </span>
+              </button>
+
+              {/* ✅ AÇÕES EM LOTE (só aparecem se houver seleção) */}
+              {documentosSelecionados.length > 0 && (
+                <>
+                  {/* Marcar como Lido */}
+                  <button
+                    onClick={marcarSelecionadosComoLidos}
+                    className="p-2 bg-slate-800 hover:bg-green-500/20 hover:border-green-500/50 rounded-lg transition-all border border-slate-700"
+                    title="Marcar selecionados como lidos"
+                  >
+                    <EyeIcon className="w-5 h-5 text-slate-400 hover:text-green-400 transition-colors" />
+                  </button>
+
+                  {/* Favoritar */}
+                  <button
+                    onClick={favoritarSelecionados}
+                    className="p-2 bg-slate-800 hover:bg-amber-500/20 hover:border-amber-500/50 rounded-lg transition-all border border-slate-700"
+                    title="Favoritar selecionados"
+                  >
+                    <StarIcon className="w-5 h-5 text-slate-400 hover:text-amber-400 transition-colors" />
+                  </button>
+
+                  {/* Arquivar */}
+                  <button
+                    onClick={arquivarSelecionados}
+                    className="p-2 bg-slate-800 hover:bg-red-500/20 hover:border-red-500/50 rounded-lg transition-all border border-slate-700"
+                    title="Arquivar selecionados"
+                  >
+                    <ArchiveBoxIcon className="w-5 h-5 text-slate-400 hover:text-red-400 transition-colors" />
+                  </button>
+                </>
+              )}
             </div>
 
-            {/* ✅ FILTRO DE ENTIDADES */}
+            {/* FILTRO DE ENTIDADES */}
             {viewMode === 'stakeholders' && entidadesDisponiveis.length > 0 && (
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
@@ -499,94 +603,126 @@ const CategoryDocumentsModal = ({
               {documentosFiltrados.map((doc, index) => {
                 const isNew = !foiLido(doc.id);
                 const isArchived = estaArquivado(doc.id);
+                const isSelected = documentosSelecionados.includes(doc.id);
 
                 return (
-                  <div key={index} className="group relative hover:bg-slate-800/50 transition-colors">
-                    <button onClick={() => onSelectDocument(doc)} className="w-full p-4 text-left flex items-start gap-3">
-                      <div className="p-2 bg-slate-800 rounded-lg group-hover:bg-slate-700 transition-colors flex-shrink-0">
-                        <DocumentTextIcon className="w-4 h-4 text-slate-400 transition-colors group-hover:text-sky-300" />
-                      </div>
-
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-start gap-2 mb-2">
-                          <h3 className="font-medium text-sm text-white group-hover:text-sky-300 transition-colors line-clamp-2 flex-1">
-                            {doc.titulo}
-                          </h3>
-                          {isNew && !isArchived && (
-                            <div className="w-2 h-2 bg-red-500 rounded-full flex-shrink-0 mt-1.5 animate-pulse"></div>
-                          )}
-                        </div>
-
-                        <div className="flex flex-wrap items-center gap-2 text-xs">
-                          <span className="flex items-center gap-1.5 px-2.5 py-1 bg-slate-800/80 border border-slate-700/50 rounded-md text-slate-300 font-medium">
-                            <CalendarIcon className="w-3.5 h-3.5 text-slate-500" />
-                            {formatDate(doc.data_publicacao || doc.createdAt)}
-                          </span>
-
-                          {doc.entidades && (
-  <span 
-    className="px-2.5 py-1 rounded-md text-white font-medium text-xs shadow-sm"
-    style={{ 
-      backgroundColor: getCorPartido(doc.entidades),
-      boxShadow: `0 0 10px ${getCorPartido(doc.entidades)}33`
-    }}
-  >
-    {(() => {
-      // ✅ Se for partido, mostrar "Partido - Jornal"
-      if (doc.categoria === 'stake_partidos' && doc.entidades?.includes('|')) {
-        const [partido, fonte] = doc.entidades.split('|');
-        return `${partido} - ${fonte}`;
-      }
-      return doc.entidades;
-    })()}
-  </span>
-)}
-
-                          {doc.tipo_conteudo && (
-                            <span className="px-2.5 py-1 bg-slate-800/60 border border-slate-700/50 rounded-md text-slate-400">
-                              {doc.tipo_conteudo}
-                            </span>
-                          )}
-
-                          {doc.numero && (
-                            <span className="px-2.5 py-1 bg-slate-800/60 border border-slate-700/50 rounded-md text-slate-500">
-                              Nº {doc.numero}
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    </button>
-
-                    <div className="absolute top-4 right-4 flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-all">
-                      {!isNew && !isArchived && (
-                        <button
-                          onClick={(e) => { e.stopPropagation(); marcarComoNaoLido(doc.id); }}
-                          className="p-2 bg-slate-800 hover:bg-blue-500/20 hover:border-blue-500/50 rounded-lg transition-all border border-transparent"
-                          title="Marcar como não lido"
-                        >
-                          <EyeIcon className="w-4 h-4 text-slate-400 hover:text-blue-400 transition-colors" />
-                        </button>
-                      )}
-
+                  <div 
+                    key={index} 
+                    className={`group relative transition-all ${
+                      isSelected 
+                        ? 'bg-slate-800/80 ring-2 ring-inset' 
+                        : 'hover:bg-slate-800/50'
+                    }`}
+                    style={isSelected ? { ringColor: '#27aae2' } : {}}
+                  >
+                    <div className="flex items-start gap-3 p-4">
+                      {/* ✅ CHECKBOX DE SELEÇÃO */}
                       <button
-                        onClick={(e) => { e.stopPropagation(); toggleFavorito(doc.id); }}
-                        className={`p-2 rounded-lg transition-all ${eFavorito(doc.id) ? "bg-amber-500/20 hover:bg-amber-500/30" : "bg-slate-800 hover:bg-slate-700"}`}
-                        title={eFavorito(doc.id) ? "Remover dos favoritos" : "Adicionar aos favoritos"}
+                        onClick={(e) => toggleSelecaoDocumento(doc.id, e)}
+                        className={`flex-shrink-0 w-5 h-5 rounded border-2 flex items-center justify-center transition-all ${
+                          isSelected
+                            ? 'border-transparent'
+                            : 'border-slate-600 hover:border-slate-500'
+                        }`}
+                        style={isSelected ? { backgroundColor: '#27aae2' } : {}}
                       >
-                        <StarIcon className={`w-4 h-4 ${eFavorito(doc.id) ? "text-amber-400 fill-amber-400" : "text-slate-400"}`} />
-                      </button>
-
-                      <button
-                        onClick={(e) => { e.stopPropagation(); isArchived ? restaurarDocumento(doc.id) : arquivarDocumento(doc.id); }}
-                        className="p-2 bg-slate-800 hover:bg-slate-700 rounded-lg transition-all"
-                        title={isArchived ? "Restaurar" : "Arquivar"}
-                      >
-                        {isArchived ? (
-                          <EyeSlashIcon className="w-4 h-4" style={{ color: '#27aae2' }} />
-                        ) : (
-                          <ArchiveBoxIcon className="w-4 h-4 text-slate-400 hover:text-red-400" />
+                        {isSelected && (
+                          <CheckIconSolid className="w-4 h-4 text-white" />
                         )}
                       </button>
+
+                      {/* CONTEÚDO DO DOCUMENTO */}
+                      <button 
+                        onClick={() => onSelectDocument(doc)} 
+                        className="flex-1 text-left flex items-start gap-3"
+                      >
+                        <div className="p-2 bg-slate-800 rounded-lg group-hover:bg-slate-700 transition-colors flex-shrink-0">
+                          <DocumentTextIcon className="w-4 h-4 text-slate-400 transition-colors group-hover:text-sky-300" />
+                        </div>
+
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-start gap-2 mb-2">
+                            <h3 className="font-medium text-sm text-white group-hover:text-sky-300 transition-colors line-clamp-2 flex-1">
+                              {doc.titulo}
+                            </h3>
+                            {isNew && !isArchived && (
+                              <div className="w-2 h-2 bg-red-500 rounded-full flex-shrink-0 mt-1.5 animate-pulse"></div>
+                            )}
+                          </div>
+
+                          <div className="flex flex-wrap items-center gap-2 text-xs">
+                            <span className="flex items-center gap-1.5 px-2.5 py-1 bg-slate-800/80 border border-slate-700/50 rounded-md text-slate-300 font-medium">
+                              <CalendarIcon className="w-3.5 h-3.5 text-slate-500" />
+                              {formatDate(doc.data_publicacao || doc.createdAt)}
+                            </span>
+
+                            {doc.entidades && (
+                              <span 
+                                className="px-2.5 py-1 rounded-md text-white font-medium text-xs shadow-sm"
+                                style={{ 
+                                  backgroundColor: getCorPartido(doc.entidades),
+                                  boxShadow: `0 0 10px ${getCorPartido(doc.entidades)}33`
+                                }}
+                              >
+                                {(() => {
+                                  if (doc.categoria === 'stake_partidos' && doc.entidades?.includes('|')) {
+                                    const [partido, fonte] = doc.entidades.split('|');
+                                    return `${partido} - ${fonte}`;
+                                  }
+                                  return doc.entidades;
+                                })()}
+                              </span>
+                            )}
+
+                            {doc.tipo_conteudo && (
+                              <span className="px-2.5 py-1 bg-slate-800/60 border border-slate-700/50 rounded-md text-slate-400">
+                                {doc.tipo_conteudo}
+                              </span>
+                            )}
+
+                            {doc.numero && (
+                              <span className="px-2.5 py-1 bg-slate-800/60 border border-slate-700/50 rounded-md text-slate-500">
+                                Nº {doc.numero}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      </button>
+
+                      {/* AÇÕES INDIVIDUAIS (só aparecem no hover se não estiver selecionado) */}
+                      {!isSelected && (
+                        <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-all">
+                          {!isNew && !isArchived && (
+                            <button
+                              onClick={(e) => { e.stopPropagation(); marcarComoNaoLido(doc.id); }}
+                              className="p-2 bg-slate-800 hover:bg-blue-500/20 hover:border-blue-500/50 rounded-lg transition-all border border-transparent"
+                              title="Marcar como não lido"
+                            >
+                              <EyeIcon className="w-4 h-4 text-slate-400 hover:text-blue-400 transition-colors" />
+                            </button>
+                          )}
+
+                          <button
+                            onClick={(e) => { e.stopPropagation(); toggleFavorito(doc.id); }}
+                            className={`p-2 rounded-lg transition-all ${eFavorito(doc.id) ? "bg-amber-500/20 hover:bg-amber-500/30" : "bg-slate-800 hover:bg-slate-700"}`}
+                            title={eFavorito(doc.id) ? "Remover dos favoritos" : "Adicionar aos favoritos"}
+                          >
+                            <StarIcon className={`w-4 h-4 ${eFavorito(doc.id) ? "text-amber-400 fill-amber-400" : "text-slate-400"}`} />
+                          </button>
+
+                          <button
+                            onClick={(e) => { e.stopPropagation(); isArchived ? restaurarDocumento(doc.id) : arquivarDocumento(doc.id); }}
+                            className="p-2 bg-slate-800 hover:bg-slate-700 rounded-lg transition-all"
+                            title={isArchived ? "Restaurar" : "Arquivar"}
+                          >
+                            {isArchived ? (
+                              <EyeSlashIcon className="w-4 h-4" style={{ color: '#27aae2' }} />
+                            ) : (
+                              <ArchiveBoxIcon className="w-4 h-4 text-slate-400 hover:text-red-400" />
+                            )}
+                          </button>
+                        </div>
+                      )}
                     </div>
                   </div>
                 );
