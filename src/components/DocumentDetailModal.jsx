@@ -190,22 +190,22 @@ const DocumentDetailModal = ({ document, onClose, onBack }) => {
           )}
 
           {/* Info Adicional */}
-          {/* Info Adicional */}
-<div className="p-3 rounded-lg border"
-     style={{
-       backgroundColor: 'rgba(38, 34, 97, 0.3)',
-       borderColor: 'rgba(100, 116, 139, 0.3)'
-     }}>
-  <p className="text-xs text-slate-500 text-center">
-    Fonte: <span className="text-slate-400 font-medium">
-      {document.fonte === 'parlamento' 
-        ? 'Parlamento Português' 
-        : document.fonte === 'stakeholders'
-          ? document.fonte_original || document.entidades || 'Stakeholders'
-          : 'Diário da República'}
-    </span>
-  </p>
-</div>
+          <div className="p-3 rounded-lg border"
+               style={{
+                 backgroundColor: 'rgba(38, 34, 97, 0.3)',
+                 borderColor: 'rgba(100, 116, 139, 0.3)'
+               }}>
+            <p className="text-xs text-slate-500 text-center">
+              Fonte: <span className="text-slate-400 font-medium">
+                {document.fonte === 'parlamento' 
+                  ? 'Parlamento Português' 
+                  : document.fonte === 'stakeholders'
+                    ? document.fonte_original || document.entidades || 'Stakeholders'
+                    : 'Diário da República'}
+              </span>
+            </p>
+          </div>
+        </div>
 
         {/* Footer com Ação - AZUL */}
         <div className="border-t p-4 flex-shrink-0"
@@ -213,7 +213,7 @@ const DocumentDetailModal = ({ document, onClose, onBack }) => {
                backgroundColor: 'rgba(38, 34, 97, 0.5)',
                borderColor: 'rgba(100, 116, 139, 0.5)'
              }}>
-          <a
+          
             href={document.url}
             target="_blank"
             rel="noopener noreferrer"
