@@ -190,16 +190,22 @@ const DocumentDetailModal = ({ document, onClose, onBack }) => {
           )}
 
           {/* Info Adicional */}
-          <div className="p-3 rounded-lg border"
-               style={{
-                 backgroundColor: 'rgba(38, 34, 97, 0.3)',
-                 borderColor: 'rgba(100, 116, 139, 0.3)'
-               }}>
-            <p className="text-xs text-slate-500 text-center">
-              Fonte: <span className="text-slate-400 font-medium">{document.fonte === 'parlamento' ? 'Parlamento Português' : 'Diário da República'}</span>
-            </p>
-          </div>
-        </div>
+          {/* Info Adicional */}
+<div className="p-3 rounded-lg border"
+     style={{
+       backgroundColor: 'rgba(38, 34, 97, 0.3)',
+       borderColor: 'rgba(100, 116, 139, 0.3)'
+     }}>
+  <p className="text-xs text-slate-500 text-center">
+    Fonte: <span className="text-slate-400 font-medium">
+      {document.fonte === 'parlamento' 
+        ? 'Parlamento Português' 
+        : document.fonte === 'stakeholders'
+          ? document.fonte_original || document.entidades || 'Stakeholders'
+          : 'Diário da República'}
+    </span>
+  </p>
+</div>
 
         {/* Footer com Ação - AZUL */}
         <div className="border-t p-4 flex-shrink-0"
