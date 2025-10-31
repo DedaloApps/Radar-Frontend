@@ -14,7 +14,7 @@ import {
   Square2StackIcon,
 } from "@heroicons/react/24/outline";
 import { CheckIcon as CheckIconSolid } from "@heroicons/react/24/solid";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
 import { useUser } from "../contexts/UserContext";
 
 const CategoryDocumentsModal = ({ 
@@ -37,6 +37,10 @@ const CategoryDocumentsModal = ({
   } = filtros;
 
   const [documentosSelecionados, setDocumentosSelecionados] = useState([]);
+  
+  // ✅ NOVO: Referência para o container de scroll
+  const scrollContainerRef = useRef(null);
+  const scrollPositionRef = useRef(0);
 
   const updateFiltro = (key, value) => {
     setFiltros(prev => ({ ...prev, [key]: value }));
@@ -172,6 +176,18 @@ const CategoryDocumentsModal = ({
     estaArquivado,
   ]);
 
+  // ✅ NOVO: Restaurar posição de scroll quando voltar ao modal
+  useEffect(() => {
+    if (scrollContainerRef.current && scrollPositionRef.current > 0) {
+      // Pequeno delay para garantir que o DOM está renderizado
+      setTimeout(() => {
+        if (scrollContainerRef.current) {
+          scrollContainerRef.current.scrollTop = scrollPositionRef.current;
+        }
+      }, 0);
+    }
+  }, []);
+
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString("pt-PT", {
@@ -202,6 +218,14 @@ const CategoryDocumentsModal = ({
       
       return { ...prev, entidadesFiltro: novasEntidades };
     });
+  };
+
+  // ✅ NOVO: Guardar posição de scroll antes de abrir documento
+  const handleSelectDocument = (doc) => {
+    if (scrollContainerRef.current) {
+      scrollPositionRef.current = scrollContainerRef.current.scrollTop;
+    }
+    onSelectDocument(doc);
   };
 
   const toggleSelecaoDocumento = (docId, e) => {
@@ -516,7 +540,11 @@ const CategoryDocumentsModal = ({
         )}
 
         {/* Lista */}
-        <div className="flex-1 overflow-y-auto" style={{ scrollbarWidth: "thin", scrollbarColor: "#334155 #1e293b" }}>
+        <div 
+          ref={scrollContainerRef}
+          className="flex-1 overflow-y-auto" 
+          style={{ scrollbarWidth: "thin", scrollbarColor: "#334155 #1e293b" }}
+        >
           {documentosFiltrados.length === 0 ? (
             <div className="text-center py-12">
               {mostrarArquivados ? (
@@ -561,7 +589,7 @@ const CategoryDocumentsModal = ({
                       </button>
 
                       <button 
-                        onClick={() => onSelectDocument(doc)} 
+                        onClick={() => handleSelectDocument(doc)} 
                         className="flex-1 text-left flex items-start gap-3"
                       >
                         <div className="p-2 bg-slate-800 rounded-lg group-hover:bg-slate-700 transition-colors flex-shrink-0">
