@@ -287,230 +287,256 @@ const CategoryDocumentsModal = ({
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="relative border-b flex-shrink-0"
-             style={{
-               backgroundColor: 'rgba(38, 34, 97, 0.5)',
-               borderColor: 'rgba(100, 116, 139, 0.5)'
-             }}>
-          <div className="p-6 pr-16">
-            <div className="flex items-center justify-between gap-4 mb-2">
-              <div className="flex items-center gap-4">
-                <div className="p-2.5 rounded-xl"
-                     style={{ backgroundColor: 'rgba(38, 34, 97, 0.8)' }}>
-                  <Icon className="w-6 h-6" style={{ color: '#27aae2' }} />
-                </div>
-                <div>
-                  <h2 className="text-xl font-bold text-white">
-                    {info.nomeCompleto || info.nome}
-                  </h2>
-                  <p className="text-sm text-slate-400">
-                    {documentosFiltrados.length} de{" "}
-                    {docs.length - totalArquivados}{" "}
-                    {documentosFiltrados.length === 1 ? "documento" : "documentos"}
-                    {naoLidos > 0 && !mostrarArquivados && (
-                      <span className="ml-2 text-red-400">
-                        • {naoLidos} {naoLidos === 1 ? "novo" : "novos"}
-                      </span>
-                    )}
-                    {totalArquivados > 0 && (
-                      <span className="ml-2 text-slate-500">
-                        • {totalArquivados} arquivado{totalArquivados !== 1 ? "s" : ""}
-                      </span>
-                    )}
-                    {/* ✅ CONTADOR DE SELECIONADOS */}
-                    {documentosSelecionados.length > 0 && (
-                      <span className="ml-2 font-semibold" style={{ color: '#27aae2' }}>
-                        • {documentosSelecionados.length} selecionado{documentosSelecionados.length !== 1 ? 's' : ''}
-                      </span>
-                    )}
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-2">
-                {totalArquivados > 0 && (
-                  <button
-                    onClick={() => updateFiltro('mostrarArquivados', !mostrarArquivados)}
-                    className={`flex items-center gap-2 px-4 py-2 border rounded-lg text-sm font-medium transition-all ${
-                      mostrarArquivados
-                        ? "bg-slate-700 border-slate-600 text-white"
-                        : "bg-slate-800 border-slate-700 text-slate-400 hover:text-white hover:border-slate-600"
-                    }`}
-                  >
-                    <ArchiveBoxIcon className="w-4 h-4" />
-                    {mostrarArquivados ? "Ver Ativos" : `Ver Arquivados (${totalArquivados})`}
-                  </button>
-                )}
-
-                {!mostrarArquivados && naoLidos > 0 && (
-                  <button
-                    onClick={marcarTudoComoLido}
-                    className="flex items-center gap-2 px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-sm text-slate-400 hover:text-white hover:border-slate-600 transition-all"
-                  >
-                    <CheckIcon className="w-4 h-4" />
-                    Marcar Todos como Lido
-                  </button>
-                )}
-              </div>
-            </div>
-          </div>
-
-          <button
-            onClick={onClose}
-            className="absolute top-6 right-6 p-2 hover:bg-slate-700 rounded-lg transition-colors"
-          >
-            <XMarkIcon className="w-5 h-5 text-slate-400 hover:text-white transition-colors" />
-          </button>
+<div className="relative border-b flex-shrink-0"
+     style={{
+       backgroundColor: 'rgba(38, 34, 97, 0.5)',
+       borderColor: 'rgba(100, 116, 139, 0.5)'
+     }}>
+  <div className="p-6 pr-16">
+    <div className="flex items-center justify-between gap-4 mb-2">
+      <div className="flex items-center gap-4">
+        <div className="p-2.5 rounded-xl"
+             style={{ backgroundColor: 'rgba(38, 34, 97, 0.8)' }}>
+          <Icon className="w-6 h-6" style={{ color: '#27aae2' }} />
         </div>
+        <div>
+          <h2 className="text-xl font-bold text-white">
+            {info.nomeCompleto || info.nome}
+          </h2>
+          <p className="text-sm text-slate-400">
+            {documentosFiltrados.length} de{" "}
+            {docs.length - totalArquivados}{" "}
+            {documentosFiltrados.length === 1 ? "documento" : "documentos"}
+            {naoLidos > 0 && !mostrarArquivados && (
+              <span className="ml-2 text-red-400">
+                • {naoLidos} {naoLidos === 1 ? "novo" : "novos"}
+              </span>
+            )}
+            {totalArquivados > 0 && (
+              <span className="ml-2 text-slate-500">
+                • {totalArquivados} arquivado{totalArquivados !== 1 ? "s" : ""}
+              </span>
+            )}
+            {/* ✅ CONTADOR DE SELECIONADOS */}
+            {documentosSelecionados.length > 0 && (
+              <span className="ml-2 font-semibold" style={{ color: '#27aae2' }}>
+                • {documentosSelecionados.length} selecionado{documentosSelecionados.length !== 1 ? 's' : ''}
+              </span>
+            )}
+          </p>
+        </div>
+      </div>
+
+      {/* ✅ SÓ O BOTÃO DE ARQUIVADOS */}
+      <div className="flex items-center gap-2">
+        {totalArquivados > 0 && (
+          <button
+            onClick={() => updateFiltro('mostrarArquivados', !mostrarArquivados)}
+            className={`flex items-center gap-2 px-4 py-2 border rounded-lg text-sm font-medium transition-all ${
+              mostrarArquivados
+                ? "bg-slate-700 border-slate-600 text-white"
+                : "bg-slate-800 border-slate-700 text-slate-400 hover:text-white hover:border-slate-600"
+            }`}
+          >
+            <ArchiveBoxIcon className="w-4 h-4" />
+            {mostrarArquivados ? "Ver Ativos" : `Ver Arquivados (${totalArquivados})`}
+          </button>
+        )}
+      </div>
+    </div>
+  </div>
+
+  <button
+    onClick={onClose}
+    className="absolute top-6 right-6 p-2 hover:bg-slate-700 rounded-lg transition-colors"
+  >
+    <XMarkIcon className="w-5 h-5 text-slate-400 hover:text-white transition-colors" />
+  </button>
+</div>
 
         {/* Filtros + Seleção */}
-        {docs.length > 0 && (
-          <div className="p-4 space-y-3 border-b flex-shrink-0"
-               style={{
-                 backgroundColor: 'rgba(38, 34, 97, 0.3)',
-                 borderColor: 'rgba(100, 116, 139, 0.5)'
-               }}>
-            <div className="flex gap-3">
-              <div className="flex-1 relative">
-                <MagnifyingGlassIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
-                <input
-                  type="text"
-                  placeholder="Pesquisar documentos..."
-                  value={searchTerm}
-                  onChange={(e) => updateFiltro('searchTerm', e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-sm text-white placeholder-slate-500 focus:outline-none transition-colors"
-                />
-              </div>
+{docs.length > 0 && (
+  <div className="p-4 space-y-3 border-b flex-shrink-0"
+       style={{
+         backgroundColor: 'rgba(38, 34, 97, 0.3)',
+         borderColor: 'rgba(100, 116, 139, 0.5)'
+       }}>
+    <div className="flex gap-3">
+      <div className="flex-1 relative">
+        <MagnifyingGlassIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+        <input
+          type="text"
+          placeholder="Pesquisar documentos..."
+          value={searchTerm}
+          onChange={(e) => updateFiltro('searchTerm', e.target.value)}
+          className="w-full pl-10 pr-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-sm text-white placeholder-slate-500 focus:outline-none transition-colors"
+        />
+      </div>
 
+      {/* ✅ BOTÃO DE ORDENAÇÃO - SÓ ÍCONE */}
+      <button
+        onClick={() => updateFiltro('sortOrder', sortOrder === "desc" ? "asc" : "desc")}
+        className="flex items-center justify-center p-2 bg-slate-800 border border-slate-700 rounded-lg text-slate-300 hover:text-white hover:border-slate-600 transition-colors w-10 h-10"
+        title={sortOrder === "desc" ? "Mais recentes primeiro" : "Mais antigos primeiro"}
+      >
+        <ArrowsUpDownIcon className="w-5 h-5" />
+      </button>
+
+      {/* ✅ BOTÃO SELECIONAR TODOS / DESSELECIONAR */}
+      <button
+        onClick={todosSelecionados ? desselecionarTodos : selecionarTodos}
+        className="flex items-center gap-2 px-4 py-2 border rounded-lg text-sm font-medium transition-all"
+        style={{
+          backgroundColor: todosSelecionados ? 'rgba(39, 170, 226, 0.15)' : 'rgb(30, 41, 59)',
+          borderColor: todosSelecionados ? 'rgba(39, 170, 226, 0.5)' : 'rgb(51, 65, 85)',
+          color: todosSelecionados ? '#27aae2' : 'rgb(148, 163, 184)'
+        }}
+      >
+        <Square2StackIcon className="w-4 h-4" />
+        <span className="hidden sm:inline">
+          {todosSelecionados ? 'Desselecionar' : 'Selecionar Todos'}
+        </span>
+      </button>
+
+      {/* ✅ AÇÕES EM LOTE (só aparecem se houver seleção) */}
+      {documentosSelecionados.length > 0 && (
+        <>
+          {/* Marcar como Lido */}
+          <button
+            onClick={marcarSelecionadosComoLidos}
+            className="p-2 bg-slate-800 hover:bg-green-500/20 hover:border-green-500/50 rounded-lg transition-all border border-slate-700"
+            title="Marcar selecionados como lidos"
+          >
+            <EyeIcon className="w-5 h-5 text-slate-400 hover:text-green-400 transition-colors" />
+          </button>
+
+          {/* Favoritar */}
+          <button
+            onClick={favoritarSelecionados}
+            className="p-2 bg-slate-800 hover:bg-amber-500/20 hover:border-amber-500/50 rounded-lg transition-all border border-slate-700"
+            title="Favoritar selecionados"
+          >
+            <StarIcon className="w-5 h-5 text-slate-400 hover:text-amber-400 transition-colors" />
+          </button>
+
+          {/* Arquivar */}
+          <button
+            onClick={arquivarSelecionados}
+            className="p-2 bg-slate-800 hover:bg-red-500/20 hover:border-red-500/50 rounded-lg transition-all border border-slate-700"
+            title="Arquivar selecionados"
+          >
+            <ArchiveBoxIcon className="w-5 h-5 text-slate-400 hover:text-red-400 transition-colors" />
+          </button>
+        </>
+      )}
+    </div>
+
+    {/* FILTRO DE ENTIDADES */}
+    {viewMode === 'stakeholders' && entidadesDisponiveis.length > 0 && (
+      <div className="space-y-2">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2 text-xs text-slate-400 font-medium">
+            <BuildingOfficeIcon className="w-4 h-4" />
+            <span>Filtrar por Entidade:</span>
+          </div>
+          {entidadesFiltro.length > 0 && (
+            <button
+              onClick={() => updateFiltro('entidadesFiltro', [])}
+              className="text-xs text-slate-500 hover:text-slate-300 transition-colors"
+            >
+              Limpar ({entidadesFiltro.length})
+            </button>
+          )}
+        </div>
+        <div className="flex flex-wrap gap-2">
+          {entidadesDisponiveis.map((entidade) => {
+            const isSelected = entidadesFiltro.includes(entidade);
+            const corPartido = getCorPartido(entidade);
+
+            return (
               <button
-                onClick={() => updateFiltro('sortOrder', sortOrder === "desc" ? "asc" : "desc")}
-                className="flex items-center gap-2 px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-white hover:border-slate-600 transition-colors"
+                key={entidade}
+                onClick={() => toggleEntidade(entidade)}
+                className={`px-4 py-2 rounded-full text-xs font-medium transition-all border-2 ${
+                  isSelected
+                    ? "text-white border-transparent shadow-lg scale-105"
+                    : "text-slate-400 bg-slate-800/50 border-slate-700 hover:text-white hover:border-slate-600 hover:bg-slate-800"
+                }`}
+                style={
+                  isSelected
+                    ? {
+                        background: corPartido,
+                        boxShadow: `0 4px 20px ${corPartido}66, 0 0 0 3px ${corPartido}1A`
+                      }
+                    : {}
+                }
               >
-                <ArrowsUpDownIcon className="w-4 h-4" />
-                <span className="hidden sm:inline">
-                  {sortOrder === "desc" ? "Recente" : "Antigo"}
-                </span>
-              </button>
-
-              {/* ✅ BOTÃO SELECIONAR TODOS / DESSELECIONAR */}
-              <button
-                onClick={todosSelecionados ? desselecionarTodos : selecionarTodos}
-                className="flex items-center gap-2 px-4 py-2 border rounded-lg text-sm font-medium transition-all"
-                style={{
-                  backgroundColor: todosSelecionados ? 'rgba(39, 170, 226, 0.15)' : 'rgb(30, 41, 59)',
-                  borderColor: todosSelecionados ? 'rgba(39, 170, 226, 0.5)' : 'rgb(51, 65, 85)',
-                  color: todosSelecionados ? '#27aae2' : 'rgb(148, 163, 184)'
-                }}
-              >
-                <Square2StackIcon className="w-4 h-4" />
-                <span className="hidden sm:inline">
-                  {todosSelecionados ? 'Desselecionar' : 'Selecionar Todos'}
-                </span>
-              </button>
-
-              {/* ✅ AÇÕES EM LOTE (só aparecem se houver seleção) */}
-              {documentosSelecionados.length > 0 && (
-                <>
-                  {/* Marcar como Lido */}
-                  <button
-                    onClick={marcarSelecionadosComoLidos}
-                    className="p-2 bg-slate-800 hover:bg-green-500/20 hover:border-green-500/50 rounded-lg transition-all border border-slate-700"
-                    title="Marcar selecionados como lidos"
-                  >
-                    <EyeIcon className="w-5 h-5 text-slate-400 hover:text-green-400 transition-colors" />
-                  </button>
-
-                  {/* Favoritar */}
-                  <button
-                    onClick={favoritarSelecionados}
-                    className="p-2 bg-slate-800 hover:bg-amber-500/20 hover:border-amber-500/50 rounded-lg transition-all border border-slate-700"
-                    title="Favoritar selecionados"
-                  >
-                    <StarIcon className="w-5 h-5 text-slate-400 hover:text-amber-400 transition-colors" />
-                  </button>
-
-                  {/* Arquivar */}
-                  <button
-                    onClick={arquivarSelecionados}
-                    className="p-2 bg-slate-800 hover:bg-red-500/20 hover:border-red-500/50 rounded-lg transition-all border border-slate-700"
-                    title="Arquivar selecionados"
-                  >
-                    <ArchiveBoxIcon className="w-5 h-5 text-slate-400 hover:text-red-400 transition-colors" />
-                  </button>
-                </>
-              )}
-            </div>
-
-            {/* FILTRO DE ENTIDADES */}
-            {viewMode === 'stakeholders' && entidadesDisponiveis.length > 0 && (
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2 text-xs text-slate-400 font-medium">
-                    <BuildingOfficeIcon className="w-4 h-4" />
-                    <span>Filtrar por Entidade:</span>
-                  </div>
-                  {entidadesFiltro.length > 0 && (
-                    <button
-                      onClick={() => updateFiltro('entidadesFiltro', [])}
-                      className="text-xs text-slate-500 hover:text-slate-300 transition-colors"
-                    >
-                      Limpar ({entidadesFiltro.length})
-                    </button>
+                <span className="flex items-center gap-1.5">
+                  {isSelected && (
+                    <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    </svg>
                   )}
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {entidadesDisponiveis.map((entidade) => {
-                    const isSelected = entidadesFiltro.includes(entidade);
-                    const corPartido = getCorPartido(entidade);
+                  {entidade}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+        {entidadesFiltro.length > 0 && (
+          <div className="flex items-center gap-2 text-xs">
+            <span className="text-slate-500">A mostrar:</span>
+            <div className="flex flex-wrap gap-1">
+              {entidadesFiltro.map((entidade) => (
+                <span
+                  key={entidade}
+                  className="px-2 py-0.5 rounded text-white font-medium"
+                  style={{ backgroundColor: getCorPartido(entidade) }}
+                >
+                  {entidade}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    )}
 
-                    return (
-                      <button
-                        key={entidade}
-                        onClick={() => toggleEntidade(entidade)}
-                        className={`px-4 py-2 rounded-full text-xs font-medium transition-all border-2 ${
-                          isSelected
-                            ? "text-white border-transparent shadow-lg scale-105"
-                            : "text-slate-400 bg-slate-800/50 border-slate-700 hover:text-white hover:border-slate-600 hover:bg-slate-800"
-                        }`}
-                        style={
-                          isSelected
-                            ? {
-                                background: corPartido,
-                                boxShadow: `0 4px 20px ${corPartido}66, 0 0 0 3px ${corPartido}1A`
-                              }
-                            : {}
-                        }
-                      >
-                        <span className="flex items-center gap-1.5">
-                          {isSelected && (
-                            <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                            </svg>
-                          )}
-                          {entidade}
-                        </span>
-                      </button>
-                    );
-                  })}
-                </div>
-                {entidadesFiltro.length > 0 && (
-                  <div className="flex items-center gap-2 text-xs">
-                    <span className="text-slate-500">A mostrar:</span>
-                    <div className="flex flex-wrap gap-1">
-                      {entidadesFiltro.map((entidade) => (
-                        <span
-                          key={entidade}
-                          className="px-2 py-0.5 rounded text-white font-medium"
-                          style={{ backgroundColor: getCorPartido(entidade) }}
-                        >
-                          {entidade}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-            )}
+    {/* ✅ FILTROS DE DATA COM ÍCONE BRANCO */}
+    <div className="flex flex-wrap gap-3 items-center">
+      <div className="relative">
+        <CalendarIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white pointer-events-none" />
+        <input
+          type="date"
+          value={dataInicio}
+          onChange={(e) => updateFiltro('dataInicio', e.target.value)}
+          placeholder="Data inicial"
+          className="pl-10 pr-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-sm text-white focus:outline-none transition-colors hover:border-slate-600"
+        />
+      </div>
+
+      <div className="relative">
+        <CalendarIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white pointer-events-none" />
+        <input
+          type="date"
+          value={dataFim}
+          onChange={(e) => updateFiltro('dataFim', e.target.value)}
+          placeholder="Data final"
+          className="pl-10 pr-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-sm text-white focus:outline-none transition-colors hover:border-slate-600"
+        />
+      </div>
+
+      {filtrosAtivos && (
+        <button
+          onClick={limparFiltros}
+          className="px-3 py-2 text-sm text-slate-400 hover:text-white transition-colors"
+        >
+          Limpar filtros
+        </button>
+      )}
+    </div>
+  </div>
+)}
 
             <div className="flex flex-wrap gap-3">
               {tiposDisponiveis.length > 0 && (
