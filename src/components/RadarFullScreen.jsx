@@ -10,8 +10,9 @@ const RadarFullScreen = ({ stats, documents, viewMode }) => {
   const [hoveredCategory, setHoveredCategory] = useState(null);
   const [selectedDocument, setSelectedDocument] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [documentoClosed, setDocumentoClosed] = useState(false); // ✅ NOVO
 
-  // ✅ NOVO: Estado para guardar os filtros
+  // ✅ Estado para guardar os filtros
   const [filtrosCategoria, setFiltrosCategoria] = useState({
     searchTerm: "",
     sortOrder: "desc",
@@ -54,26 +55,21 @@ const RadarFullScreen = ({ stats, documents, viewMode }) => {
     1
   );
 
-  // Função para voltar do documento para a categoria
+  // ✅ ATUALIZADO: Função para voltar do documento para a categoria
   const handleBackToCategory = () => {
     setSelectedDocument(null);
-    // selectedCategory já está definido, então o modal reaparece
+    setDocumentoClosed(prev => !prev); // ✅ Toggle para trigger o useEffect
   };
 
-  // ✅ NOVO: Limpar filtros quando fechar o modal completamente
+  // ✅ Função para fechar o documento
+  const handleCloseDocument = () => {
+    setSelectedDocument(null);
+    setSelectedCategory(null);
+  };
+
+  // ✅ Limpar filtros quando fechar o modal completamente
   const handleCloseCategory = () => {
     setSelectedCategory(null);
-    // Opcional: limpar filtros quando fechar
-    // setFiltrosCategoria({
-    //   searchTerm: "",
-    //   sortOrder: "desc",
-    //   tipoFiltro: "todos",
-    //   fonteFiltro: "todos",
-    //   entidadesFiltro: [],
-    //   dataInicio: "",
-    //   dataFim: "",
-    //   mostrarArquivados: false
-    // });
   };
 
   return (
@@ -243,24 +239,24 @@ const RadarFullScreen = ({ stats, documents, viewMode }) => {
             onMouseLeave={() => setHoveredCategory(null)}
           >
             <button
-  onClick={() => {
-    setSelectedCategory({ id: categoria, info, docs: categoryDocs });
-    // ✅ Limpar filtros ao abrir nova categoria
-    setFiltrosCategoria({
-      searchTerm: "",
-      sortOrder: "desc",
-      tipoFiltro: "todos",
-      fonteFiltro: "todos",
-      entidadesFiltro: [],
-      dataInicio: "",
-      dataFim: "",
-      mostrarArquivados: false
-    });
-  }}
-  className={`relative group transition-all duration-300 ${
-    isHovered ? "scale-110" : ""
-  }`}
->
+              onClick={() => {
+                setSelectedCategory({ id: categoria, info, docs: categoryDocs });
+                // ✅ Limpar filtros ao abrir nova categoria
+                setFiltrosCategoria({
+                  searchTerm: "",
+                  sortOrder: "desc",
+                  tipoFiltro: "todos",
+                  fonteFiltro: "todos",
+                  entidadesFiltro: [],
+                  dataInicio: "",
+                  dataFim: "",
+                  mostrarArquivados: false
+                });
+              }}
+              className={`relative group transition-all duration-300 ${
+                isHovered ? "scale-110" : ""
+              }`}
+            >
               {/* Glow on hover - AZUL */}
               <div
                 className="absolute inset-0 rounded-2xl blur-xl transition-opacity"
@@ -354,8 +350,9 @@ const RadarFullScreen = ({ stats, documents, viewMode }) => {
           onSelectDocument={(doc) => {
             setSelectedDocument(doc);
           }}
-          filtros={filtrosCategoria}  // ✅ PASSA OS FILTROS
-          setFiltros={setFiltrosCategoria}  // ✅ PASSA O SETTER
+          filtros={filtrosCategoria}
+          setFiltros={setFiltrosCategoria}
+          documentoClosed={documentoClosed} // ✅ NOVA PROP
         />
       )}
 
@@ -363,11 +360,8 @@ const RadarFullScreen = ({ stats, documents, viewMode }) => {
       {selectedDocument && (
         <DocumentDetailModal
           document={selectedDocument}
-          onClose={() => {
-            setSelectedDocument(null);
-            setSelectedCategory(null);
-          }}
-          onBack={selectedCategory ? handleBackToCategory : null}
+          onClose={handleCloseDocument} // ✅ USA A NOVA FUNÇÃO
+          onBack={selectedCategory ? handleBackToCategory : null} // ✅ USA handleBackToCategory
         />
       )}
     </>
