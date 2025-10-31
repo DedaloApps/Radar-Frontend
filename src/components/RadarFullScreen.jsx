@@ -11,6 +11,18 @@ const RadarFullScreen = ({ stats, documents, viewMode }) => {
   const [selectedDocument, setSelectedDocument] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
 
+  // ✅ NOVO: Estado para guardar os filtros
+  const [filtrosCategoria, setFiltrosCategoria] = useState({
+    searchTerm: "",
+    sortOrder: "desc",
+    tipoFiltro: "todos",
+    fonteFiltro: "todos",
+    entidadesFiltro: [],
+    dataInicio: "",
+    dataFim: "",
+    mostrarArquivados: false
+  });
+
   const { categoriasFavoritas, stakeholdersFavoritos, tiposConteudoVisiveis, foiLido, estaArquivado } = useUser();
 
   // Definir lista de categorias baseado no modo
@@ -29,12 +41,10 @@ const RadarFullScreen = ({ stats, documents, viewMode }) => {
     const stat = stats.porCategoria?.find((s) => s._id === categoria);
     const total = stat?.total || 0;
     
-    // ✅ CORRIGIDO: Filtrar sempre por d.categoria (funciona para ambos os modos)
     const categoryDocs = documentosFiltrados.filter((d) => {
       return d.categoria === categoria;
     });
     
-    // Contar apenas documentos não arquivados
     const activeCount = categoryDocs.filter((doc) => !estaArquivado(doc.id)).length;
     return { total, documents: categoryDocs, activeCount };
   };
@@ -48,6 +58,22 @@ const RadarFullScreen = ({ stats, documents, viewMode }) => {
   const handleBackToCategory = () => {
     setSelectedDocument(null);
     // selectedCategory já está definido, então o modal reaparece
+  };
+
+  // ✅ NOVO: Limpar filtros quando fechar o modal completamente
+  const handleCloseCategory = () => {
+    setSelectedCategory(null);
+    // Opcional: limpar filtros quando fechar
+    // setFiltrosCategoria({
+    //   searchTerm: "",
+    //   sortOrder: "desc",
+    //   tipoFiltro: "todos",
+    //   fonteFiltro: "todos",
+    //   entidadesFiltro: [],
+    //   dataInicio: "",
+    //   dataFim: "",
+    //   mostrarArquivados: false
+    // });
   };
 
   return (
@@ -191,7 +217,6 @@ const RadarFullScreen = ({ stats, documents, viewMode }) => {
       {categoriasList.map((categoria, index) => {
         const angle = (angleStep * index - 90) * (Math.PI / 180);
 
-        // ✅ Obter informação baseada no modo
         const info = viewMode === 'stakeholders'
           ? getStakeholderInfo(categoria)
           : getCategoriaInfo(categoria);
@@ -311,15 +336,17 @@ const RadarFullScreen = ({ stats, documents, viewMode }) => {
 
       {/* Modal de Documentos da Categoria */}
       {selectedCategory && !selectedDocument && (
-  <CategoryDocumentsModal
-    category={selectedCategory}
-    viewMode={viewMode}  // ✅ ADICIONA ISTO
-    onClose={() => setSelectedCategory(null)}
-    onSelectDocument={(doc) => {
-      setSelectedDocument(doc);
-    }}
-  />
-)}
+        <CategoryDocumentsModal
+          category={selectedCategory}
+          viewMode={viewMode}
+          onClose={handleCloseCategory}
+          onSelectDocument={(doc) => {
+            setSelectedDocument(doc);
+          }}
+          filtros={filtrosCategoria}  // ✅ PASSA OS FILTROS
+          setFiltros={setFiltrosCategoria}  // ✅ PASSA O SETTER
+        />
+      )}
 
       {/* Modal de Detalhe do Documento */}
       {selectedDocument && (
