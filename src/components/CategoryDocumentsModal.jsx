@@ -493,37 +493,52 @@ const CategoryDocumentsModal = ({ category, onClose, onSelectDocument, viewMode 
                       </div>
 
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-start gap-2 mb-1">
-                          <h3 className="font-medium text-sm text-white group-hover:text-sky-300 transition-colors line-clamp-2 flex-1">
-                            {doc.titulo}
-                          </h3>
-                          {isNew && !isArchived && (
-                            <div className="w-2 h-2 bg-red-500 rounded-full flex-shrink-0 mt-1.5 animate-pulse"></div>
-                          )}
-                        </div>
+  <div className="flex items-start gap-2 mb-2">
+    <h3 className="font-medium text-sm text-white group-hover:text-sky-300 transition-colors line-clamp-2 flex-1">
+      {doc.titulo}
+    </h3>
+    {isNew && !isArchived && (
+      <div className="w-2 h-2 bg-red-500 rounded-full flex-shrink-0 mt-1.5 animate-pulse"></div>
+    )}
+  </div>
 
-                        <div className="flex flex-wrap items-center gap-3 text-xs text-slate-500">
-                          <span className="flex items-center gap-1">
-                            <CalendarIcon className="w-3.5 h-3.5" />
-                            {formatDate(doc.data_publicacao || doc.createdAt)}
-                          </span>
-                          {doc.entidades && (
-                            <span className="px-2 py-0.5 rounded text-white font-medium"
-                                  style={{ backgroundColor: getCorPartido(doc.entidades) }}>
-                              {/* ✅ Se for partido E tiver fonte_original, mostrar "Partido - Fonte" */}
-                              {doc.categoria === 'stake_partidos' && doc.fonte_original
-                                ? `${doc.entidades} - ${doc.fonte_original}`
-                                : doc.entidades}
-                            </span>
-                          )}
-                          {doc.tipo_conteudo && (
-                            <span className="px-2 py-0.5 bg-slate-800 rounded text-slate-400">
-                              {doc.tipo_conteudo}
-                            </span>
-                          )}
-                          {doc.numero && <span className="text-slate-600">Nº {doc.numero}</span>}
-                        </div>
-                      </div>
+  <div className="flex flex-wrap items-center gap-2 text-xs">
+    {/* ✅ DATA PERSONALIZADA NUM BADGE BONITO */}
+    <span className="flex items-center gap-1.5 px-2.5 py-1 bg-slate-800/80 border border-slate-700/50 rounded-md text-slate-300 font-medium">
+      <CalendarIcon className="w-3.5 h-3.5 text-slate-500" />
+      {formatDate(doc.data_publicacao || doc.createdAt)}
+    </span>
+
+    {/* ✅ ENTIDADE (Partido/Stakeholder) */}
+    {doc.entidades && (
+      <span 
+        className="px-2.5 py-1 rounded-md text-white font-medium text-xs shadow-sm"
+        style={{ 
+          backgroundColor: getCorPartido(doc.entidades),
+          boxShadow: `0 0 10px ${getCorPartido(doc.entidades)}33`
+        }}
+      >
+        {doc.categoria === 'stake_partidos' && doc.fonte_original
+          ? `${doc.entidades} - ${doc.fonte_original}`
+          : doc.entidades}
+      </span>
+    )}
+
+    {/* ✅ TIPO DE CONTEÚDO */}
+    {doc.tipo_conteudo && (
+      <span className="px-2.5 py-1 bg-slate-800/60 border border-slate-700/50 rounded-md text-slate-400">
+        {doc.tipo_conteudo}
+      </span>
+    )}
+
+    {/* ✅ NÚMERO (se existir) */}
+    {doc.numero && (
+      <span className="px-2.5 py-1 bg-slate-800/60 border border-slate-700/50 rounded-md text-slate-500">
+        Nº {doc.numero}
+      </span>
+    )}
+  </div>
+</div>
                     </button>
 
                     <div className="absolute top-4 right-4 flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-all">
