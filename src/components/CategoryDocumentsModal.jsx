@@ -179,16 +179,15 @@ const CategoryDocumentsModal = ({
 
   // ✅ Restaurar posição de scroll quando documento é fechado
   useEffect(() => {
-    if (scrollContainerRef.current && scrollPositionRef.current > 0) {
-      const timer = setTimeout(() => {
-        if (scrollContainerRef.current) {
-          scrollContainerRef.current.scrollTop = scrollPositionRef.current;
-        }
-      }, 50);
-      
-      return () => clearTimeout(timer);
-    }
-  }, [documentoClosed]); // ✅ Trigger quando documento fecha
+     if (documentoClosed !== undefined && scrollContainerRef.current && scrollPositionRef.current > 0) {
+    // Usar requestAnimationFrame para garantir que o DOM está pronto
+    requestAnimationFrame(() => {
+      if (scrollContainerRef.current) {
+        scrollContainerRef.current.scrollTop = scrollPositionRef.current;
+      }
+    });
+  }
+}, [documentoClosed]); // ✅ Trigger quando documento fecha
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
