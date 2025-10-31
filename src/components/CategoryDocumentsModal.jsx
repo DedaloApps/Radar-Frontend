@@ -177,16 +177,18 @@ const CategoryDocumentsModal = ({
   ]);
 
   // ✅ NOVO: Restaurar posição de scroll quando voltar ao modal
-  useEffect(() => {
-    if (scrollContainerRef.current && scrollPositionRef.current > 0) {
-      // Pequeno delay para garantir que o DOM está renderizado
-      setTimeout(() => {
-        if (scrollContainerRef.current) {
-          scrollContainerRef.current.scrollTop = scrollPositionRef.current;
-        }
-      }, 0);
-    }
-  }, []);
+ useEffect(() => {
+  // Restaurar scroll quando o modal de documento fecha
+  if (scrollContainerRef.current && scrollPositionRef.current > 0) {
+    const timer = setTimeout(() => {
+      if (scrollContainerRef.current) {
+        scrollContainerRef.current.scrollTop = scrollPositionRef.current;
+      }
+    }, 50);
+    
+    return () => clearTimeout(timer);
+  }
+}, [category.docs.length]); // ✅ Trigger quando algo muda
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
