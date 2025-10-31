@@ -196,14 +196,21 @@ const DocumentDetailModal = ({ document, onClose, onBack }) => {
                  borderColor: 'rgba(100, 116, 139, 0.3)'
                }}>
             <p className="text-xs text-slate-500 text-center">
-              Fonte: <span className="text-slate-400 font-medium">
-                {document.fonte === 'parlamento' 
-                  ? 'Parlamento Português' 
-                  : document.fonte === 'stakeholders'
-                    ? document.fonte_original || document.entidades || 'Stakeholders'
-                    : 'Diário da República'}
-              </span>
-            </p>
+  Fonte: <span className="text-slate-400 font-medium">
+    {document.fonte === 'parlamento' 
+      ? 'Parlamento Português' 
+      : document.fonte === 'stakeholders'
+        ? (() => {
+            // ✅ Se for partido, extrair fonte original
+            if (document.categoria === 'stake_partidos' && document.entidades?.includes('|')) {
+              const [partido, fonteOriginal] = document.entidades.split('|');
+              return fonteOriginal; // "Observador" ou "CNN Portugal"
+            }
+            return document.entidades || 'Stakeholders';
+          })()
+        : 'Diário da República'}
+  </span>
+</p>
           </div>
         </div>
 
