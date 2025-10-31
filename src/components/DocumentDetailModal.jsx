@@ -215,7 +215,7 @@ const DocumentDetailModal = ({ document, onClose, onBack }) => {
      }}>
   
   
-    href={document.url}
+   a href={document.url}
     target="_blank"
     rel="noopener noreferrer"
     className="flex items-center justify-center gap-2 w-full py-3 text-white font-semibold rounded-lg transition-all group"
