@@ -567,7 +567,7 @@ const CategoryDocumentsModal = ({
 
                 return (
                   <div 
-                    key={index} 
+                    key={doc.id} 
                     className={`group relative transition-all ${
                       isSelected 
                         ? 'bg-slate-800/80 ring-2 ring-inset' 
