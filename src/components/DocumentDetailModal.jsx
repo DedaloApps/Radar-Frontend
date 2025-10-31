@@ -208,30 +208,31 @@ const DocumentDetailModal = ({ document, onClose, onBack }) => {
         </div>
 
         {/* Footer com Ação - AZUL */}
-        <div className="border-t p-4 flex-shrink-0"
-             style={{
-               backgroundColor: 'rgba(38, 34, 97, 0.5)',
-               borderColor: 'rgba(100, 116, 139, 0.5)'
-             }}>
-          
-            href={document.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center justify-center gap-2 w-full py-3 text-white font-semibold rounded-lg transition-all group"
-            style={{ backgroundColor: '#27aae2' }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = '#1e88b5';
-              e.currentTarget.style.boxShadow = '0 0 20px rgba(39, 170, 226, 0.4)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = '#27aae2';
-              e.currentTarget.style.boxShadow = 'none';
-            }}
-          >
-            <span>Ver Documento Original</span>
-            <ArrowTopRightOnSquareIcon className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-          </a>
-        </div>
+<div className="border-t p-4 flex-shrink-0"
+     style={{
+       backgroundColor: 'rgba(38, 34, 97, 0.5)',
+       borderColor: 'rgba(100, 116, 139, 0.5)'
+     }}>
+  
+  
+    href={document.url}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="flex items-center justify-center gap-2 w-full py-3 text-white font-semibold rounded-lg transition-all group"
+    style={{ backgroundColor: '#27aae2' }}
+    onMouseEnter={(e) => {
+      e.currentTarget.style.backgroundColor = '#1e88b5';
+      e.currentTarget.style.boxShadow = '0 0 20px rgba(39, 170, 226, 0.4)';
+    }}
+    onMouseLeave={(e) => {
+      e.currentTarget.style.backgroundColor = '#27aae2';
+      e.currentTarget.style.boxShadow = 'none';
+    }}
+  >
+    <span>Ver Documento Original</span>
+    <ArrowTopRightOnSquareIcon className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+  </a>
+</div>
       </div>
     </div>
   );
