@@ -23,7 +23,8 @@ const CategoryDocumentsModal = ({
   onSelectDocument, 
   viewMode,
   filtros,
-  setFiltros
+  setFiltros,
+  documentoClosed // ✅ NOVA PROP
 }) => {
   const {
     searchTerm,
@@ -38,7 +39,7 @@ const CategoryDocumentsModal = ({
 
   const [documentosSelecionados, setDocumentosSelecionados] = useState([]);
   
-  // ✅ NOVO: Referência para o container de scroll
+  // ✅ Referência para o container de scroll
   const scrollContainerRef = useRef(null);
   const scrollPositionRef = useRef(0);
 
@@ -176,19 +177,18 @@ const CategoryDocumentsModal = ({
     estaArquivado,
   ]);
 
-  // ✅ NOVO: Restaurar posição de scroll quando voltar ao modal
- useEffect(() => {
-  // Restaurar scroll quando o modal de documento fecha
-  if (scrollContainerRef.current && scrollPositionRef.current > 0) {
-    const timer = setTimeout(() => {
-      if (scrollContainerRef.current) {
-        scrollContainerRef.current.scrollTop = scrollPositionRef.current;
-      }
-    }, 50);
-    
-    return () => clearTimeout(timer);
-  }
-}, [category.docs.length]); // ✅ Trigger quando algo muda
+  // ✅ Restaurar posição de scroll quando documento é fechado
+  useEffect(() => {
+    if (scrollContainerRef.current && scrollPositionRef.current > 0) {
+      const timer = setTimeout(() => {
+        if (scrollContainerRef.current) {
+          scrollContainerRef.current.scrollTop = scrollPositionRef.current;
+        }
+      }, 50);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [documentoClosed]); // ✅ Trigger quando documento fecha
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -222,7 +222,7 @@ const CategoryDocumentsModal = ({
     });
   };
 
-  // ✅ NOVO: Guardar posição de scroll antes de abrir documento
+  // ✅ Guardar posição de scroll antes de abrir documento
   const handleSelectDocument = (doc) => {
     if (scrollContainerRef.current) {
       scrollPositionRef.current = scrollContainerRef.current.scrollTop;
