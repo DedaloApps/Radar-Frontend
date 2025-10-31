@@ -524,18 +524,23 @@ const CategoryDocumentsModal = ({
                           </span>
 
                           {doc.entidades && (
-                            <span 
-                              className="px-2.5 py-1 rounded-md text-white font-medium text-xs shadow-sm"
-                              style={{ 
-                                backgroundColor: getCorPartido(doc.entidades),
-                                boxShadow: `0 0 10px ${getCorPartido(doc.entidades)}33`
-                              }}
-                            >
-                              {doc.categoria === 'stake_partidos' && doc.fonte_original
-                                ? `${doc.entidades} - ${doc.fonte_original}`
-                                : doc.entidades}
-                            </span>
-                          )}
+  <span 
+    className="px-2.5 py-1 rounded-md text-white font-medium text-xs shadow-sm"
+    style={{ 
+      backgroundColor: getCorPartido(doc.entidades),
+      boxShadow: `0 0 10px ${getCorPartido(doc.entidades)}33`
+    }}
+  >
+    {(() => {
+      // ✅ Se for partido, mostrar "Partido - Jornal"
+      if (doc.categoria === 'stake_partidos' && doc.entidades?.includes('|')) {
+        const [partido, fonte] = doc.entidades.split('|');
+        return `${partido} - ${fonte}`;
+      }
+      return doc.entidades;
+    })()}
+  </span>
+)}
 
                           {doc.tipo_conteudo && (
                             <span className="px-2.5 py-1 bg-slate-800/60 border border-slate-700/50 rounded-md text-slate-400">
